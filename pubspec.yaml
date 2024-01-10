@@ -1,0 +1,21 @@
+name: cryptography_utils
+description: "Cryptography utils"
+version: 0.0.1
+
+environment:
+  sdk: ">=3.2.2"
+  flutter: "^3.16.2"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
+  # https://pub.dev/packages/equatable
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
