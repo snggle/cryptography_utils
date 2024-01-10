@@ -7,6 +7,7 @@ class LegacyWalletConfig extends AWalletConfig {
 
   const LegacyWalletConfig({
     required ILegacyDerivator derivator,
+    required super.addressEncoder,
     required this.coinIndex,
     required this.curveType,
     required this.purpose,

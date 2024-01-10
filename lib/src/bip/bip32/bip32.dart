@@ -8,3 +8,4 @@ export 'hd_wallet/legacy_hd_wallet.dart';
 export 'keys/bip32_hmac_keys.dart';
 export 'keys/i_bip32_private_key.dart';
 export 'keys/i_bip32_public_key.dart';
+export 'keys/public_key_mode.dart';

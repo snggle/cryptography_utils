@@ -18,6 +18,7 @@ void main() {
 
       // Assert
       LegacyHDWallet expectedKiraWallet = LegacyHDWallet(
+        address: 'kira143q8vxpvuykt9pq50e6hng9s38vmy844n8k9wx',
         walletConfig: Bip44WalletsConfig.kira,
         privateKey: Secp256k1PrivateKey(
           chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
@@ -54,6 +55,7 @@ void main() {
 
       // Assert
       LegacyHDWallet expectedCosmosWallet = LegacyHDWallet(
+        address: 'cosmos143q8vxpvuykt9pq50e6hng9s38vmy844rgut0t',
         walletConfig: Bip44WalletsConfig.cosmos,
         privateKey: Secp256k1PrivateKey(
           chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
@@ -90,6 +92,7 @@ void main() {
 
       // Assert
       LegacyHDWallet expectedEthereumWallet = LegacyHDWallet(
+        address: '0x50e10257924889818aA729c6EDfa02524b32Edb9',
         walletConfig: Bip44WalletsConfig.ethereum,
         privateKey: Secp256k1PrivateKey(
           chainCode: base64Decode('YsN74zJ6p9/kjsFCM5UUBq470XR3CEssHXyawdn7xBw='),
@@ -126,6 +129,7 @@ void main() {
 
       // Assert
       LegacyHDWallet expectedBitcoinBip44Wallet = LegacyHDWallet(
+        address: '12CUuS1w48dmLqug3sQeZGXhM6ziyLdDFR',
         walletConfig: Bip44WalletsConfig.bitcoin,
         privateKey: Secp256k1PrivateKey(
           chainCode: base64Decode('rEcUq915xZMcSVN9UIfhWIf7c+cb9fURwnXSJ59fbhs='),
@@ -162,6 +166,7 @@ void main() {
 
       // Assert
       LegacyHDWallet expectedBitcoinBip49Wallet = LegacyHDWallet(
+        address: '38BaaMYeUR32tptWPcfLiuZwdkq1iHy7mW',
         walletConfig: Bip49WalletsConfig.bitcoin,
         privateKey: Secp256k1PrivateKey(
           chainCode: base64Decode('dD+m4pyYe3edlY9ZDNDpe370dwMmGNF2ihkMDXjYSpY='),
@@ -198,6 +203,7 @@ void main() {
 
       // Assert
       LegacyHDWallet expectedBitcoinBip84Wallet = LegacyHDWallet(
+        address: 'bc1quxjugvagpv4kz5hdkh7x0qklarw5akdk2sg0wp',
         walletConfig: Bip84WalletsConfig.bitcoin,
         privateKey: Secp256k1PrivateKey(
           chainCode: base64Decode('HmhuNs2LO3+/SpMIb4FCOCRlS5Ym+ACIprpAAmG4zMI='),

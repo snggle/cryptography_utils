@@ -6,6 +6,7 @@ class LegacyHDWallet extends AHDWallet {
   final LegacyDerivationPath? derivationPath;
 
   const LegacyHDWallet({
+    required super.address,
     required super.walletConfig,
     required super.privateKey,
     required super.publicKey,
@@ -23,7 +24,10 @@ class LegacyHDWallet extends AHDWallet {
     IBip32PrivateKey bip32PrivateKey = await walletConfig.derivator.derivePath(mnemonic, derivationPath);
     IBip32PublicKey bip32PublicKey = bip32PrivateKey.publicKey;
 
+    String address = walletConfig.addressEncoder.encodePublicKey(bip32PublicKey);
+
     return LegacyHDWallet(
+      address: address,
       walletConfig: walletConfig,
       privateKey: bip32PrivateKey,
       publicKey: bip32PublicKey,
@@ -32,5 +36,5 @@ class LegacyHDWallet extends AHDWallet {
   }
 
   @override
-  List<Object?> get props => <Object?>[walletConfig, privateKey, publicKey, derivationPath];
+  List<Object?> get props => <Object?>[address, walletConfig, privateKey, publicKey, derivationPath];
 }
