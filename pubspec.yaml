@@ -26,6 +26,10 @@ dependencies:
   # https://pub.dev/packages/pointycastle
   pointycastle: ^3.7.4
 
+  # A set of high-level APIs over PointyCastle for two-way cryptography.
+  # https://pub.dev/packages/encrypt
+  encrypt: ^5.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
