@@ -34,6 +34,10 @@ dependencies:
   # https://pub.dev/packages/collection
   collection: 1.18.0
 
+  # A set of high-level APIs over PointyCastle for two-way cryptography.
+  # https://pub.dev/packages/encrypt
+  encrypt: 5.0.3
+
 dev_dependencies:
   # A full featured library for writing and running Dart tests across platforms.
   # https://pub.dev/packages/test
