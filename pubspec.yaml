@@ -30,5 +30,9 @@ dependencies:
   # https://pub.dev/packages/collection
   collection: 1.18.0
 
+  # A set of high-level APIs over PointyCastle for two-way cryptography.
+  # https://pub.dev/packages/encrypt
+  encrypt: 5.0.3
+
 dev_dependencies:
   test: 1.25.5
