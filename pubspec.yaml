@@ -27,6 +27,14 @@ dependencies:
   # https://pub.dev/packages/decimal
   decimal: 2.3.3
 
+  # Collections and utilities functions and classes related to collections.
+  # https://pub.dev/packages/collection
+  collection: 1.18.0
+
+  # A set of high-level APIs over PointyCastle for two-way cryptography.
+  # https://pub.dev/packages/encrypt
+  encrypt: 5.0.3
+
   # Dart package containing utility methods for data encoding and decoding.
   codec_utils:
     git:
