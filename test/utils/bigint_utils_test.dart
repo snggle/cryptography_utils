@@ -72,6 +72,47 @@ void main() {
     });
   });
 
+  group('Tests of BigIntUtils.decodeWithSign()', () {
+    test('Should [return signed BigInt] constructed from given bytes (sign POSITIVE)', () {
+      // Arrange
+      List<int> actualBytes = base64Decode('SZYC0g==');
+
+      // Act
+      BigInt actualBigInt = BigIntUtils.decodeWithSign(1, actualBytes);
+
+      // Assert
+      BigInt expectedBigInt = BigInt.parse('1234567890');
+
+      expect(actualBigInt, expectedBigInt);
+    });
+
+    test('Should [return unsigned BigInt] constructed from given bytes (sign NEGATIVE)', () {
+      // Arrange
+      List<int> actualBytes = base64Decode('SZYC0g==');
+
+      // Act
+      BigInt actualBigInt = BigIntUtils.decodeWithSign(-1, actualBytes);
+
+      // Assert
+      BigInt expectedBigInt = BigInt.parse('-912915758');
+
+      expect(actualBigInt, expectedBigInt);
+    });
+
+    test('Should [return zero] constructed from given bytes (sign == 0)', () {
+      // Arrange
+      List<int> actualBytes = base64Decode('SZYC0g==');
+
+      // Act
+      BigInt actualBigInt = BigIntUtils.decodeWithSign(0, actualBytes);
+
+      // Assert
+      BigInt expectedBigInt = BigInt.zero;
+
+      expect(actualBigInt, expectedBigInt);
+    });
+  });
+
   group('Tests of BigIntUtils.decode()', () {
     test('Should [return BigInt] constructed from given bytes', () {
       // Arrange
@@ -84,6 +125,30 @@ void main() {
       BigInt expectedBigInt = BigInt.parse('1234567890');
 
       expect(actualBigInt, expectedBigInt);
+    });
+  });
+
+  group('Tests of BigIntUtils.getBit()', () {
+    test('Should [return TRUE] if given index has [bit == 1]', () {
+      // Arrange
+      BigInt actualNumber = BigInt.parse('110010101000100001010111', radix: 2);
+
+      // Act
+      bool actualBit = BigIntUtils.getBit(actualNumber, 2);
+
+      // Assert
+      expect(actualBit, true);
+    });
+
+    test('Should [return FALSE] if given index has [bit == 0]', () {
+      // Arrange
+      BigInt actualNumber = BigInt.parse('110010101000100001010111', radix: 2);
+
+      // Act
+      bool actualBit = BigIntUtils.getBit(actualNumber, 3);
+
+      // Assert
+      expect(actualBit, false);
     });
   });
 }
