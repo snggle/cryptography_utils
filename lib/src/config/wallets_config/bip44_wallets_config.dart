@@ -39,4 +39,12 @@ class Bip44WalletsConfig {
     curveType: CurveType.secp256k1,
     purpose: BipProposalType.bip44,
   );
+
+  static LegacyWalletConfig solana = LegacyWalletConfig(
+    addressEncoder: const SolanaAddressEncoder(),
+    derivator: ED25519Derivator(),
+    purpose: BipProposalType.bip44,
+    coinIndex: Slip44.solana,
+    curveType: CurveType.ed25519,
+  );
 }

@@ -4,5 +4,6 @@ export 'i_blockchain_address_encoder.dart';
 export 'p2pkh_address_encoder.dart';
 export 'p2sh_address_encoder.dart';
 export 'p2wpkh_address_encoder.dart';
+export 'solana_address_encoder.dart';
 export 'substrate_ed25519_address_encoder.dart';
 export 'substrate_sr25519_address_encoder.dart';

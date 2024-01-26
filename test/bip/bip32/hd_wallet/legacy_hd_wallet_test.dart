@@ -119,6 +119,40 @@ void main() {
       expect(actualEthereumWallet, expectedEthereumWallet);
     });
 
+    test('Should [return LegacyHDWallet] from given mnemonic (BIP44-Solana)', () async {
+      // Act
+      LegacyHDWallet actualSolanaWallet = await LegacyHDWallet.fromMnemonic(
+        mnemonic: mnemonic,
+        walletConfig: Bip44WalletsConfig.solana,
+        derivationPathString: "m/44'/501'/0'",
+      );
+
+      // Assert
+      LegacyHDWallet expectedSolanaWallet = LegacyHDWallet(
+        address: '9hhbpdfqH2xaNhr4Lrd6JsAsmhsMJoou6aTv9K7MC7G6',
+        walletConfig: Bip44WalletsConfig.solana,
+        privateKey: ED25519PrivateKey(
+          chainCode: base64Decode('+ZGw7L105N54Uwwvz4mMpJ6iNJj7xumWTKKCh8QAgIY='),
+          edPrivateKey: EDPrivateKey.fromBytes(base64Decode('R9I6Ttyga6IgJLNgZPIR0Sq5oCyrujJiWI3ngJn8NuU=')),
+        ),
+        publicKey: ED25519PublicKey(
+          edPublicKey: EDPublicKey(
+            EDPoint(
+              curve: Curves.ed25519,
+              n: BigInt.parse('7237005577332262213973186563042994240857116359379907606001950938285454250989'),
+              x: BigInt.parse('44770412612249132879508693710199042699271465674024261288602292914024751467771'),
+              y: BigInt.parse('9071192539003680880021133333155815940615935403600658841594844653366853384648'),
+              z: BigInt.parse('215655415489707601689906281986627164961686488479408878249048443374796070278'),
+              t: BigInt.parse('55926202586167076010672118601058589559146741453778469146658296279768153697900'),
+            ),
+          ),
+        ),
+        derivationPath: LegacyDerivationPath.parse("m/44'/501'/0'"),
+      );
+
+      expect(actualSolanaWallet, expectedSolanaWallet);
+    });
+
     test('Should [return LegacyHDWallet] from given mnemonic (BIP44-Bitcoin)', () async {
       // Act
       LegacyHDWallet actualBitcoinBip44Wallet = await LegacyHDWallet.fromMnemonic(
