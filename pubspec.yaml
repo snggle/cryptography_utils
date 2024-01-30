@@ -1,6 +1,6 @@
 name: cryptography_utils
 description: "Cryptography utils"
-version: 0.0.3
+version: 0.0.4
 
 environment:
   sdk: ">=3.2.2"
