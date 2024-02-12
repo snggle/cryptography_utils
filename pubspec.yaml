@@ -30,6 +30,10 @@ dependencies:
   # https://pub.dev/packages/decimal
   decimal: 2.3.3
 
+  # Collections and utilities functions and classes related to collections.
+  # https://pub.dev/packages/collection
+  collection: 1.18.0
+
 dev_dependencies:
   # A full featured library for writing and running Dart tests across platforms.
   # https://pub.dev/packages/test
