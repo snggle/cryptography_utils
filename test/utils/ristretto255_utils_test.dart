@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/utils/ristretto255_utils.dart';
 import 'package:test/test.dart';
 
