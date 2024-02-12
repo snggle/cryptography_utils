@@ -4,6 +4,7 @@ export 'src/bip/bip.dart';
 export 'src/cdsa/cdsa.dart';
 export 'src/hash/hmac.dart';
 export 'src/hash/keccak.dart';
+export 'src/hash/keccak_f1600.dart';
 export 'src/hash/pbkdf2.dart';
 export 'src/hash/ripemd160.dart';
 export 'src/signer/export.dart';
