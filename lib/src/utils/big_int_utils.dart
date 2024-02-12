@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 class BigIntUtils {
-  static Uint8List changeToBytes(BigInt value, {int? length}) {
+  static Uint8List changeToBytes(BigInt value, {int? length, Endian order = Endian.big}) {
     int byteLength = length ?? calculateByteLength(value);
 
     BigInt updatedValue = value;
@@ -13,6 +13,10 @@ class BigIntUtils {
     for (int i = 0; i < byteLength; i++) {
       byteList[byteLength - i - 1] = (updatedValue & bigMaskEight).toInt();
       updatedValue = updatedValue >> 8;
+    }
+
+    if (order == Endian.little) {
+      byteList = byteList.reversed.toList();
     }
 
     return Uint8List.fromList(byteList);
@@ -60,12 +64,17 @@ class BigIntUtils {
     }
   }
 
-  static BigInt decode(List<int> bytes, {int? bitLength}) {
-    int bytesBitLength = bytes.length * 8;
+  static BigInt decode(List<int> bytes, {int? bitLength, Endian order = Endian.big}) {
+    List<int> tmpBytes = bytes;
+    if (order == Endian.little) {
+      tmpBytes = List<int>.from(bytes.reversed.toList());
+    }
+
+    int bytesBitLength = tmpBytes.length * 8;
 
     BigInt result = BigInt.zero;
-    for (int i = 0; i < bytes.length; i++) {
-      result += BigInt.from(bytes[i]) << ((bytes.length - i - 1) * 8);
+    for (int i = 0; i < tmpBytes.length; i++) {
+      result += BigInt.from(tmpBytes[tmpBytes.length - i - 1]) << (8 * i);
     }
 
     if (bitLength != null && bytesBitLength >= bitLength) {
