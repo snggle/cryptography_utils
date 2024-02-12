@@ -12,4 +12,12 @@ class BytesUtils {
     List<int> bytes = BigIntUtils.changeToBytes(z2, length: padding.bitLength ~/ 8);
     return Uint8List.fromList(bytes);
   }
+
+  static Uint8List padLeft(List<int> data, int length, int value) {
+    List<int> paddedData = List<int>.from(data);
+    if (paddedData.length < length) {
+      paddedData.insertAll(0, List<int>.generate(length - paddedData.length, (_) => value));
+    }
+    return Uint8List.fromList(paddedData);
+  }
 }
