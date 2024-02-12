@@ -4,4 +4,6 @@ enum AddressEncoderType {
   bitcoinP2WPKH,
   cosmos,
   ethereum,
+  substrateED25519,
+  substrateSR25519,
 }

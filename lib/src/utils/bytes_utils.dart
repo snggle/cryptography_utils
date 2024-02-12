@@ -22,4 +22,12 @@ class BytesUtils {
     }
     return chunks;
   }
+
+  static Uint8List padLeft(List<int> data, int length, int value) {
+    List<int> paddedData = List<int>.from(data);
+    if (paddedData.length < length) {
+      paddedData.insertAll(0, List<int>.generate(length - paddedData.length, (_) => value));
+    }
+    return Uint8List.fromList(paddedData);
+  }
 }

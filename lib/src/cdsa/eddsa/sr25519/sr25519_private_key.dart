@@ -14,10 +14,12 @@ class SR25519PrivateKey extends ABip32PrivateKey {
     required super.metadata,
     required this.key,
     Uint8List? nonce,
-  })  : nonce = nonce ?? Uint8List(0);
+  }) : nonce = nonce ?? Uint8List(0);
 
   factory SR25519PrivateKey.fromEDPrivateKey({required EDPrivateKey edPrivateKey, required Bip32KeyMetadata metadata}) {
-    List<int> h = sha512.convert(edPrivateKey.bytes).bytes;
+    List<int> h = sha512
+        .convert(edPrivateKey.bytes)
+        .bytes;
     List<int> a = h.sublist(0, 32);
     a[0] &= 248;
     a[31] &= 63;
@@ -28,6 +30,18 @@ class SR25519PrivateKey extends ABip32PrivateKey {
       key: Uint8List.fromList(a),
       nonce: Uint8List.fromList(h.sublist(32, 64)),
       metadata: metadata,
+    );
+  }
+
+  SR25519PrivateKey copyWith({
+    Bip32KeyMetadata? metadata,
+    Uint8List? key,
+    Uint8List? nonce,
+  }) {
+    return SR25519PrivateKey(
+      metadata: metadata ?? this.metadata,
+      key: key ?? this.key,
+      nonce: nonce ?? this.nonce,
     );
   }
 

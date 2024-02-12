@@ -73,4 +73,34 @@ void main() {
       expect(actualChunkedBytes, expectedChunkedBytes);
     });
   });
+
+  group('Tests of BytesUtils.padLeft()', () {
+    test('Should [return List<int>] padded to given size', () {
+      // Arrange
+      List<int> actualBytes = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
+      int actualLength = 18;
+
+      // Act
+      List<int> actualPaddedBytes = BytesUtils.padLeft(actualBytes, actualLength, 0);
+
+      // Assert
+      List<int> expectedPaddedBytes = <int>[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      expect(actualPaddedBytes, expectedPaddedBytes);
+    });
+
+    test('Should [return given List<int>] if given data is larger than provided "length" value', () {
+      // Arrange
+      List<int> actualBytes = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
+      int actualLength = 2;
+
+      // Act
+      List<int> actualPaddedBytes = BytesUtils.padLeft(actualBytes, actualLength, 0);
+
+      // Assert
+      List<int> expectedPaddedBytes = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      expect(actualPaddedBytes, expectedPaddedBytes);
+    });
+  });
 }

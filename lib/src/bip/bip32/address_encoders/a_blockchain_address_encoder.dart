@@ -15,7 +15,9 @@ abstract class ABlockchainAddressEncoder<T extends ABip32PublicKey> {
       AddressEncoderType.bitcoinP2WPKH => BitcoinP2WPKHAddressEncoder(hrp: args[0]),
       AddressEncoderType.cosmos => CosmosAddressEncoder(hrp: args[0]),
       AddressEncoderType.ethereum => EthereumAddressEncoder(skipChecksumBool: args[0] == 'true'),
-    };
+      AddressEncoderType.substrateED25519 => SubstrateED25519AddressEncoder(ss58Format: int.parse(args[0])),
+      AddressEncoderType.substrateSR25519 => SubstrateSR25519AddressEncoder(ss58Format: int.parse(args[0])),
+    }  as ABlockchainAddressEncoder<ABip32PublicKey>;
   }
 
   String serializeType() {

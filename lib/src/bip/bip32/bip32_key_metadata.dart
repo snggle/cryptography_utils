@@ -57,8 +57,8 @@ class Bip32KeyMetadata extends Equatable {
 
   Bip32KeyMetadata deriveNext({
     required Uint8List newCompressedPublicKey,
-    required Uint8List newChainCode,
-    required int newShiftedIndex,
+    Uint8List? newChainCode,
+    int? newShiftedIndex,
   }) {
     BigInt newParentFingerprint = fingerprint;
     BigInt newFingerprint = ABip32PublicKey.calcFingerprint(newCompressedPublicKey);
