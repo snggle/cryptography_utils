@@ -26,5 +26,9 @@ dependencies:
   # https://pub.dev/packages/compute
   compute: 1.0.2
 
+  # Collections and utilities functions and classes related to collections.
+  # https://pub.dev/packages/collection
+  collection: 1.18.0
+
 dev_dependencies:
   test: 1.25.5

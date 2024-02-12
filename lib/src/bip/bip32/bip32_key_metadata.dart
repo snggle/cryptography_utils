@@ -9,10 +9,6 @@ class Bip32KeyMetadata extends Equatable {
   /// The number of derivations from the master root key to this key, indicating its level in the hierarchy.
   final int depth;
 
-  /// A 256-bit (32 bytes) value acting as a component of BIP-32 private key.
-  /// It's used in conjunction with [ECPrivateKey] or [ECPublicKey] for generating child private keys.
-  final Uint8List chainCode;
-
   /// The unique identifier derived from the hash of the ECDSA public key, representing this key in the hierarchy.
   final BigInt fingerprint;
 
@@ -25,15 +21,37 @@ class Bip32KeyMetadata extends Equatable {
   /// The derivation path index in its shifted form. Is null for the master key.
   final int? shiftedIndex;
 
+  /// A 256-bit (32 bytes) value acting as a component of BIP-32 private key.
+  /// It's used in conjunction with [ECPrivateKey] or [ECPublicKey] for generating child private keys.
+  final Uint8List chainCode;
+
   /// Creates a new instance of [Bip32KeyMetadata] with the specified parameters.
-  const Bip32KeyMetadata({
+  Bip32KeyMetadata({
     required this.depth,
-    required this.chainCode,
     required this.fingerprint,
     required this.parentFingerprint,
     required this.masterFingerprint,
     this.shiftedIndex,
-  });
+    Uint8List? chainCode,
+  }) : chainCode = chainCode ?? Uint8List(0);
+
+  Bip32KeyMetadata copyWith({
+    int? depth,
+    Uint8List? chainCode,
+    BigInt? fingerprint,
+    BigInt? parentFingerprint,
+    BigInt? masterFingerprint,
+    int? shiftedIndex,
+  }) {
+    return Bip32KeyMetadata(
+      depth: depth ?? this.depth,
+      chainCode: chainCode ?? this.chainCode,
+      fingerprint: fingerprint ?? this.fingerprint,
+      parentFingerprint: parentFingerprint ?? this.parentFingerprint,
+      masterFingerprint: masterFingerprint ?? this.masterFingerprint,
+      shiftedIndex: shiftedIndex ?? this.shiftedIndex,
+    );
+  }
 
   @override
   List<Object?> get props => <Object?>[depth, chainCode, fingerprint, parentFingerprint, masterFingerprint, shiftedIndex];

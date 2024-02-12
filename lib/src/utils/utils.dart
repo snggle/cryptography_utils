@@ -3,4 +3,5 @@ export 'binary_utils.dart';
 export 'bytes_utils.dart';
 export 'ec_point_utils.dart';
 export 'ed25519_utils.dart';
+export 'ristretto255_utils.dart';
 export 'secure_random.dart';
