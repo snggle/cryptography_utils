@@ -4,7 +4,7 @@ run-name: Version and tests check
 on:
   pull_request:
     branches:
-      - dev
+      - master
 
 jobs:
   app-version-check:
@@ -13,13 +13,13 @@ jobs:
       # https://github.com/marketplace/actions/checkout
       - uses: actions/checkout@main
         with:
-          ref: dev
-      - name: Extract version from branch DEV
+          ref: master
+      - name: Extract version from branch MASTER
         run: |
           chmod -R 777 scripts
-          DEV_BRANCH_VERSION="$(./scripts/version.sh)"
-          echo "DEV_BRANCH_VERSION=$DEV_BRANCH_VERSION" >> $GITHUB_ENV
-          echo "DEV_BRANCH_VERSION: $DEV_BRANCH_VERSION"
+          MASTER_BRANCH_VERSION="$(./scripts/version.sh)"
+          echo "MASTER_BRANCH_VERSION=$MASTER_BRANCH_VERSION" >> $GITHUB_ENV
+          echo "MASTER_BRANCH_VERSION: $MASTER_BRANCH_VERSION"
       - uses: actions/checkout@main
       - name: Extract version from branch WORKING
         run: |
@@ -29,10 +29,10 @@ jobs:
           echo "WORKING_BRANCH_VERSION: $WORKING_BRANCH_VERSION"
       - name: Compare versions
         run: |
-          echo "DEV_BRANCH_VERSION: $DEV_BRANCH_VERSION"
+          echo "MASTER_BRANCH_VERSION: $MASTER_BRANCH_VERSION"
           echo "WORKING_BRANCH_VERSION: $WORKING_BRANCH_VERSION"
 
-          RESULT="$(./scripts/compare_versions.py $DEV_BRANCH_VERSION $WORKING_BRANCH_VERSION)"
+          RESULT="$(./scripts/compare_versions.py $MASTER_BRANCH_VERSION $WORKING_BRANCH_VERSION)"
           
           if [ $RESULT == "True" ]; then
             exit 0
