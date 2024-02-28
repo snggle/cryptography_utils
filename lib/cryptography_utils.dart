@@ -6,6 +6,7 @@ export 'src/hash/hmac.dart';
 export 'src/hash/keccak.dart';
 export 'src/hash/pbkdf2.dart';
 export 'src/hash/ripemd160.dart';
+export 'src/identicons/identicons.dart';
 export 'src/signer/export.dart';
 export 'src/slip/slip.dart';
 export 'src/transactions/export.dart';
