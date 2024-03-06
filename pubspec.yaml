@@ -1,6 +1,6 @@
 name: cryptography_utils
 description: "Cryptography utils"
-version: 0.0.2
+version: 0.0.3
 
 environment:
   sdk: ">=3.2.2"
@@ -13,6 +13,10 @@ dependencies:
   # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
   # https://pub.dev/packages/equatable
   equatable: ^2.0.5
+
+  # Implementations of SHA, MD5, and HMAC cryptographic functions.
+  # https://pub.dev/packages/crypto
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:

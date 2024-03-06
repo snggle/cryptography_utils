@@ -48,6 +48,18 @@ class BigIntUtils {
     return nafList;
   }
 
+  static BigInt decodeWithSign(int sign, List<int> bytes, {int? bitLength}) {
+    BigInt result = decode(bytes, bitLength: bitLength);
+
+    if (sign == 0 || result == BigInt.zero) {
+      return BigInt.zero;
+    } else if (sign < 0) {
+      return result.toSigned(result.bitLength);
+    } else {
+      return result.toUnsigned(result.bitLength);
+    }
+  }
+
   static BigInt decode(List<int> bytes, {int? bitLength}) {
     int bytesBitLength = bytes.length * 8;
 
@@ -60,5 +72,9 @@ class BigIntUtils {
       result >>= bytesBitLength - bitLength;
     }
     return result;
+  }
+
+  static bool getBit(BigInt value, int index) {
+    return value & (BigInt.one << index) != BigInt.zero;
   }
 }

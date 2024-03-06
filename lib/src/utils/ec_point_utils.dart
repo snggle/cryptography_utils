@@ -30,9 +30,38 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import 'dart:math';
+
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 class ECPointUtils {
+  /// Sums the results of multiplication of two points on the elliptic curve (`P` and `Q`) by two different scalars (`k` and `l`).
+  /// This operation uses Strauss-Shamir trick, which allows to reduce the number of required point operations on the curve.
+  static ECPoint sumTwoMultiplies(ECPoint P, BigInt k, ECPoint Q, BigInt l) {
+    int m = max(k.bitLength, l.bitLength);
+
+    ECPoint Z = P + Q;
+    ECPoint R = ECPoint.infinityFrom(P);
+
+    for (int i = m - 1; i >= 0; --i) {
+      R = doublePoint(R);
+
+      if (BigIntUtils.getBit(k, i)) {
+        if (BigIntUtils.getBit(l, i)) {
+          R = R + Z;
+        } else {
+          R = R + P;
+        }
+      } else {
+        if (BigIntUtils.getBit(l, i)) {
+          R = R + Q;
+        }
+      }
+    }
+
+    return R;
+  }
+
   /// Adds two points in projective coordinates on an elliptic curve
   static ECPoint addPoints(ECPoint point1, ECPoint point2) {
     // If y1 = 0 or z1 = 0 then Point1 is the point at infinity, and the result is Point2
