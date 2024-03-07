@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Tests of Mnemonic.generate() constructor', () {
-    test('Should [return generated Mnemonic] with given size (12)', () {
+    test('Should [return 12-word Mnemonic] from random entropy', () {
       // Act
       Mnemonic actualMnemonic = Mnemonic.generate(mnemonicSize: MnemonicSize.words12);
 
@@ -17,7 +17,7 @@ void main() {
       expect(actualMnemonic.isValid, true);
     });
 
-    test('Should [return generated Mnemonic] with given size (15)', () {
+    test('Should [return 15-word Mnemonic] from random entropy', () {
       // Act
       Mnemonic actualMnemonic = Mnemonic.generate(mnemonicSize: MnemonicSize.words15);
 
@@ -28,7 +28,7 @@ void main() {
       expect(actualMnemonic.isValid, true);
     });
 
-    test('Should [return generated Mnemonic] with given size (18)', () {
+    test('Should [return 18-word Mnemonic] from random entropy', () {
       // Act
       Mnemonic actualMnemonic = Mnemonic.generate(mnemonicSize: MnemonicSize.words18);
 
@@ -39,7 +39,7 @@ void main() {
       expect(actualMnemonic.isValid, true);
     });
 
-    test('Should [return generated Mnemonic] with given size (21)', () {
+    test('Should [return 21-word Mnemonic] from random entropy', () {
       // Act
       Mnemonic actualMnemonic = Mnemonic.generate(mnemonicSize: MnemonicSize.words21);
 
@@ -50,7 +50,7 @@ void main() {
       expect(actualMnemonic.isValid, true);
     });
 
-    test('Should [return generated Mnemonic] with given size (24)', () {
+    test('Should [return 24-word Mnemonic] from random entropy', () {
       // Act
       Mnemonic actualMnemonic = Mnemonic.generate(mnemonicSize: MnemonicSize.words24);
 
@@ -185,7 +185,7 @@ void main() {
       expect(actualIsValid, false);
     });
 
-    test('Should [return TRUE] when mnemonic contains a word from outside the dictionary', () {
+    test('Should [return FALSE] when mnemonic contains a word from outside the dictionary', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString('ammonium nitrite atom hydrogen cyanide carbonate chlorate chlorite perchlorate cation peroxide oxalate');
 
@@ -209,7 +209,7 @@ void main() {
   });
 
   group('Tests of Mnemonic.entropy getter', () {
-    test('Should [return entropy] from 12-word mnemonic', () {
+    test('Should [return entropy] from [12-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString('admit decide brave dinosaur patch fresh april toward elite clutch toy witness');
 
@@ -222,7 +222,7 @@ void main() {
       expect(actualEntropy, expectedEntropy);
     });
 
-    test('Should [return entropy] from 15-word mnemonic', () {
+    test('Should [return entropy] from [15-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
 
@@ -235,7 +235,7 @@ void main() {
       expect(actualEntropy, expectedEntropy);
     });
 
-    test('Should [return entropy] from 18-word mnemonic', () {
+    test('Should [return entropy] from [18-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic =
           Mnemonic.fromString('very erosion proud virus remain pony dignity hat tornado art enhance enhance rabbit add hospital buffalo gallery journey');
@@ -249,7 +249,7 @@ void main() {
       expect(actualEntropy, expectedEntropy);
     });
 
-    test('Should [return entropy] from 21-word mnemonic', () {
+    test('Should [return entropy] from [21-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString(
           'concert tired breeze call boy business chronic fox crater fire arctic universe void remember giraffe fetch hint select sound insect sister');
@@ -263,7 +263,7 @@ void main() {
       expect(actualEntropy, expectedEntropy);
     });
 
-    test('Should [return entropy] from 24-word mnemonic', () {
+    test('Should [return entropy] from [24-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString(
           'kiwi prosper empty sphere recall predict border bridge adult grid hunt confirm spread priority decade enrich sentence merry cactus drum example citizen choice tent');
@@ -303,7 +303,7 @@ void main() {
   });
 
   group('Tests of Mnemonic.length getter', () {
-    test('Should [return 12] if mnemonic has 12 words', () {
+    test('Should [return 12] from [12-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString('admit decide brave dinosaur patch fresh april toward elite clutch toy witness');
 
@@ -315,7 +315,7 @@ void main() {
       expect(actualLength, expectedLength);
     });
 
-    test('Should [return 15] if mnemonic has 15 words', () {
+    test('Should [return 15] from [15-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
 
@@ -327,7 +327,7 @@ void main() {
       expect(actualLength, expectedLength);
     });
 
-    test('Should [return 18] if mnemonic has 18 words', () {
+    test('Should [return 18] from [18-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic =
           Mnemonic.fromString('very erosion proud virus remain pony dignity hat tornado art enhance enhance rabbit add hospital buffalo gallery journey');
@@ -340,7 +340,7 @@ void main() {
       expect(actualLength, expectedLength);
     });
 
-    test('Should [return 21] if mnemonic has 21 words', () {
+    test('Should [return 21] from [21-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString(
           'concert tired breeze call boy business chronic fox crater fire arctic universe void remember giraffe fetch hint select sound insect sister');
@@ -353,7 +353,7 @@ void main() {
       expect(actualLength, expectedLength);
     });
 
-    test('Should [return 24] if mnemonic has 24 words', () {
+    test('Should [return 24] from [24-word Mnemonic]', () {
       // Arrange
       Mnemonic actualMnemonic = Mnemonic.fromString(
           'kiwi prosper empty sphere recall predict border bridge adult grid hunt confirm spread priority decade enrich sentence merry cactus drum example citizen choice tent');

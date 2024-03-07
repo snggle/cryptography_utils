@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Tests of EntropyMnemonicSeedGenerator.calculateSeed()', () {
-    test('Should [return seed] constructed from given mnemonic (12 words) (32 length)', () async {
+    test('Should [return 32-bytes seed] constructed from [12-word Mnemonic]', () async {
       // Arrange
       EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
@@ -19,7 +19,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (15 words) (32 length)', () async {
+    test('Should [return 32-bytes seed] constructed from [15-word Mnemonic]', () async {
       // Arrange
       EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
@@ -32,7 +32,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (18 words) (32 length)', () async {
+    test('Should [return 32-bytes seed] constructed from [18-word Mnemonic]', () async {
       // Arrange
       EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator();
       Mnemonic actualMnemonic =
@@ -46,7 +46,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (21 words) (32 length)', () async {
+    test('Should [return 32-bytes seed] constructed from [21-word Mnemonic]', () async {
       // Arrange
       EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString(
@@ -60,7 +60,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (24 words) (32 length)', () async {
+    test('Should [return 32-bytes seed] constructed from [24-word Mnemonic]', () async {
       // Arrange
       EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString(
@@ -76,9 +76,9 @@ void main() {
 
     // ************************************************************************************************
 
-    test('Should [return seed] constructed from given mnemonic (12 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [12-word Mnemonic]', () async {
       // Arrange
-      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(length: 64);
+      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(seedLength: 64);
       Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
 
       // Act
@@ -89,9 +89,9 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (15 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [15-word Mnemonic]', () async {
       // Arrange
-      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(length: 64);
+      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(seedLength: 64);
       Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
 
       // Act
@@ -102,9 +102,9 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (18 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [18-word Mnemonic]', () async {
       // Arrange
-      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(length: 64);
+      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(seedLength: 64);
       Mnemonic actualMnemonic =
           Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
 
@@ -116,9 +116,9 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (21 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [21-word Mnemonic]', () async {
       // Arrange
-      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(length: 64);
+      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(seedLength: 64);
       Mnemonic actualMnemonic = Mnemonic.fromString(
           'fatal flame spike bless razor prevent rally human stamp kiwi cause raise always discover chef wide program bless fold celery immense');
 
@@ -130,9 +130,9 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (24 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [24-word Mnemonic]', () async {
       // Arrange
-      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(length: 64);
+      EntropyMnemonicSeedGenerator actualEntropyMnemonicSeedGenerator = EntropyMnemonicSeedGenerator(seedLength: 64);
       Mnemonic actualMnemonic = Mnemonic.fromString(
           'track resist blood salute popular pride salon receive weather tornado wink tackle few trend embrace burst zebra mind siege tower shift joy flash awkward');
 

@@ -6,9 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Tests of PBKDF2.process()', () {
-    test('Should [return hash] constructed from given password and salt (32 length)', () {
+    test('Should [return 32-bytes hash] constructed from given password and salt', () {
       // Arrange
-      PBKDF2 actualPBKDF2 = PBKDF2(length: 32);
+      PBKDF2 actualPBKDF2 = PBKDF2(outputLength: 32);
       Uint8List actualPassword = base64Decode('bWVkaWEgc2VtaW5hciBzZW1pbmFyIGdlbnRsZSBzdHVtYmxlIHNtb290aCBzYWxvbiB6ZWJyYSB2aXN1YWwgZ2FzcCB1c3VhbCByb3VnaA==');
       Uint8List actualSalt = base64Decode('bW5lbW9uaWM=');
 
@@ -21,9 +21,9 @@ void main() {
       expect(actualHash, expectedHash);
     });
 
-    test('Should [return hash] constructed from given password and salt (64 length)', () {
+    test('Should [return 64-bytes hash] constructed from given password and salt', () {
       // Arrange
-      PBKDF2 actualPBKDF2 = PBKDF2(length: 64);
+      PBKDF2 actualPBKDF2 = PBKDF2(outputLength: 64);
       Uint8List actualPassword = base64Decode('bWVkaWEgc2VtaW5hciBzZW1pbmFyIGdlbnRsZSBzdHVtYmxlIHNtb290aCBzYWxvbiB6ZWJyYSB2aXN1YWwgZ2FzcCB1c3VhbCByb3VnaA==');
       Uint8List actualSalt = base64Decode('bW5lbW9uaWM=');
 

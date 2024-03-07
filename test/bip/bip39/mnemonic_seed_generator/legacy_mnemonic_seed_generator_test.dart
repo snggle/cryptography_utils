@@ -6,7 +6,77 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Tests of LegacyMnemonicSeedGenerator.calculateSeed()', () {
-    test('Should [return seed] constructed from given mnemonic (12 words) (64 length)', () async {
+    test('Should [return 32-bytes seed] constructed from [12-word Mnemonic]', () async {
+      // Arrange
+      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
+      Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
+
+      // Act
+      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
+
+      // Assert
+      Uint8List expectedSeed = base64Decode('PR2YNJm2i+sQ37pVigrZ/DjPLHDI/7/ZvSybQ3A3xLU=');
+      expect(actualSeed, expectedSeed);
+    });
+
+    test('Should [return 32-bytes seed] constructed from [15-word Mnemonic]', () async {
+      // Arrange
+      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
+      Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
+
+      // Act
+      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
+
+      // Assert
+      Uint8List expectedSeed = base64Decode('SJpxaXeoxjUEmulwcKnGHV0TkvTe/3wFzncpqPTwlBM=');
+      expect(actualSeed, expectedSeed);
+    });
+
+    test('Should [return 32-bytes seed] constructed from [18-word Mnemonic]', () async {
+      // Arrange
+      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
+      Mnemonic actualMnemonic =
+      Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
+
+      // Act
+      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
+
+      // Assert
+      Uint8List expectedSeed = base64Decode('FAY0bWKF3Te5qtxAqZL4FEZLkg/2qEd/qgiaDltgnW4=');
+      expect(actualSeed, expectedSeed);
+    });
+
+    test('Should [return 32-bytes seed] constructed from [21-word Mnemonic]', () async {
+      // Arrange
+      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
+      Mnemonic actualMnemonic = Mnemonic.fromString(
+          'fatal flame spike bless razor prevent rally human stamp kiwi cause raise always discover chef wide program bless fold celery immense');
+
+      // Act
+      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
+
+      // Assert
+      Uint8List expectedSeed = base64Decode('Msio2buc9rH5UmfgV58iETBMd3BFqF2EJDxul+kGpxo=');
+      expect(actualSeed, expectedSeed);
+    });
+
+    test('Should [return 32-bytes seed] constructed from [24-word Mnemonic]', () async {
+      // Arrange
+      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
+      Mnemonic actualMnemonic = Mnemonic.fromString(
+          'track resist blood salute popular pride salon receive weather tornado wink tackle few trend embrace burst zebra mind siege tower shift joy flash awkward');
+
+      // Act
+      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
+
+      // Assert
+      Uint8List expectedSeed = base64Decode('eC7elPvLPqAwBYRITd5Ixthc+YlF0QfgIb9lgtO81Uw=');
+      expect(actualSeed, expectedSeed);
+    });
+
+    // ************************************************************************************************
+
+    test('Should [return 64-bytes seed] constructed from [12-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
@@ -19,7 +89,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (15 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [15-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
@@ -32,11 +102,11 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (18 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [18-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
       Mnemonic actualMnemonic =
-          Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
+      Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
@@ -46,7 +116,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (21 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [21-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString(
@@ -60,7 +130,7 @@ void main() {
       expect(actualSeed, expectedSeed);
     });
 
-    test('Should [return seed] constructed from given mnemonic (24 words) (64 length)', () async {
+    test('Should [return 64-bytes seed] constructed from [24-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
       Mnemonic actualMnemonic = Mnemonic.fromString(
@@ -71,76 +141,6 @@ void main() {
 
       // Assert
       Uint8List expectedSeed = base64Decode('eC7elPvLPqAwBYRITd5Ixthc+YlF0QfgIb9lgtO81UzO22hXaKbOw1Vy8QIBxfZh8w17Itc/R+Q42zMZLyGYLQ==');
-      expect(actualSeed, expectedSeed);
-    });
-
-    // ************************************************************************************************
-
-    test('Should [return seed] constructed from given mnemonic (12 words) (32 length)', () async {
-      // Arrange
-      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(length: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
-
-      // Act
-      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
-
-      // Assert
-      Uint8List expectedSeed = base64Decode('PR2YNJm2i+sQ37pVigrZ/DjPLHDI/7/ZvSybQ3A3xLU=');
-      expect(actualSeed, expectedSeed);
-    });
-
-    test('Should [return seed] constructed from given mnemonic (15 words) (32 length)', () async {
-      // Arrange
-      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(length: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
-
-      // Act
-      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
-
-      // Assert
-      Uint8List expectedSeed = base64Decode('SJpxaXeoxjUEmulwcKnGHV0TkvTe/3wFzncpqPTwlBM=');
-      expect(actualSeed, expectedSeed);
-    });
-
-    test('Should [return seed] constructed from given mnemonic (18 words) (32 length)', () async {
-      // Arrange
-      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(length: 32);
-      Mnemonic actualMnemonic =
-          Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
-
-      // Act
-      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
-
-      // Assert
-      Uint8List expectedSeed = base64Decode('FAY0bWKF3Te5qtxAqZL4FEZLkg/2qEd/qgiaDltgnW4=');
-      expect(actualSeed, expectedSeed);
-    });
-
-    test('Should [return seed] constructed from given mnemonic (21 words) (32 length)', () async {
-      // Arrange
-      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(length: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString(
-          'fatal flame spike bless razor prevent rally human stamp kiwi cause raise always discover chef wide program bless fold celery immense');
-
-      // Act
-      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
-
-      // Assert
-      Uint8List expectedSeed = base64Decode('Msio2buc9rH5UmfgV58iETBMd3BFqF2EJDxul+kGpxo=');
-      expect(actualSeed, expectedSeed);
-    });
-
-    test('Should [return seed] constructed from given mnemonic (24 words) (32 length)', () async {
-      // Arrange
-      LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(length: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString(
-          'track resist blood salute popular pride salon receive weather tornado wink tackle few trend embrace burst zebra mind siege tower shift joy flash awkward');
-
-      // Act
-      Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.calculateSeed(actualMnemonic);
-
-      // Assert
-      Uint8List expectedSeed = base64Decode('eC7elPvLPqAwBYRITd5Ixthc+YlF0QfgIb9lgtO81Uw=');
       expect(actualSeed, expectedSeed);
     });
   });

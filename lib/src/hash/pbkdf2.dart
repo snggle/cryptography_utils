@@ -34,16 +34,17 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// The [PBKDF2] class is designed for deriving cryptographic keys from passwords.
-/// It implements the Password-Based Key Derivation Function 2 (PBKDF2) algorithm.
+/// The [PBKDF2] class utilizes the PBKDF2 (Password-Based Key Derivation Function 2) hashing algorithm
+/// to generate secure cryptographic keys from passwords. It is frequently applied for hashing passwords
+/// within databases and in blockchain technology for seed generation from mnemonics.
 class PBKDF2 {
   final int iterations;
-  final int length;
+  final int outputLength;
   final Hash hash;
 
   PBKDF2({
     this.iterations = 2048,
-    this.length = 64,
+    this.outputLength = 64,
     this.hash = sha512,
   });
 
@@ -53,9 +54,9 @@ class PBKDF2 {
     List<int> ctr = List<int>.filled(4, 0);
     List<int> t = List<int>.filled(dlen, 0);
     List<int> u = List<int>.filled(dlen, 0);
-    List<int> dk = List<int>.filled(length, 0);
+    List<int> dk = List<int>.filled(outputLength, 0);
 
-    for (int i = 0; i * dlen < length; i++) {
+    for (int i = 0; i * dlen < outputLength; i++) {
       _writeUint32BE(i + 1, ctr);
       HMAC prf = HMAC(hash: hash, key: password)
         ..update(salt)
@@ -72,7 +73,7 @@ class PBKDF2 {
         }
       }
 
-      for (int j = 0; j < dlen && i * dlen + j < length; j++) {
+      for (int j = 0; j < dlen && i * dlen + j < outputLength; j++) {
         dk[i * dlen + j] = t[j];
       }
     }

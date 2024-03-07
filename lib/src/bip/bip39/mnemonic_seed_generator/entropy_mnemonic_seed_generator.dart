@@ -8,8 +8,8 @@ class EntropyMnemonicSeedGenerator extends AMnemonicSeedGenerator {
   static const String _defaultSalt = 'mnemonic';
 
   EntropyMnemonicSeedGenerator({
-    int length = 32,
-  }) : super(length: length);
+    int seedLength = 32,
+  }) : super(seedLength: seedLength);
 
   @override
   Future<Uint8List> calculateSeed(Mnemonic mnemonic, {String passphrase = ''}) async {
