@@ -50,10 +50,15 @@ class PBKDF2 {
 
   /// Derives a cryptographic key from the provided password and salt using the PBKDF2 algorithm.
   Uint8List process(Uint8List password, Uint8List salt) {
+    // Digest length (dlen)
     int dlen = hash.blockSize ~/ 2;
-    List<int> ctr = List<int>.filled(4, 0);
+
+    // Intermediate results calculated during the HMAC operations
     List<int> t = List<int>.filled(dlen, 0);
     List<int> u = List<int>.filled(dlen, 0);
+    List<int> ctr = List<int>.filled(4, 0);
+
+    // Derived key (DK)
     List<int> dk = List<int>.filled(outputLength, 0);
 
     for (int i = 0; i * dlen < outputLength; i++) {

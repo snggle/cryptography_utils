@@ -14,7 +14,7 @@ class Mnemonic extends Equatable {
 
   /// Generates a new random mnemonic phrase of the specified size.
   factory Mnemonic.generate({required MnemonicSize mnemonicSize}) {
-    Uint8List entropy = SecureRandom.getBytes(mnemonicSize.entropyBytesSize);
+    Uint8List entropy = SecureRandom.getBytes(length: mnemonicSize.entropyBytesSize, max: 255);
     return Mnemonic.fromEntropy(entropy);
   }
 
