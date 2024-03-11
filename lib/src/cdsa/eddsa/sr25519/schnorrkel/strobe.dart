@@ -316,7 +316,7 @@ class Strobe with EquatableMixin {
     }
 
     // Run the permutation
-    KeccakF1600(24).process(_actualState);
+    KeccakF1600().process(_actualState);
 
     // Reset the buffer and set posBegin to 0
     // (meaning that the current operation started on a previous block)
