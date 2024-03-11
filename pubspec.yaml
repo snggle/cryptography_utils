@@ -26,6 +26,10 @@ dependencies:
   # https://pub.dev/packages/pointycastle
   pointycastle: ^3.7.4
 
+  strobe: ^1.0.4
+
+  blockchain_utils: ^2.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
