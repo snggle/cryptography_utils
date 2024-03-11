@@ -5,7 +5,7 @@ void main() {
   group('Tests of KeccakF1600.process()', () {
     test('Should [return KeccakF1600 HASH] constructed from given data', () {
       // Arrange
-      KeccakF1600 actualKeccakF1600 = KeccakF1600(24);
+      KeccakF1600 actualKeccakF1600 = KeccakF1600();
       List<BigInt> actualDataToHash = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.codeUnits.map(BigInt.from).toList();
 
       // Act
