@@ -1,18 +1,18 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// [Bip49WalletsConfig] class provides configurations for creating wallets adhering to BIP-49 standards.
+/// [Bip84WalletsConfig] class provides configurations for creating wallets adhering to BIP-84 standards.
 /// Configurations include:
 ///   - `addressEncoder`: Algorithm used for address encoding
 ///   - `derivator`: Algorithm used for key derivation
 ///   - `coinIndex`: Index of the coin as per the SLIP44 standard
 ///   - `curveType`: Type of the elliptic curve used for key generation
 ///   - `purpose`: Type of the BIP proposal
-class Bip49WalletsConfig {
+class Bip84WalletsConfig {
   static LegacyWalletConfig bitcoin = LegacyWalletConfig(
-    addressEncoder: P2SHAddressEncoder(),
+    addressEncoder: BitcoinP2WPKHAddressEncoder(hrp: Slip173.bitcoin),
     derivator: Secp256k1Derivator(),
     coinIndex: Slip44.bitcoin,
     curveType: CurveType.secp256k1,
-    purpose: BipProposalType.bip49,
+    purpose: BipProposalType.bip84,
   );
 }

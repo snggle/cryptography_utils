@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-/// The [Hex] class is designed for encoding and decoding data using the hexadecimal encoding scheme.
-class Hex {
+/// The [HexEncoder] class is designed for encoding and decoding data using the hexadecimal encoding scheme.
+class HexEncoder {
   /// Encodes the given [data] as a hexadecimal string.
-  String encode(List<int> data, {bool lowercaseBool = true}) {
+  static String encode(List<int> data, {bool lowercaseBool = true}) {
     List<String> hexString = data.map((int e) => e.toRadixString(16).padLeft(2, '0')).toList();
     String hexData = hexString.join();
 
@@ -15,7 +15,7 @@ class Hex {
   }
 
   /// Decodes the given [hex] string into a list of bytes.
-  Uint8List decode(String hex) {
+  static Uint8List decode(String hex) {
     String tmpHex = hex.toLowerCase();
     if (hex.startsWith('0x')) {
       tmpHex = hex.substring(2);
@@ -35,7 +35,7 @@ class Hex {
   }
 
   /// Returns whether the given [hex] string is a valid hexadecimal string.
-  bool isHex(String hex) {
+  static bool isHex(String hex) {
     try {
       decode(hex);
       return true;

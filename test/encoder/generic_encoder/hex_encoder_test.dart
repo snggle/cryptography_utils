@@ -10,12 +10,12 @@ void main() {
   String hexUppercase =
       '3132333435363738393A3B3C3D3E3F404142434445464748494A4B4C4D4E4F505152535455565758595A5B5D5E5F606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E';
 
-  group('Tests of Hex.encode()', () {
+  group('Tests of HexEncoder.encode()', () {
     test('Should [return UPPERCASE hexadecimal] from given bytes', () {
       Uint8List actualDataToEncode = asciiCodeBytes;
 
       // Act
-      String actualHexResult = Hex().encode(actualDataToEncode, lowercaseBool: false);
+      String actualHexResult = HexEncoder.encode(actualDataToEncode, lowercaseBool: false);
 
       // Assert
       String expectedHexResult = hexUppercase;
@@ -27,7 +27,7 @@ void main() {
       Uint8List actualDataToEncode = asciiCodeBytes;
 
       // Act
-      String actualHexResult = Hex().encode(actualDataToEncode, lowercaseBool: true);
+      String actualHexResult = HexEncoder.encode(actualDataToEncode, lowercaseBool: true);
 
       // Assert
       String expectedHexResult = hexLowercase;
@@ -36,13 +36,13 @@ void main() {
     });
   });
 
-  group('Tests of Hex.decode()', () {
+  group('Tests of HexEncoder.decode()', () {
     test('Should [return Uint8List] decoded from given [UPPERCASE hexadecimal] [with 0x prefix]', () {
       // Arrange
       String actualHexToDecode = hexUppercase;
 
       // Act
-      Uint8List actualDecodedHexResult = Hex().decode('0x$actualHexToDecode');
+      Uint8List actualDecodedHexResult = HexEncoder.decode('0x$actualHexToDecode');
 
       // Assert
       Uint8List expectedDecodedHexResult = asciiCodeBytes;
@@ -55,7 +55,7 @@ void main() {
       String actualHexToDecode = hexUppercase;
 
       // Act
-      Uint8List actualDecodedHexResult = Hex().decode(actualHexToDecode);
+      Uint8List actualDecodedHexResult = HexEncoder.decode(actualHexToDecode);
 
       // Assert
       Uint8List expectedDecodedHexResult = asciiCodeBytes;
@@ -68,7 +68,7 @@ void main() {
       String actualHexToDecode = hexLowercase;
 
       // Act
-      Uint8List actualDecodedHexResult = Hex().decode('0x$actualHexToDecode');
+      Uint8List actualDecodedHexResult = HexEncoder.decode('0x$actualHexToDecode');
 
       // Assert
       Uint8List expectedDecodedHexResult = asciiCodeBytes;
@@ -81,7 +81,7 @@ void main() {
       String actualHexToDecode = hexLowercase;
 
       // Act
-      Uint8List actualDecodedHexResult = Hex().decode(actualHexToDecode);
+      Uint8List actualDecodedHexResult = HexEncoder.decode(actualHexToDecode);
 
       // Assert
       Uint8List expectedDecodedHexResult = asciiCodeBytes;
@@ -90,13 +90,13 @@ void main() {
     });
   });
 
-  group('Tests of Hex.isHex()', () {
+  group('Tests of HexEncoder.isHex()', () {
     test('Should [return TRUE] if given value is [UPPERCASE hexadecimal] [with 0x prefix]', () {
       // Arrange
       String actualHexToCheck = '0x$hexUppercase';
 
       // Act
-      bool actualHexBool = Hex().isHex(actualHexToCheck);
+      bool actualHexBool = HexEncoder.isHex(actualHexToCheck);
 
       // Assert
       bool expectedHexBool = true;
@@ -109,7 +109,7 @@ void main() {
       String actualHexToCheck = hexUppercase;
 
       // Act
-      bool actualHexBool = Hex().isHex(actualHexToCheck);
+      bool actualHexBool = HexEncoder.isHex(actualHexToCheck);
 
       // Assert
       bool expectedHexBool = true;
@@ -122,7 +122,7 @@ void main() {
       String actualHexToCheck = '0x$hexLowercase';
 
       // Act
-      bool actualHexBool = Hex().isHex(actualHexToCheck);
+      bool actualHexBool = HexEncoder.isHex(actualHexToCheck);
 
       // Assert
       bool expectedHexBool = true;
@@ -135,7 +135,7 @@ void main() {
       String actualHexToCheck = hexLowercase;
 
       // Act
-      bool actualHexBool = Hex().isHex(actualHexToCheck);
+      bool actualHexBool = HexEncoder.isHex(actualHexToCheck);
 
       // Assert
       bool expectedHexBool = true;
@@ -148,7 +148,7 @@ void main() {
       String actualHexToCheck = 'random string';
 
       // Act
-      bool actualHexBool = Hex().isHex(actualHexToCheck);
+      bool actualHexBool = HexEncoder.isHex(actualHexToCheck);
 
       // Assert
       bool expectedHexBool = false;

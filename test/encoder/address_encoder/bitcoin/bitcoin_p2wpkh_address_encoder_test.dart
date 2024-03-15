@@ -12,13 +12,13 @@ void main() {
 
   Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ));
 
-  group('Tests of P2WPKHAddressEncoder.encodePublicKey()', () {
-    test('Should [return P2WPKH address] for given public key', () {
+  group('Tests of BitcoinP2WPKHAddressEncoder.encodePublicKey()', () {
+    test('Should [return Bitcoin P2WPKH address] for given public key', () {
       // Arrange
-      P2WPKHAddressEncoder actualP2PKHAddressEncoder = P2WPKHAddressEncoder(hrp: 'bc');
+      BitcoinP2WPKHAddressEncoder actualBitcoinP2PKHAddressEncoder = BitcoinP2WPKHAddressEncoder(hrp: 'bc');
 
       // Act
-      String actualAddress = actualP2PKHAddressEncoder.encodePublicKey(actualPublicKey);
+      String actualAddress = actualBitcoinP2PKHAddressEncoder.encodePublicKey(actualPublicKey);
 
       // Assert
       String expectedAddress = 'bc1quxjugvagpv4kz5hdkh7x0qklarw5akdk2sg0wp';

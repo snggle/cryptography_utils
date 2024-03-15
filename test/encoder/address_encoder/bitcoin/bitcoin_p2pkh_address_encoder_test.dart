@@ -12,13 +12,13 @@ void main() {
 
   Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ));
 
-  group('Tests of P2PKHAddressEncoder.encodePublicKey()', () {
-    test('Should [return P2PKH address] for given public key (public key COMPRESSED)', () {
+  group('Tests of BitcoinP2PKHAddressEncoder.encodePublicKey()', () {
+    test('Should [return Bitcoin P2PKH address] for given public key (public key COMPRESSED)', () {
       // Arrange
-      P2PKHAddressEncoder actualP2PKHAddressEncoder = P2PKHAddressEncoder(publicKeyMode: PublicKeyMode.compressed);
+      BitcoinP2PKHAddressEncoder actualBitcoinP2PKHAddressEncoder = BitcoinP2PKHAddressEncoder(publicKeyMode: PublicKeyMode.compressed);
 
       // Act
-      String actualAddress = actualP2PKHAddressEncoder.encodePublicKey(actualPublicKey);
+      String actualAddress = actualBitcoinP2PKHAddressEncoder.encodePublicKey(actualPublicKey);
 
       // Assert
       String expectedAddress = '12CUuS1w48dmLqug3sQeZGXhM6ziyLdDFR';
@@ -26,12 +26,12 @@ void main() {
       expect(actualAddress, expectedAddress);
     });
 
-    test('Should [return P2PKH address] for given public key (public key UNCOMPRESSED)', () {
+    test('Should [return Bitcoin P2PKH address] for given public key (public key UNCOMPRESSED)', () {
       // Arrange
-      P2PKHAddressEncoder actualP2PKHAddressEncoder = P2PKHAddressEncoder(publicKeyMode: PublicKeyMode.uncompressed);
+      BitcoinP2PKHAddressEncoder actualBitcoinP2PKHAddressEncoder = BitcoinP2PKHAddressEncoder(publicKeyMode: PublicKeyMode.uncompressed);
 
       // Act
-      String actualAddress = actualP2PKHAddressEncoder.encodePublicKey(actualPublicKey);
+      String actualAddress = actualBitcoinP2PKHAddressEncoder.encodePublicKey(actualPublicKey);
 
       // Assert
       String expectedAddress = '1PkHDRGVzHNc3dSnBEZ8MzULiyTKEibk7c';

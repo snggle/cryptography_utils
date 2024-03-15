@@ -18,7 +18,7 @@ class EthereumAddressEncoder implements IBlockchainAddressEncoder<Secp256k1Publi
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
     Uint8List keccakHash = Keccak(256).process(publicKey.uncompressed.sublist(1));
-    String keccakHex = Hex().encode(keccakHash, lowercaseBool: true);
+    String keccakHex = HexEncoder.encode(keccakHash, lowercaseBool: true);
 
     String address = keccakHex.substring(_startByte);
     if (skipChecksumBool) {
@@ -30,7 +30,7 @@ class EthereumAddressEncoder implements IBlockchainAddressEncoder<Secp256k1Publi
   static String _wrapWithChecksum(String address) {
     Uint8List addressBytes = utf8.encode(address.toLowerCase());
     Uint8List checksumBytes = Keccak(256).process(addressBytes);
-    String checksumHex = Hex().encode(checksumBytes, lowercaseBool: true);
+    String checksumHex = HexEncoder.encode(checksumBytes, lowercaseBool: true);
 
     List<String> addressWithChecksum = address.split('').asMap().entries.map((MapEntry<int, String> entry) {
       int index = entry.key;

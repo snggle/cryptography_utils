@@ -34,8 +34,8 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// The [Base58] class is designed for encoding data using the Base58 encoding scheme.
-class Base58 {
+/// The [Base58Encoder] class is designed for encoding data using the Base58 encoding scheme.
+class Base58Encoder {
   static const String _bitcoinCheckAlphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 
   static String encodeWithChecksum(Uint8List dataBytes) {

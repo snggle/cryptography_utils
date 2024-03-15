@@ -3,21 +3,19 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// The [P2SHAddressEncoder] class is designed for encoding P2SH (Pay-to-Script-Hash) addresses in accordance with Bitcoin.
+/// The [BitcoinP2SHAddressEncoder] class is designed for encoding P2SH (Pay-to-Script-Hash) addresses in accordance with Bitcoin.
 /// P2SH addresses utilize the RIPEMD-160 and SHA-256 hash functions to generate addresses from a script's hash.
 /// Through these methods, it produces addresses prefixed with '3 and encoded with Base58Check'.
-class P2SHAddressEncoder implements IBlockchainAddressEncoder<Secp256k1PublicKey> {
+class BitcoinP2SHAddressEncoder implements IBlockchainAddressEncoder<Secp256k1PublicKey> {
   static const List<int> _networkVersionBytes = <int>[0x05];
   static const List<int> _scriptBytes = <int>[0x00, 0x14];
-
-  P2SHAddressEncoder();
 
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
     /// Generate the script signature from the public key.
     List<int> scriptSignatureBytes = _addScriptSignature(publicKey);
 
-    return Base58.encodeWithChecksum(Uint8List.fromList(<int>[..._networkVersionBytes, ...scriptSignatureBytes]));
+    return Base58Encoder.encodeWithChecksum(Uint8List.fromList(<int>[..._networkVersionBytes, ...scriptSignatureBytes]));
   }
 
   List<int> _addScriptSignature(Secp256k1PublicKey publicKey) {

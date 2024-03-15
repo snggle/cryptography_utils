@@ -9,7 +9,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 ///   - `purpose`: Type of the BIP proposal
 class Bip44WalletsConfig {
   static LegacyWalletConfig bitcoin = LegacyWalletConfig(
-    addressEncoder: P2PKHAddressEncoder(),
+    addressEncoder: BitcoinP2PKHAddressEncoder(),
     derivator: Secp256k1Derivator(),
     coinIndex: Slip44.bitcoin,
     curveType: CurveType.secp256k1,
