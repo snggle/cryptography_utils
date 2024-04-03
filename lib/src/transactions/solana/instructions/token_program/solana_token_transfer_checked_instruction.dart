@@ -1,0 +1,104 @@
+import 'dart:typed_data';
+
+import 'package:cryptography_utils/cryptography_utils.dart';
+
+/// An instruction which transfers a token identified as [mint] from a [source] associated account to a [destination] associated account.
+///
+/// Example instruction: https://solscan.io/tx/5Cx6TSFpNPxG4byh51hx1tdn1S7CZev8NmKuumErgLQxbvV6FVzXcfxF4rmpzpVsQffYb7EsExXiwq3aUMhT8tfE?cluster=devnet
+/// {
+///   "info": {
+///     "authority": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19",
+///     "destination": "5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP",
+///     "mint": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+///     "source": "9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv",
+///     "tokenAmount": {
+///       "amount": "100000",
+///       "decimals": 6,
+///       "uiAmount": 0.1,
+///       "uiAmountString": "0.1"
+///     }
+///   },
+///   "type": "transferChecked"
+/// }
+class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
+  /// Field order on Solscan is based on unknown rules.
+  /// Solscan also ignores the [discriminator] for this instruction, even though it is always present in this instruction's data array.
+  ///
+  /// Our field order below is NOT influenced by Solscan and follows the order of data received from [SolanaCompiledInstruction]:
+  /// - account indexes, in order of appearance in the [SolanaCompiledInstruction] accounts field
+  /// - instruction data array values, in order of appearance in [SolanaCompiledInstruction] data field
+  final String _source;
+  final String _mint;
+  final String _destination;
+  final String _authority;
+  final int _discriminator;
+  final BigInt _amount;
+  final int _decimals;
+
+  const SolanaTokenTransferCheckedInstruction({
+    required String programId,
+    required String source,
+    required String mint,
+    required String destination,
+    required String authority,
+    required int discriminator,
+    required BigInt amount,
+    required int decimals,
+  })  : _source = source,
+        _mint = mint,
+        _destination = destination,
+        _authority = authority,
+        _discriminator = discriminator,
+        _amount = amount,
+        _decimals = decimals,
+        super(programId: programId);
+
+  /// Creates a new instance of [SolanaTokenTransferCheckedInstruction] from the serialized data.
+  factory SolanaTokenTransferCheckedInstruction.fromSerializedData(
+      SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
+    String source = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
+    String mint = accountKeys[solanaCompiledInstruction.accounts[1]].toBase58();
+    String destination = accountKeys[solanaCompiledInstruction.accounts[2]].toBase58();
+    String authority = accountKeys[solanaCompiledInstruction.accounts[3]].toBase58();
+
+    ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
+    int discriminator = byteData.getUint8(0);
+    BigInt amount = BigInt.from(byteData.getUint64(1, Endian.little));
+    int decimals = byteData.getUint8(9);
+
+    return SolanaTokenTransferCheckedInstruction(
+      programId: programId,
+      source: source,
+      mint: mint,
+      destination: destination,
+      authority: authority,
+      discriminator: discriminator,
+      amount: amount,
+      decimals: decimals,
+    );
+  }
+
+  @override
+  String? get source => _source;
+
+  @override
+  String? get mint => _mint;
+
+  @override
+  String? get destination => _destination;
+
+  @override
+  String? get authority => _authority;
+
+  @override
+  int? get discriminator => _discriminator;
+
+  @override
+  BigInt? get amount => _amount;
+
+  @override
+  int? get decimals => _decimals;
+
+  @override
+  List<Object?> get props => <Object?>[programId, _source, _mint, _destination, _authority, _discriminator, _amount, _decimals];
+}
