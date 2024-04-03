@@ -30,4 +30,10 @@ class Bip44WalletsConfig {
     derivator: Secp256k1Derivator(),
     curveType: CurveType.secp256k1,
   );
+
+  static LegacyWalletConfig<ED25519PrivateKey> solana = LegacyWalletConfig<ED25519PrivateKey>(
+    addressEncoder: SolanaAddressEncoder(),
+    derivator: ED25519Derivator(),
+    curveType: CurveType.ed25519,
+  );
 }

@@ -85,5 +85,16 @@ void main() {
       expect(actualAddressEncoder, isA<EthereumAddressEncoder>());
       expect((actualAddressEncoder as EthereumAddressEncoder).skipChecksumBool, false);
     });
+
+    test('Should [return SolanaAddressEncoder] when type is "solana()"', () {
+      // Arrange
+      String actualSerializedType = 'solana()';
+
+      // Act
+      ABlockchainAddressEncoder<ABip32PublicKey> actualAddressEncoder = ABlockchainAddressEncoder.fromSerializedType(actualSerializedType);
+
+      // Assert
+      expect(actualAddressEncoder, isA<SolanaAddressEncoder>());
+    });
   });
 }
