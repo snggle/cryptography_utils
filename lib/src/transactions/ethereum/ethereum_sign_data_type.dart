@@ -1,4 +1,4 @@
-enum SignDataType {
+enum EthereumSignDataType {
   /// For signing message usage, like EIP-191 personal sign data
   rawBytes,
 
