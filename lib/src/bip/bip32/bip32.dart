@@ -11,6 +11,7 @@ export 'derivation_path/legacy_derivation_path/legacy_derivation_path_element.da
 export 'derivation_path/substrate_derivation_path/substrate_derivation_path.dart';
 export 'derivation_path/substrate_derivation_path/substrate_derivation_path_element.dart';
 export 'derivators/i_derivator.dart';
+export 'derivators/legacy_derivators/ed25519_derivator.dart';
 export 'derivators/legacy_derivators/i_legacy_derivator.dart';
 export 'derivators/legacy_derivators/secp256k1_derivator.dart';
 export 'derivators/substrate_derivators/i_substrate_derivator.dart';
