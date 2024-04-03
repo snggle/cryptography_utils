@@ -1,4 +1,5 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/bip/bip32/address_encoders/solana_address_encoder.dart';
 
 /// The [ABlockchainAddressEncoder] class is designed for encoding addresses in accordance with the specific blockchain network.
 abstract class ABlockchainAddressEncoder<T extends ABip32PublicKey> {
@@ -17,6 +18,7 @@ abstract class ABlockchainAddressEncoder<T extends ABip32PublicKey> {
       AddressEncoderType.ethereum => EthereumAddressEncoder(skipChecksumBool: args[0] == 'true'),
       AddressEncoderType.substrateED25519 => SubstrateED25519AddressEncoder(ss58Format: int.parse(args[0])),
       AddressEncoderType.substrateSR25519 => SubstrateSR25519AddressEncoder(ss58Format: int.parse(args[0])),
+      AddressEncoderType.solana => SolanaAddressEncoder(),
     }  as ABlockchainAddressEncoder<ABip32PublicKey>;
   }
 

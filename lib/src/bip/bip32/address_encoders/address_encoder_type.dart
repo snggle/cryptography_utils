@@ -6,4 +6,5 @@ enum AddressEncoderType {
   ethereum,
   substrateED25519,
   substrateSR25519,
+  solana,
 }

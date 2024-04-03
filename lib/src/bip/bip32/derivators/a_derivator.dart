@@ -6,6 +6,7 @@ abstract class ADerivator {
     DerivatorType derivatorType = DerivatorType.values.byName(type);
     return switch (derivatorType) {
       DerivatorType.secp256k1 => Secp256k1Derivator(),
+      DerivatorType.ed25519 => ED25519Derivator(),
       DerivatorType.substrateED25519 => SubstrateED25519Derivator(),
       DerivatorType.substrateSR25519 => SubstrateSR25519Derivator(),
     };
