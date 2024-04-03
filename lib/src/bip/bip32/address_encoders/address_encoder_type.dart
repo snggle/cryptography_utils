@@ -4,4 +4,5 @@ enum AddressEncoderType {
   bitcoinP2WPKH,
   cosmos,
   ethereum,
+  solana,
 }
