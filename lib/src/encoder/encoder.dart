@@ -4,6 +4,7 @@ export 'address_encoder/bitcoin/bitcoin_p2wpkh_address_encoder.dart';
 export 'address_encoder/cosmos_address_encoder.dart';
 export 'address_encoder/ethereum_address_encoder.dart';
 export 'address_encoder/i_blockchain_address_encoder.dart';
+export 'address_encoder/solana_address_encoder.dart';
 export 'address_encoder/substrate/substrate_ed25519_address_encoder.dart';
 export 'address_encoder/substrate/substrate_sr25519_address_encoder.dart';
 export 'generic_encoder/base/base58_encoder.dart';
