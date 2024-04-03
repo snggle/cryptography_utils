@@ -27,7 +27,7 @@ dependencies:
   codec_utils:
     git:
       url: https://github.com/snggle/codec_utils.git
-      ref: master
+      ref: ks-feature/solana-cbor-and-compact-u16-decoding
 
 dev_dependencies:
   # A full featured library for writing and running Dart tests across platforms.
