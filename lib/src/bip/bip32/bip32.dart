@@ -11,6 +11,7 @@ export 'derivation_path/legacy_derivation_path/legacy_derivation_path.dart';
 export 'derivation_path/legacy_derivation_path/legacy_derivation_path_element.dart';
 export 'derivators/a_derivator.dart';
 export 'derivators/legacy_derivators/a_legacy_derivator.dart';
+export 'derivators/legacy_derivators/ed25519_derivator.dart';
 export 'derivators/legacy_derivators/secp256k1_derivator.dart';
 export 'hd_wallet/a_hd_wallet.dart';
 export 'hd_wallet/legacy_hd_wallet.dart';
