@@ -1,4 +1,5 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/bip/bip32/address_encoders/solana_address_encoder.dart';
 
 /// [Bip44WalletsConfig] class provides configurations for creating wallets adhering to BIP-44 standards.
 /// Configurations include:
@@ -29,5 +30,11 @@ class Bip44WalletsConfig {
     addressEncoder: CosmosAddressEncoder(hrp: Slip173.kira),
     derivator: Secp256k1Derivator(),
     curveType: CurveType.secp256k1,
+  );
+
+  static LegacyWalletConfig<ED25519PrivateKey> solana = LegacyWalletConfig<ED25519PrivateKey>(
+    addressEncoder: SolanaAddressEncoder(),
+    derivator: ED25519Derivator(),
+    curveType: CurveType.ed25519,
   );
 }
