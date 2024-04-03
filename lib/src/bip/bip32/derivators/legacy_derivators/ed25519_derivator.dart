@@ -1,0 +1,116 @@
+// Class was shaped by the influence of several key sources including:
+// "blockchain_utils" - Copyright (c) 2010 Mohsen
+// https://github.com/mrtnetwork/blockchain_utils/.
+//
+// BSD 3-Clause License
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// 3. Neither the name of the copyright holder nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import 'dart:typed_data';
+
+import 'package:crypto/crypto.dart';
+import 'package:cryptography_utils/cryptography_utils.dart';
+
+/// [ED25519Derivator] is a class that implements the derivation of [ED25519PrivateKey] objects.
+class ED25519Derivator implements ILegacyDerivator<ED25519PrivateKey> {
+  static const List<int> _hardenedPrivateKeyPrefix = <int>[0x00];
+
+  /// Derives a [ED25519PrivateKey] from a mnemonic pharse and full derivation path
+  @override
+  Future<ED25519PrivateKey> derivePath(Mnemonic mnemonic, LegacyDerivationPath legacyDerivationPath) async {
+    ED25519PrivateKey masterPrivateKey = await deriveMasterKey(mnemonic);
+    ED25519PrivateKey childPrivateKey = masterPrivateKey;
+    for (LegacyDerivationPathElement derivationPathElement in legacyDerivationPath.pathElements) {
+      childPrivateKey = deriveChildKey(childPrivateKey, derivationPathElement);
+    }
+
+    return childPrivateKey;
+  }
+
+  /// Derives a master [ED25519PrivateKey] from a mnemonic phrase
+  @override
+  Future<ED25519PrivateKey> deriveMasterKey(Mnemonic mnemonic) async {
+    LegacyMnemonicSeedGenerator seedGenerator = LegacyMnemonicSeedGenerator(seedLength: 64);
+    Uint8List seed = await seedGenerator.generateSeed(mnemonic);
+    Uint8List hmacHash = HMAC(hash: sha512, key: Bip32HMACKeys.hmacKeyED25519Bytes).process(seed);
+
+    Uint8List privateKey = hmacHash.sublist(0, 32);
+    Uint8List chainCode = hmacHash.sublist(32);
+
+    EDPrivateKey edPrivateKey = EDPrivateKey.fromBytes(privateKey);
+    BigInt masterFingerprint = _calcFingerprint(edPrivateKey.edPublicKey.bytes);
+
+    ED25519PrivateKey ed25519privateKey = ED25519PrivateKey(
+      metadata: Bip32KeyMetadata(
+        depth: 0,
+        chainCode: chainCode,
+        fingerprint: masterFingerprint,
+        parentFingerprint: BigInt.from(0x00000000),
+        masterFingerprint: masterFingerprint,
+      ),
+      edPrivateKey: edPrivateKey,
+    );
+
+    return ed25519privateKey;
+  }
+
+  /// Derives a child [ED25519PrivateKey] from a parent [ED25519PrivateKey] and a single element of a derivation path
+  @override
+  ED25519PrivateKey deriveChildKey(ED25519PrivateKey ed25519privateKey, LegacyDerivationPathElement derivationPathElement) {
+    return _deriveHard(ed25519privateKey, derivationPathElement);
+  }
+
+  /// Derives a child [ED25519PrivateKey] from a parent [ED25519PrivateKey] and a single hardened element of a derivation path
+  ED25519PrivateKey _deriveHard(ED25519PrivateKey ed25519privateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
+    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...ed25519privateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
+
+    Uint8List hmacHash = HMAC(hash: sha512, key: ed25519privateKey.metadata.chainCode).process(data);
+
+    Uint8List scalarBytes = hmacHash.sublist(0, 32);
+    Uint8List chainCodeBytes = hmacHash.sublist(32);
+
+    EDPrivateKey edPrivateKey = EDPrivateKey.fromBytes(scalarBytes);
+    BigInt fingerprint = _calcFingerprint(edPrivateKey.edPublicKey.bytes);
+
+    return ED25519PrivateKey(
+      metadata: Bip32KeyMetadata(
+        depth: ed25519privateKey.metadata.depth + 1,
+        shiftedIndex: legacyDerivationPathElement.shiftedIndex,
+        chainCode: chainCodeBytes,
+        fingerprint: fingerprint,
+        parentFingerprint: ed25519privateKey.metadata.fingerprint,
+        masterFingerprint: ed25519privateKey.metadata.masterFingerprint,
+      ),
+      edPrivateKey: edPrivateKey,
+    );
+  }
+
+  BigInt _calcFingerprint(Uint8List publicKeyBytes) {
+    Uint8List sha256Fingerprint = Uint8List.fromList(sha256.convert(publicKeyBytes).bytes);
+    Uint8List ripemd160Fingerprint = Uint8List.fromList(Ripemd160().process(sha256Fingerprint));
+    return BigIntUtils.decode(ripemd160Fingerprint.sublist(0, 4));
+  }
+}
