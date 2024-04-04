@@ -4,7 +4,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  Mnemonic mnemonic = Mnemonic.fromString(
+  Mnemonic mnemonic = Mnemonic.fromMnemonicPhrase(
       'require point property company tongue busy bench burden caution gadget knee glance thought bulk assist month cereal report quarter tool section often require shield');
 
   group('Tests of LegacyHDWallet.fromMnemonic()', () {
