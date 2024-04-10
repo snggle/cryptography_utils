@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Secp256k1Derivator actualSecp256k1Derivator = Secp256k1Derivator();
-  Mnemonic actualMnemonic = Mnemonic.fromString(
+  Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase(
       'require point property company tongue busy bench burden caution gadget knee glance thought bulk assist month cereal report quarter tool section often require shield');
 
   group('Secp256k1Derivator.derivePath()', () {

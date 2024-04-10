@@ -9,7 +9,7 @@ void main() {
     test('Should [return 32-bytes seed] constructed from [12-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.generateSeed(actualMnemonic);
@@ -22,7 +22,7 @@ void main() {
     test('Should [return 32-bytes seed] constructed from [15-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.generateSeed(actualMnemonic);
@@ -36,7 +36,7 @@ void main() {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
       Mnemonic actualMnemonic =
-          Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
+          Mnemonic.fromMnemonicPhrase('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.generateSeed(actualMnemonic);
@@ -49,7 +49,7 @@ void main() {
     test('Should [return 32-bytes seed] constructed from [21-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString(
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase(
           'fatal flame spike bless razor prevent rally human stamp kiwi cause raise always discover chef wide program bless fold celery immense');
 
       // Act
@@ -63,7 +63,7 @@ void main() {
     test('Should [return 32-bytes seed] constructed from [24-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator(seedLength: 32);
-      Mnemonic actualMnemonic = Mnemonic.fromString(
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase(
           'track resist blood salute popular pride salon receive weather tornado wink tackle few trend embrace burst zebra mind siege tower shift joy flash awkward');
 
       // Act
@@ -79,7 +79,7 @@ void main() {
     test('Should [return 64-bytes seed] constructed from [12-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
-      Mnemonic actualMnemonic = Mnemonic.fromString('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('media seminar seminar gentle stumble smooth salon zebra visual gasp usual rough');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.generateSeed(actualMnemonic);
@@ -92,7 +92,7 @@ void main() {
     test('Should [return 64-bytes seed] constructed from [15-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
-      Mnemonic actualMnemonic = Mnemonic.fromString('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('doctor arrange before lift parade husband gadget orchard omit milk guilt biology act beauty dice');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.generateSeed(actualMnemonic);
@@ -106,7 +106,7 @@ void main() {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
       Mnemonic actualMnemonic =
-          Mnemonic.fromString('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
+          Mnemonic.fromMnemonicPhrase('sense wet coach stage sheriff bargain wrap advance slide timber leave ski famous label pyramid debate sort fatal');
 
       // Act
       Uint8List actualSeed = await actualLegacyMnemonicSeedGenerator.generateSeed(actualMnemonic);
@@ -119,7 +119,7 @@ void main() {
     test('Should [return 64-bytes seed] constructed from [21-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
-      Mnemonic actualMnemonic = Mnemonic.fromString(
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase(
           'fatal flame spike bless razor prevent rally human stamp kiwi cause raise always discover chef wide program bless fold celery immense');
 
       // Act
@@ -133,7 +133,7 @@ void main() {
     test('Should [return 64-bytes seed] constructed from [24-word Mnemonic]', () async {
       // Arrange
       LegacyMnemonicSeedGenerator actualLegacyMnemonicSeedGenerator = LegacyMnemonicSeedGenerator();
-      Mnemonic actualMnemonic = Mnemonic.fromString(
+      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase(
           'track resist blood salute popular pride salon receive weather tornado wink tackle few trend embrace burst zebra mind siege tower shift joy flash awkward');
 
       // Act
