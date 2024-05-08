@@ -18,7 +18,7 @@ void main() {
       actualK = actualRFC6979.generateNextK();
 
       // Assert
-      BigInt expectedK = BigInt.parse('88812974560257212982887499926255360508697235223425121547133315455333161949091');
+      BigInt expectedK = BigInt.parse('55363610068230945866195479904364332371309073732412980602033091501520302568611');
 
       expect(actualK, expectedK);
     });
@@ -28,7 +28,7 @@ void main() {
       actualK = actualRFC6979.generateNextK();
 
       // Assert
-      BigInt expectedK = BigInt.parse('39895679606177596180287448438804030706681317903018289114299200620908600491251');
+      BigInt expectedK = BigInt.parse('6446984329827201161639586424862907291104184339952330734639705342348070727455');
 
       expect(actualK, expectedK);
     });
@@ -38,7 +38,7 @@ void main() {
       actualK = actualRFC6979.generateNextK();
 
       // Assert
-      BigInt expectedK = BigInt.parse('97287072958682325125178613215978617558522978457213714644802934270632351217368');
+      BigInt expectedK = BigInt.parse('99171740025834307469794610228569422856896562362771710481536067169873355338700');
 
       expect(actualK, expectedK);
     });

@@ -23,41 +23,53 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// This class implements the functionality necessary to generate and verify digital signatures using
-/// the ECDSA algorithm, a cryptographic algorithm used for creating a digital signature of data
-/// which can then be verified by others with the signer's public key.
-class ECDSASigner {
+/// This class implements the functionality necessary to verify digital signatures using
+/// the ECDSA (Elliptic Curve Digital Signature Algorithm). By using the public key associated with
+/// the signature, this verifier can confirm whether the signature was indeed created by the holder
+/// of the corresponding private key and that the data has not been altered since it was signed.
+class ECDSAVerifier {
   /// The hash function used for generating the message digest.
   final Hash hashFunction;
 
-  /// The ECDSA private key used for signing the message.
-  final ECPrivateKey ecPrivateKey;
+  /// The ECDSA public key which will be used to verification.
+  final ECPublicKey ecPublicKey;
 
-  ECDSASigner({
+  /// Constructs an [ECDSAVerifier] with the provided hash function and ECDSA public key.
+  ECDSAVerifier({
     required this.hashFunction,
-    required this.ecPrivateKey,
+    required this.ecPublicKey,
   });
 
-  /// Generates a deterministic signature for a given message using [ECPrivateKey].
-  /// Uses RFC6979 for 'k' ephemeral key generation to mitigate certain vulnerabilities associated with random 'k' generation.
-  ECSignature sign(Uint8List message) {
-    BigInt n = ecPrivateKey.G.n;
+  /// Verifies an ECDSA signature against given message.
+  bool isSignatureValid(Uint8List message, ECSignature signature) {
+    BigInt n = ecPublicKey.G.n;
     BigInt e = BigIntUtils.decodeWithSign(1, message, bitLength: n.bitLength);
-    BigInt r;
-    BigInt s;
 
-    RFC6979 rfc6979 = RFC6979(n: ecPrivateKey.G.n, hashFunction: hashFunction, d: ecPrivateKey.d, m: message);
+    BigInt r = signature.r;
+    BigInt s = signature.s;
 
-    do {
-      BigInt? k;
-      do {
-        k = rfc6979.generateNextK();
-        ECPoint p = ecPrivateKey.G * k;
-        r = p.affineX % n;
-      } while (r == BigInt.zero);
-      s = (k.modInverse(n) * (e + (ecPrivateKey.d * r) % n)) % n;
-    } while (s == BigInt.zero);
+    if (_isValidSignatureRange(r, n) == false || _isValidSignatureRange(s, n) == false) {
+      return false;
+    }
 
-    return ECSignature(r: r, s: s);
+    BigInt c = s.modInverse(n);
+
+    BigInt u1 = (e * c) % n;
+    BigInt u2 = (r * c) % n;
+
+    ECPoint point = ECPointUtils.sumTwoMultiplies(ecPublicKey.G, u1, ecPublicKey.Q, u2);
+
+    if (point.isInfinity) {
+      return false;
+    }
+
+    BigInt v = point.affineX % n;
+
+    return v == r;
+  }
+
+  /// Checks if the given value is in the range [0, n) which is required for processing ECDSA signature verification.
+  bool _isValidSignatureRange(BigInt value, BigInt n) {
+    return value.compareTo(BigInt.zero) >= 0 && value.compareTo(n) < 0;
   }
 }
