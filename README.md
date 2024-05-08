@@ -1,5 +1,5 @@
 # cryptography_utils
-Private keys manager
+Dart package containing utility methods for common cryptographic and blockchain-specific operations.
 
 ## Installation
 Use git clone to download [cryptography_utils](https://github.com/CandyLabsIT/cryptography_utils) project.
@@ -8,46 +8,25 @@ git clone git@github.com:CandyLabsIT/cryptography_utils.git
 ```
 
 ## Usage
-The project runs on flutter version **3.16.2**. You can use [fvm](https://fvm.app/docs/getting_started/installation)
-for easy switching between versions otherwise see [flutter installation](https://docs.flutter.dev/get-started/install)
+The project runs on Flutter version **3.16.2** (Dart >=3.1.4). You can use [fvm](https://fvm.app/docs/getting_started/installation)
+for easy switching between Dart/Flutter versions otherwise see [flutter installation](https://docs.flutter.dev/get-started/install)
 ```bash
 # Install and use required flutter version
 fvm install 3.16.2
-fvm use 3.16.2
+fvm use 3.16.2 --force
 
 # Install required packages in pubspec.yaml
-fvm flutter pub get
-
-# Run project
-fvm flutter run 
-```
-
-To generate config files use
-```bash
-fvm flutter pub run build_runner
-```
-```bash
-# Built-in Commands 
-# - build: Runs a single build and exits.
-# - watch: Runs a persistent build server that watches the files system for edits and does rebuilds as necessary
-# - serve: Same as watch, but runs a development server as well
-
-# Command Line Options
-# --delete-conflicting-outputs: Assume conflicting outputs in the users package are from previous builds, and skip the user prompt that would usually be provided.
-# 
-# Command example:
-
-fvm flutter pub run build_runner watch --delete-conflicting-outputs
+fvm dart pub get
 ```
 
 ## Tests
-To run Unit Tests / Integration tests
+To run tests
 ```bash
 # Run all Unit Tests
-fvm flutter test test
+fvm dart run test
 
 # To run specific Unit Test
-fvm flutter test path/to/test.dart
+fvm dart test absolute/path/to/test.dart
 ```
 
 ## Contributing

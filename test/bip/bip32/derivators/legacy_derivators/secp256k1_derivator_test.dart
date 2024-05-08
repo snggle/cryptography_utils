@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   Secp256k1Derivator actualSecp256k1Derivator = Secp256k1Derivator();
