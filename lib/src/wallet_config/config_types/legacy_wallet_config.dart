@@ -1,6 +1,6 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-class LegacyWalletConfig<T extends IBip32PrivateKey> extends AWalletConfig {
+class LegacyWalletConfig<T extends ABip32PrivateKey> extends AWalletConfig {
   final int coinIndex;
   final CurveType curveType;
   final BipProposalType purpose;

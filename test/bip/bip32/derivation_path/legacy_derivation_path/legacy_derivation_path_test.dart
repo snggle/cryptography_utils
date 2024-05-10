@@ -9,11 +9,11 @@ void main() {
 
       // Assert
       LegacyDerivationPath expectedLegacyDerivationPath = LegacyDerivationPath(pathElements: const <LegacyDerivationPathElement>[
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483692, value: "44'"),
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483708, value: "60'"),
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483648, value: "0'"),
-        LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0'),
-        LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0'),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 60),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
       ]);
 
       expect(actualLegacyDerivationPath, expectedLegacyDerivationPath);
@@ -25,11 +25,11 @@ void main() {
 
       // Assert
       LegacyDerivationPath expectedLegacyDerivationPath = LegacyDerivationPath(pathElements: const <LegacyDerivationPathElement>[
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483692, value: "44'"),
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483708, value: "60'"),
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483648, value: "0'"),
-        LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0'),
-        LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0'),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 60),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
       ]);
 
       expect(actualLegacyDerivationPath, expectedLegacyDerivationPath);
@@ -60,15 +60,36 @@ void main() {
     });
   });
 
+  group('Tests of LegacyDerivationPath.fromShiftedIndexes() constructor', () {
+    test('Should [return LegacyDerivationPath] built from list of shifted indexes', () {
+      // Arrange
+      List<int> actualShiftedIndexes = <int>[2147483692, 2147483708, 2147483648, 0, 0];
+
+      // Act
+      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.fromShiftedIndexes(actualShiftedIndexes);
+
+      // Assert
+      LegacyDerivationPath expectedLegacyDerivationPath = LegacyDerivationPath(pathElements: const <LegacyDerivationPathElement>[
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 60),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
+      ]);
+
+      expect(actualLegacyDerivationPath, expectedLegacyDerivationPath);
+    });
+  });
+
   group('Tests of LegacyDerivationPath.toString()', () {
     test('Should [return LegacyDerivationPath] as String', () {
       // Arrange
       LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath(pathElements: const <LegacyDerivationPathElement>[
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483692, value: "44'"),
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483708, value: "60'"),
-        LegacyDerivationPathElement(hardenedBool: true, index: 2147483648, value: "0'"),
-        LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0'),
-        LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0'),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 60),
+        LegacyDerivationPathElement(hardenedBool: true, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
+        LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0),
       ]);
 
       // Act

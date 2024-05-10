@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
@@ -10,7 +12,17 @@ void main() {
     curve: Curves.secp256k1,
   );
 
-  Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ));
+  Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(
+    ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ),
+    metadata: Bip32KeyMetadata(
+      depth: 5,
+      shiftedIndex: 0,
+      fingerprint: BigInt.parse('220462739'),
+      parentFingerprint: BigInt.parse('541880847'),
+      masterFingerprint: BigInt.parse('83580899'),
+      chainCode: base64Decode('rEcUq915xZMcSVN9UIfhWIf7c+cb9fURwnXSJ59fbhs='),
+    ),
+  );
 
   group('Tests of BitcoinP2PKHAddressEncoder.encodePublicKey()', () {
     test('Should [return Bitcoin P2PKH address] for given public key (public key COMPRESSED)', () {

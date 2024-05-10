@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
@@ -10,7 +12,17 @@ void main() {
     curve: Curves.secp256k1,
   );
 
-  Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ));
+  Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(
+    ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ),
+    metadata: Bip32KeyMetadata(
+      depth: 5,
+      shiftedIndex: 0,
+      fingerprint: BigInt.parse('2889905688'),
+      parentFingerprint: BigInt.parse('58474422'),
+      masterFingerprint: BigInt.parse('83580899'),
+      chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
+    ),
+  );
 
   group('Tests of CosmosAddressEncoder.encodePublicKey()', () {
     test('Should [return Cosmos address] for given public key (cosmos)', () {

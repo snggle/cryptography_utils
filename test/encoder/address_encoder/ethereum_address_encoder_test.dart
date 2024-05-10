@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
@@ -10,7 +12,17 @@ void main() {
     curve: Curves.secp256k1,
   );
 
-  Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ));
+  Secp256k1PublicKey actualPublicKey = Secp256k1PublicKey(
+    ecPublicKey: ECPublicKey(CurvePoints.generatorSecp256k1, actualPointQ),
+    metadata: Bip32KeyMetadata(
+      depth: 5,
+      shiftedIndex: 0,
+      fingerprint: BigInt.parse('2837893204'),
+      parentFingerprint: BigInt.parse('162080603'),
+      masterFingerprint: BigInt.parse('83580899'),
+      chainCode: base64Decode('YsN74zJ6p9/kjsFCM5UUBq470XR3CEssHXyawdn7xBw='),
+    ),
+  );
 
   group('Tests of EthereumAddressEncoder.encodePublicKey()', () {
     test('Should [return Etherum address] [WITH checksum] for given public key', () {

@@ -6,15 +6,14 @@ import 'package:equatable/equatable.dart';
 class LegacyDerivationPathElement extends Equatable {
   static const List<String> _hardenedChars = <String>["'"];
 
-  final int index;
-  final String value;
   final bool _hardenedBool;
+  final int _rawIndex;
 
   const LegacyDerivationPathElement({
     required bool hardenedBool,
-    required this.index,
-    required this.value,
-  }) : _hardenedBool = hardenedBool;
+    required int rawIndex,
+  })  : _hardenedBool = hardenedBool,
+        _rawIndex = rawIndex;
 
   /// Parses a single derivation path element which can be either a hardened or non-hardened index.
   factory LegacyDerivationPathElement.parse(String pathElement) {
@@ -25,33 +24,48 @@ class LegacyDerivationPathElement extends Equatable {
       parsedPathElement = parsedPathElement.substring(0, pathElement.length - 1);
     }
 
-    int? index = int.tryParse(parsedPathElement, radix: 10);
-    if (index == null) {
+    int? rawIndex = int.tryParse(parsedPathElement, radix: 10);
+    if (rawIndex == null) {
       throw FormatException('Invalid BIP32 derivation path element ($pathElement)');
-    } else if (hardenedBool) {
-      index = index | (1 << 31);
-    } else {
-      index = index & ~(1 << 31);
     }
 
-    return LegacyDerivationPathElement(
-      hardenedBool: hardenedBool,
-      index: index,
-      value: pathElement,
-    );
+    return LegacyDerivationPathElement(hardenedBool: hardenedBool, rawIndex: rawIndex);
+  }
+
+  factory LegacyDerivationPathElement.fromShiftedIndex(int shiftedIndex) {
+    int rawIndex = shiftedIndex & ~(1 << 31);
+    bool hardenedBool = (shiftedIndex & (1 << 31)) != 0;
+
+    return LegacyDerivationPathElement(hardenedBool: hardenedBool, rawIndex: rawIndex);
   }
 
   /// Returns true if the index is hardened, false otherwise.
   bool get isHardened => _hardenedBool;
 
+  /// Returns the raw index value.
+  int get rawIndex => _rawIndex;
+
+  /// Returns the index as a shifted integer including whether it is hardened or not.
+  /// Indexes numbered between 0 and (2^31 - 1) are considered unhardened.
+  /// Indexes numbered between 2^31 and (2^32 - 1) are considered hardened.
+  ///
+  /// This value is used in the derivation of child keys in BIP32.
+  int get shiftedIndex {
+    if (isHardened) {
+      return _rawIndex | (1 << 31);
+    } else {
+      return _rawIndex & ~(1 << 31);
+    }
+  }
+
   /// Returns the index as a 32-bit unsigned integer.
-  Uint8List toBytes() {
-    return Uint8List(4)..buffer.asByteData().setInt32(0, index, Endian.big);
+  Uint8List toBytes([Endian endian = Endian.big]) {
+    return Uint8List(4)..buffer.asByteData().setInt32(0, shiftedIndex, endian);
   }
 
   @override
-  String toString() => value;
+  String toString() => '$_rawIndex${_hardenedBool ? _hardenedChars.first : ''}';
 
   @override
-  List<Object?> get props => <Object>[value, index, _hardenedBool];
+  List<Object?> get props => <Object>[_rawIndex, _hardenedBool];
 }

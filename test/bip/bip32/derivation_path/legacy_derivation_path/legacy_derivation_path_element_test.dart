@@ -8,7 +8,7 @@ void main() {
       LegacyDerivationPathElement actualLegacyDerivationPathElement = LegacyDerivationPathElement.parse("44'");
 
       // Assert
-      LegacyDerivationPathElement expectedLegacyDerivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, index: 2147483692, value: "44'");
+      LegacyDerivationPathElement expectedLegacyDerivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44);
 
       expect(actualLegacyDerivationPathElement, expectedLegacyDerivationPathElement);
     });
@@ -18,7 +18,7 @@ void main() {
       LegacyDerivationPathElement actualLegacyDerivationPathElement = LegacyDerivationPathElement.parse('0');
 
       // Assert
-      LegacyDerivationPathElement expectedLegacyDerivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0');
+      LegacyDerivationPathElement expectedLegacyDerivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0);
 
       expect(actualLegacyDerivationPathElement, expectedLegacyDerivationPathElement);
     });
@@ -29,10 +29,38 @@ void main() {
     });
   });
 
+  group('Tests of LegacyDerivationPathElement.fromShiftedIndex() constructor', () {
+    test('Should [return LegacyDerivationPathElement] with hardened index', () {
+      // Arrange
+      int actualShiftedIndex = 2147483692;
+
+      // Act
+      LegacyDerivationPathElement actualLegacyDerivationPathElement = LegacyDerivationPathElement.fromShiftedIndex(actualShiftedIndex);
+
+      // Assert
+      LegacyDerivationPathElement expectedLegacyDerivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44);
+
+      expect(actualLegacyDerivationPathElement, expectedLegacyDerivationPathElement);
+    });
+
+    test('Should [return LegacyDerivationPathElement] with soft index', () {
+      // Arrange
+      int actualShiftedIndex = 44;
+
+      // Act
+      LegacyDerivationPathElement actualLegacyDerivationPathElement = LegacyDerivationPathElement.fromShiftedIndex(actualShiftedIndex);
+
+      // Assert
+      LegacyDerivationPathElement expectedLegacyDerivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 44);
+
+      expect(actualLegacyDerivationPathElement, expectedLegacyDerivationPathElement);
+    });
+  });
+
   group('Tests of LegacyDerivationPathElement.isHardened getter', () {
     test('Should [return TRUE] if [path element HARDENED]', () {
       // Arrange
-      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, index: 0, value: "0'");
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 0);
 
       // Act
       bool actualHardenedBool = derivationPathElement.isHardened;
@@ -43,7 +71,7 @@ void main() {
 
     test('Should [return FALSE] if [path element NOT HARDENED]', () {
       // Arrange
-      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0');
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0);
 
       // Act
       bool actualHardenedBool = derivationPathElement.isHardened;
@@ -53,10 +81,66 @@ void main() {
     });
   });
 
+  group('Tests of LegacyDerivationPathElement.rawIndex getter', () {
+    test('Should [return number] identifying index of (HARDENED path element)', () {
+      // Arrange
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44);
+
+      // Act
+      int actualRawIndex = derivationPathElement.rawIndex;
+
+      // Assert
+      int expectedRawIndex = 44;
+
+      expect(actualRawIndex, expectedRawIndex);
+    });
+
+    test('Should [return number] identifying index of (NOT HARDENED path element)', () {
+      // Arrange
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 44);
+
+      // Act
+      int actualRawIndex = derivationPathElement.rawIndex;
+
+      // Assert
+      int expectedRawIndex = 44;
+
+      expect(actualRawIndex, expectedRawIndex);
+    });
+  });
+
+  group('Tests of LegacyDerivationPathElement.shiftedIndex getter', () {
+    test('Should [return number] identifying index of (HARDENED path element)', () {
+      // Arrange
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44);
+
+      // Act
+      int actualShiftedIndex = derivationPathElement.shiftedIndex;
+
+      // Assert
+      int expectedShiftedIndex = 2147483692;
+
+      expect(actualShiftedIndex, expectedShiftedIndex);
+    });
+
+    test('Should [return number] identifying index of (NOT HARDENED path element)', () {
+      // Arrange
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 44);
+
+      // Act
+      int actualShiftedIndex = derivationPathElement.shiftedIndex;
+
+      // Assert
+      int expectedShiftedIndex = 44;
+
+      expect(actualShiftedIndex, expectedShiftedIndex);
+    });
+  });
+
   group('Tests of LegacyDerivationPathElement.toBytes()', () {
     test('Should [return BYTES] constructed from LegacyDerivationPathElement index (zero value)', () {
       // Arrange
-      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, index: 0, value: '0');
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 0);
 
       // Act
       List<int> actualBytes = derivationPathElement.toBytes();
@@ -68,7 +152,7 @@ void main() {
 
     test('Should [return BYTES] constructed from LegacyDerivationPathElement index (non-zero value)', () {
       // Arrange
-      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, index: 2147483692, value: '44');
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44);
 
       // Act
       List<int> actualBytes = derivationPathElement.toBytes();
@@ -82,7 +166,7 @@ void main() {
   group('Test of LegacyDerivationPathElement.toString()', () {
     test('Should [return String] identifying (HARDENED path element)', () {
       // Arrange
-      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, index: 2147483692, value: "44'");
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: true, rawIndex: 44);
 
       // Act
       String actualString = derivationPathElement.toString();
@@ -94,7 +178,7 @@ void main() {
 
     test('Should [return String] identifying (NOT HARDENED path element)', () {
       // Arrange
-      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, index: 44, value: '44');
+      LegacyDerivationPathElement derivationPathElement = const LegacyDerivationPathElement(hardenedBool: false, rawIndex: 44);
 
       // Act
       String actualString = derivationPathElement.toString();
