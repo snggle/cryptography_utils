@@ -8,7 +8,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 ///   - `curveType`: Type of the elliptic curve used for key generation
 ///   - `purpose`: Type of the BIP proposal
 class Bip84WalletsConfig {
-  static LegacyWalletConfig bitcoin = LegacyWalletConfig(
+  static LegacyWalletConfig<Secp256k1PrivateKey> bitcoin = LegacyWalletConfig<Secp256k1PrivateKey>(
     addressEncoder: BitcoinP2WPKHAddressEncoder(hrp: Slip173.bitcoin),
     derivator: Secp256k1Derivator(),
     coinIndex: Slip44.bitcoin,

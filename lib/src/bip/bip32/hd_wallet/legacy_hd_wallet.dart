@@ -17,7 +17,7 @@ class LegacyHDWallet extends AHDWallet {
   static Future<LegacyHDWallet> fromMnemonic({
     required String derivationPathString,
     required Mnemonic mnemonic,
-    required LegacyWalletConfig walletConfig,
+    required LegacyWalletConfig<IBip32PrivateKey> walletConfig,
   }) async {
     LegacyDerivationPath derivationPath = LegacyDerivationPath.parse(derivationPathString);
 

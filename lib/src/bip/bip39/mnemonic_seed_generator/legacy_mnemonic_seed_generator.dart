@@ -1,5 +1,6 @@
+import 'dart:typed_data';
+
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:flutter/foundation.dart';
 
 /// The [LegacyMnemonicSeedGenerator] class provides functionality to generate mnemonic seed using traditional method based on mnemonic phrase.
 /// It's used in various cryptographic applications like Bitcoin, Ethereum or Cosmos.

@@ -1,5 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:compute/compute.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:flutter/foundation.dart';
 
 /// Abstract class for mnemonic seed generators.
 /// Contains shared method to calculate seed from mnemonic in separated thread.
@@ -10,7 +12,6 @@ abstract class AMnemonicSeedGenerator {
 
   Future<Uint8List> generateSeed(Mnemonic mnemonic, {String passphrase = ''});
 
-  @protected
   Future<Uint8List> computeSeed({
     required Uint8List password,
     required Uint8List salt,

@@ -1,8 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 /// The [Mnemonic] class is designed for handling mnemonic phrases, which are human-readable sequences of words used to generate and recover cryptographic keys.
 /// This functionality is typically used in the context of cryptocurrency wallets for generating private-keys in a way that is easier for users to record and remember.

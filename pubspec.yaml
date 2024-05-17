@@ -1,33 +1,30 @@
 name: cryptography_utils
 description: "Cryptography utils"
-version: 0.0.7
+version: 0.0.8
 
 environment:
-  sdk: ">=3.2.2"
-  flutter: "^3.16.2"
+  sdk: ">=3.1.4"
 
 dependencies:
-  flutter:
-    sdk: flutter
-
   # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
   # https://pub.dev/packages/equatable
-  equatable: ^2.0.5
+  equatable: 2.0.5
 
   # Implementations of SHA, MD5, and HMAC cryptographic functions.
   # https://pub.dev/packages/crypto
-  crypto: ^3.0.3
+  crypto: 3.0.3
 
   # Library implementing Bitcoins BIP173 (Bech32 encoding) specification in a Flutter friendly fashion.
   # https://pub.dev/packages/bech32
-  bech32: ^0.2.2
+  bech32: 0.2.2
 
   # A Dart library implementing cryptographic algorithms and primitives, modeled on the BouncyCastle library.
   # https://pub.dev/packages/pointycastle
-  pointycastle: ^3.7.4
+  pointycastle: 3.7.4
+
+  # Flutter's compute function made available for all non-Flutter Dart programs
+  # https://pub.dev/packages/compute
+  compute: 1.0.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-flutter:
+  test: 1.25.5

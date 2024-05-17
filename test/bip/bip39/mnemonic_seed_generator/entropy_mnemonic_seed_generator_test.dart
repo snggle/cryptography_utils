@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Tests of EntropyMnemonicSeedGenerator.generateSeed()', () {
