@@ -7,8 +7,8 @@ import 'package:equatable/equatable.dart';
 abstract class AHDWallet extends Equatable {
   final String address;
   final AWalletConfig walletConfig;
-  final IBip32PrivateKey privateKey;
-  final IBip32PublicKey publicKey;
+  final ABip32PrivateKey privateKey;
+  final ABip32PublicKey publicKey;
 
   const AHDWallet({
     required this.address,

@@ -13,19 +13,28 @@ void main() {
       LegacyHDWallet actualBitcoinBip44Wallet = await LegacyHDWallet.fromMnemonic(
         mnemonic: mnemonic,
         walletConfig: Bip44WalletsConfig.bitcoin,
-        derivationPathString: "m/44'/0'/0'/0/0",
+        derivationPath: LegacyDerivationPath.parse("m/44'/0'/0'/0/0"),
       );
 
       // Assert
+      Bip32KeyMetadata expectedBip32Metadata = Bip32KeyMetadata(
+        depth: 5,
+        shiftedIndex: 0,
+        fingerprint: BigInt.parse('220462739'),
+        parentFingerprint: BigInt.parse('541880847'),
+        masterFingerprint: BigInt.parse('83580899'),
+        chainCode: base64Decode('rEcUq915xZMcSVN9UIfhWIf7c+cb9fURwnXSJ59fbhs='),
+      );
+
       LegacyHDWallet expectedBitcoinBip44Wallet = LegacyHDWallet(
         address: '12CUuS1w48dmLqug3sQeZGXhM6ziyLdDFR',
         walletConfig: Bip44WalletsConfig.bitcoin,
         privateKey: Secp256k1PrivateKey(
-          chainCode: base64Decode('rEcUq915xZMcSVN9UIfhWIf7c+cb9fURwnXSJ59fbhs='),
           ecPrivateKey: ECPrivateKey(
             CurvePoints.generatorSecp256k1,
             BigInt.parse('82377503398124971005475108599523902661393087907602410456433373035270068286106'),
           ),
+          metadata: expectedBip32Metadata,
         ),
         publicKey: Secp256k1PublicKey(
           ecPublicKey: ECPublicKey(
@@ -38,6 +47,7 @@ void main() {
               z: BigInt.parse('84221606303351351252384011276733806130312533127115701665238461934963837834470'),
             ),
           ),
+          metadata: expectedBip32Metadata,
         ),
         derivationPath: LegacyDerivationPath.parse("m/44'/0'/0'/0/0"),
       );
@@ -50,19 +60,28 @@ void main() {
       LegacyHDWallet actualBitcoinBip49Wallet = await LegacyHDWallet.fromMnemonic(
         mnemonic: mnemonic,
         walletConfig: Bip49WalletsConfig.bitcoin,
-        derivationPathString: "m/49'/0'/0'/0/0",
+        derivationPath: LegacyDerivationPath.parse("m/49'/0'/0'/0/0"),
       );
 
       // Assert
+      Bip32KeyMetadata expectedBip32Metadata = Bip32KeyMetadata(
+        depth: 5,
+        shiftedIndex: 0,
+        fingerprint: BigInt.parse('2009194743'),
+        parentFingerprint: BigInt.parse('3366442085'),
+        masterFingerprint: BigInt.parse('83580899'),
+        chainCode: base64Decode('dD+m4pyYe3edlY9ZDNDpe370dwMmGNF2ihkMDXjYSpY='),
+      );
+
       LegacyHDWallet expectedBitcoinBip49Wallet = LegacyHDWallet(
         address: '38BaaMYeUR32tptWPcfLiuZwdkq1iHy7mW',
         walletConfig: Bip49WalletsConfig.bitcoin,
         privateKey: Secp256k1PrivateKey(
-          chainCode: base64Decode('dD+m4pyYe3edlY9ZDNDpe370dwMmGNF2ihkMDXjYSpY='),
           ecPrivateKey: ECPrivateKey(
             CurvePoints.generatorSecp256k1,
             BigInt.parse('94791086327829028717275008054464607695206537392279157300063391421050953013739'),
           ),
+          metadata: expectedBip32Metadata,
         ),
         publicKey: Secp256k1PublicKey(
           ecPublicKey: ECPublicKey(
@@ -75,6 +94,7 @@ void main() {
               z: BigInt.parse('11902898874332229604673834019199903475888972972060602920606280067238874780442'),
             ),
           ),
+          metadata: expectedBip32Metadata,
         ),
         derivationPath: LegacyDerivationPath.parse("m/49'/0'/0'/0/0"),
       );
@@ -87,19 +107,28 @@ void main() {
       LegacyHDWallet actualBitcoinBip84Wallet = await LegacyHDWallet.fromMnemonic(
         mnemonic: mnemonic,
         walletConfig: Bip84WalletsConfig.bitcoin,
-        derivationPathString: "m/84'/0'/0'/0/0",
+        derivationPath: LegacyDerivationPath.parse("m/84'/0'/0'/0/0"),
       );
 
       // Assert
+      Bip32KeyMetadata expectedBip32Metadata = Bip32KeyMetadata(
+        depth: 5,
+        shiftedIndex: 0,
+        fingerprint: BigInt.parse('3785737267'),
+        parentFingerprint: BigInt.parse('4177480418'),
+        masterFingerprint: BigInt.parse('83580899'),
+        chainCode: base64Decode('HmhuNs2LO3+/SpMIb4FCOCRlS5Ym+ACIprpAAmG4zMI='),
+      );
+
       LegacyHDWallet expectedBitcoinBip84Wallet = LegacyHDWallet(
         address: 'bc1quxjugvagpv4kz5hdkh7x0qklarw5akdk2sg0wp',
         walletConfig: Bip84WalletsConfig.bitcoin,
         privateKey: Secp256k1PrivateKey(
-          chainCode: base64Decode('HmhuNs2LO3+/SpMIb4FCOCRlS5Ym+ACIprpAAmG4zMI='),
           ecPrivateKey: ECPrivateKey(
             CurvePoints.generatorSecp256k1,
             BigInt.parse('104431983138007662112969845964787088318479940099811565105163559790396390283107'),
           ),
+          metadata: expectedBip32Metadata,
         ),
         publicKey: Secp256k1PublicKey(
           ecPublicKey: ECPublicKey(
@@ -112,6 +141,7 @@ void main() {
               z: BigInt.parse('40734431342056095760694605795848451157672234281365399275614292579983211792826'),
             ),
           ),
+          metadata: expectedBip32Metadata,
         ),
         derivationPath: LegacyDerivationPath.parse("m/84'/0'/0'/0/0"),
       );
@@ -124,19 +154,28 @@ void main() {
       LegacyHDWallet actualCosmosWallet = await LegacyHDWallet.fromMnemonic(
         mnemonic: mnemonic,
         walletConfig: Bip44WalletsConfig.cosmos,
-        derivationPathString: "m/44'/118'/0'/0/0",
+        derivationPath: LegacyDerivationPath.parse("m/44'/118'/0'/0/0"),
       );
 
       // Assert
+      Bip32KeyMetadata expectedBip32Metadata = Bip32KeyMetadata(
+        depth: 5,
+        shiftedIndex: 0,
+        fingerprint: BigInt.parse('2889905688'),
+        parentFingerprint: BigInt.parse('58474422'),
+        masterFingerprint: BigInt.parse('83580899'),
+        chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
+      );
+
       LegacyHDWallet expectedCosmosWallet = LegacyHDWallet(
         address: 'cosmos143q8vxpvuykt9pq50e6hng9s38vmy844rgut0t',
         walletConfig: Bip44WalletsConfig.cosmos,
         privateKey: Secp256k1PrivateKey(
-          chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
           ecPrivateKey: ECPrivateKey(
             CurvePoints.generatorSecp256k1,
             BigInt.parse('25933686250415448129536663355227060923413846494721047098076326567395973050293'),
           ),
+          metadata: expectedBip32Metadata,
         ),
         publicKey: Secp256k1PublicKey(
           ecPublicKey: ECPublicKey(
@@ -149,6 +188,7 @@ void main() {
               z: BigInt.parse('3190226348536498292494465017020441737630476122313049345633869118655223224149'),
             ),
           ),
+          metadata: expectedBip32Metadata,
         ),
         derivationPath: LegacyDerivationPath.parse("m/44'/118'/0'/0/0"),
       );
@@ -161,19 +201,28 @@ void main() {
       LegacyHDWallet actualEthereumWallet = await LegacyHDWallet.fromMnemonic(
         mnemonic: mnemonic,
         walletConfig: Bip44WalletsConfig.ethereum,
-        derivationPathString: "m/44'/60'/0'/0/0",
+        derivationPath: LegacyDerivationPath.parse("m/44'/60'/0'/0/0"),
       );
 
       // Assert
+      Bip32KeyMetadata expectedBip32Metadata = Bip32KeyMetadata(
+        depth: 5,
+        shiftedIndex: 0,
+        fingerprint: BigInt.parse('2837893204'),
+        parentFingerprint: BigInt.parse('162080603'),
+        masterFingerprint: BigInt.parse('83580899'),
+        chainCode: base64Decode('YsN74zJ6p9/kjsFCM5UUBq470XR3CEssHXyawdn7xBw='),
+      );
+
       LegacyHDWallet expectedEthereumWallet = LegacyHDWallet(
         address: '0x50e10257924889818aA729c6EDfa02524b32Edb9',
         walletConfig: Bip44WalletsConfig.ethereum,
         privateKey: Secp256k1PrivateKey(
-          chainCode: base64Decode('YsN74zJ6p9/kjsFCM5UUBq470XR3CEssHXyawdn7xBw='),
           ecPrivateKey: ECPrivateKey(
             CurvePoints.generatorSecp256k1,
             BigInt.parse('91850346642365090382529827989594437164777469345439968194889143349494450093883'),
           ),
+          metadata: expectedBip32Metadata,
         ),
         publicKey: Secp256k1PublicKey(
           ecPublicKey: ECPublicKey(
@@ -186,6 +235,7 @@ void main() {
               z: BigInt.parse('33112508886275853310422687256511308836721055527980470378416551104097868981749'),
             ),
           ),
+          metadata: expectedBip32Metadata,
         ),
         derivationPath: LegacyDerivationPath.parse("m/44'/60'/0'/0/0"),
       );
@@ -198,19 +248,28 @@ void main() {
       LegacyHDWallet actualKiraWallet = await LegacyHDWallet.fromMnemonic(
         mnemonic: mnemonic,
         walletConfig: Bip44WalletsConfig.kira,
-        derivationPathString: "m/44'/118'/0'/0/0",
+        derivationPath: LegacyDerivationPath.parse("m/44'/118'/0'/0/0"),
       );
 
       // Assert
+      Bip32KeyMetadata expectedBip32Metadata = Bip32KeyMetadata(
+        depth: 5,
+        shiftedIndex: 0,
+        fingerprint: BigInt.parse('2889905688'),
+        parentFingerprint: BigInt.parse('58474422'),
+        masterFingerprint: BigInt.parse('83580899'),
+        chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
+      );
+
       LegacyHDWallet expectedKiraWallet = LegacyHDWallet(
         address: 'kira143q8vxpvuykt9pq50e6hng9s38vmy844n8k9wx',
         walletConfig: Bip44WalletsConfig.kira,
         privateKey: Secp256k1PrivateKey(
-          chainCode: base64Decode('atgf2JWMxW014Hby5ccSn5NlRKQvIV2jvsdtcN3Eb8I='),
           ecPrivateKey: ECPrivateKey(
             CurvePoints.generatorSecp256k1,
             BigInt.parse('25933686250415448129536663355227060923413846494721047098076326567395973050293'),
           ),
+          metadata: expectedBip32Metadata,
         ),
         publicKey: Secp256k1PublicKey(
           ecPublicKey: ECPublicKey(
@@ -223,6 +282,7 @@ void main() {
               z: BigInt.parse('3190226348536498292494465017020441737630476122313049345633869118655223224149'),
             ),
           ),
+          metadata: expectedBip32Metadata,
         ),
         derivationPath: LegacyDerivationPath.parse("m/44'/118'/0'/0/0"),
       );

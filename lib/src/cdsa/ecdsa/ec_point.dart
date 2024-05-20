@@ -223,5 +223,5 @@ class ECPoint extends Equatable {
   }
 
   @override
-  List<Object?> get props => <Object?>[curve, n, x, y, z];
+  List<Object?> get props => <Object?>[curve, n, affineX, affineY];
 }

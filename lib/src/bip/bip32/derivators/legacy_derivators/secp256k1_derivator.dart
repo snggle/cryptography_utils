@@ -59,27 +59,35 @@ class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {
     Uint8List privateKey = hmacHash.sublist(0, 32);
     Uint8List chainCode = hmacHash.sublist(32);
 
+    ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(privateKey, CurvePoints.generatorSecp256k1);
+    BigInt masterFingerprint = _calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
+
     return Secp256k1PrivateKey(
-      ecPrivateKey: ECPrivateKey.fromBytes(privateKey, CurvePoints.generatorSecp256k1),
-      chainCode: chainCode,
-    );
+        ecPrivateKey: ecPrivateKey,
+        metadata: Bip32KeyMetadata(
+          depth: 0,
+          chainCode: chainCode,
+          fingerprint: masterFingerprint,
+          parentFingerprint: BigInt.from(0x00000000),
+          masterFingerprint: masterFingerprint,
+        ));
   }
 
   /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single element of a derivation path
   @override
   Secp256k1PrivateKey deriveChildKey(Secp256k1PrivateKey privateKey, LegacyDerivationPathElement derivationPathElement) {
     if (derivationPathElement.isHardened) {
-      return _deriveHard(privateKey, derivationPathElement.toBytes());
+      return _deriveHard(privateKey, derivationPathElement);
     } else {
-      return _deriveSoft(privateKey, derivationPathElement.toBytes());
+      return _deriveSoft(privateKey, derivationPathElement);
     }
   }
 
   /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single hardened element of a derivation path
-  Secp256k1PrivateKey _deriveHard(Secp256k1PrivateKey secp256k1privateKey, Uint8List derivationBytes) {
-    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...secp256k1privateKey.bytes, ...derivationBytes]);
+  Secp256k1PrivateKey _deriveHard(Secp256k1PrivateKey secp256k1privateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
+    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...secp256k1privateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
 
-    Uint8List hmacHash = HMAC(hash: sha512, key: secp256k1privateKey.chainCode).process(data);
+    Uint8List hmacHash = HMAC(hash: sha512, key: secp256k1privateKey.metadata.chainCode).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
@@ -89,17 +97,27 @@ class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {
     BigInt privateKey = (scalar + privateKeyScalar) % CurvePoints.generatorSecp256k1.n;
     Uint8List privateKeyBytes = BigIntUtils.changeToBytes(privateKey, length: secp256k1privateKey.length);
 
+    ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(privateKeyBytes, CurvePoints.generatorSecp256k1);
+    BigInt fingerprint = _calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
+
     return Secp256k1PrivateKey(
-      ecPrivateKey: ECPrivateKey.fromBytes(privateKeyBytes, CurvePoints.generatorSecp256k1),
-      chainCode: chainCodeBytes,
+      ecPrivateKey: ecPrivateKey,
+      metadata: Bip32KeyMetadata(
+        depth: secp256k1privateKey.metadata.depth + 1,
+        shiftedIndex: legacyDerivationPathElement.shiftedIndex,
+        chainCode: chainCodeBytes,
+        fingerprint: fingerprint,
+        parentFingerprint: secp256k1privateKey.metadata.fingerprint,
+        masterFingerprint: secp256k1privateKey.metadata.masterFingerprint,
+      ),
     );
   }
 
   /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single non-hardened element of a derivation path
-  Secp256k1PrivateKey _deriveSoft(Secp256k1PrivateKey secp256k1privateKey, Uint8List derivationBytes) {
-    Uint8List data = Uint8List.fromList(<int>[...secp256k1privateKey.publicKey.compressed, ...derivationBytes]);
+  Secp256k1PrivateKey _deriveSoft(Secp256k1PrivateKey secp256k1privateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
+    Uint8List data = Uint8List.fromList(<int>[...secp256k1privateKey.publicKey.compressed, ...legacyDerivationPathElement.toBytes()]);
 
-    Uint8List hmacHash = HMAC(hash: sha512, key: secp256k1privateKey.chainCode).process(data);
+    Uint8List hmacHash = HMAC(hash: sha512, key: secp256k1privateKey.metadata.chainCode).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
@@ -109,9 +127,25 @@ class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {
     BigInt privateKey = (scalar + privateKeyScalar) % CurvePoints.generatorSecp256k1.n;
     Uint8List privateKeyBytes = BigIntUtils.changeToBytes(privateKey, length: secp256k1privateKey.length);
 
+    ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(privateKeyBytes, CurvePoints.generatorSecp256k1);
+    BigInt fingerprint = _calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
+
     return Secp256k1PrivateKey(
-      ecPrivateKey: ECPrivateKey.fromBytes(privateKeyBytes, CurvePoints.generatorSecp256k1),
-      chainCode: chainCodeBytes,
+      ecPrivateKey: ecPrivateKey,
+      metadata: Bip32KeyMetadata(
+        depth: secp256k1privateKey.metadata.depth + 1,
+        shiftedIndex: legacyDerivationPathElement.shiftedIndex,
+        chainCode: chainCodeBytes,
+        fingerprint: fingerprint,
+        parentFingerprint: secp256k1privateKey.metadata.fingerprint,
+        masterFingerprint: secp256k1privateKey.metadata.masterFingerprint,
+      ),
     );
+  }
+
+  BigInt _calcFingerprint(Uint8List publicKeyBytes) {
+    Uint8List sha256Fingerprint = Uint8List.fromList(sha256.convert(publicKeyBytes).bytes);
+    Uint8List ripemd160Fingerprint = Uint8List.fromList(Ripemd160().process(sha256Fingerprint));
+    return BigIntUtils.decode(ripemd160Fingerprint.sublist(0, 4));
   }
 }

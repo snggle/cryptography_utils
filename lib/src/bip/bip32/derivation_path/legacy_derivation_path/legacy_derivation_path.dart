@@ -37,6 +37,15 @@ class LegacyDerivationPath extends Equatable {
     return LegacyDerivationPath(pathElements: pathElements);
   }
 
+  /// Parses a derivation path from a list of shifted indexes.
+  /// 2147483692/2147483708/2147483648/0/0 -> 40'/60'/0'/0/0
+  factory LegacyDerivationPath.fromShiftedIndexes(List<int> shiftedIndexes) {
+    List<LegacyDerivationPathElement> pathElements = shiftedIndexes.map((int shiftedIndex) {
+      return LegacyDerivationPathElement.fromShiftedIndex(shiftedIndex);
+    }).toList();
+    return LegacyDerivationPath(pathElements: pathElements);
+  }
+
   @override
   String toString() {
     List<String> separatedPath = <String>[_masterChar, ...pathElements.map((LegacyDerivationPathElement e) => e.toString())];
