@@ -87,10 +87,8 @@ class RFC6979 {
     _hmacK.fillRange(0, _hLen, 0x00);
     _hmacV.fillRange(0, _hLen, 0x01);
 
-    List<int> h1 = _hashFunction.convert(_m).bytes;
-
     Uint8List entropy = BigIntUtils.changeToBytes(_d, length: BigIntUtils.calculateByteLength(_n));
-    Uint8List nonce = BytesUtils.changeToOctetsWithOrderPadding(h1, _n);
+    Uint8List nonce = BytesUtils.changeToOctetsWithOrderPadding(_m, _n);
 
     List<List<int>> bx = <List<int>>[entropy, nonce, <int>[]];
 
