@@ -4,14 +4,14 @@
 // Mozilla Public License Version 2.0
 import 'dart:typed_data';
 
+import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/abi_decoder.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function.dart';
 import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
-import 'package:cryptography_utils/src/signer/ethereum/ethereum_signature.dart';
-import 'package:cryptography_utils/src/transactions/ethereum/access_list_bytes_item.dart';
-import 'package:cryptography_utils/src/transactions/ethereum/i_ethereum_transaction.dart';
-import 'package:equatable/equatable.dart';
+import 'package:cryptography_utils/src/utils/ethereum_utils.dart';
 
 /// Represents an Ethereum transaction adhering to the EIP-1559 standard.
-class EthereumEIP1559Transaction extends Equatable implements IEthereumTransaction {
+class EthereumEIP1559Transaction extends AEthereumTransaction {
   /// Type identifier for EIP-1559 transactions.
   static const int txType = 2;
 
@@ -39,8 +39,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
   /// The amount of ether (in wei) to be transferred from the sender to the recipient.
   final BigInt value;
 
-  /// Encoded call data sent with the transaction. This can include function signatures and arguments
-  /// for contract interactions.
+  /// ABI data sent with the transaction
   final Uint8List data;
 
   /// An access list specifying storage keys and addresses that the transaction intends to access.
@@ -50,8 +49,11 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
   /// This field is null when the transaction is unsigned.
   final EthereumSignature? signature;
 
+  /// The decoded ABI function from the transaction data.
+  final AbiFunction? _abiFunction;
+
   /// Creates a new instance of [EthereumEIP1559Transaction] with the specified parameters.
-  const EthereumEIP1559Transaction({
+  EthereumEIP1559Transaction({
     required this.chainId,
     required this.nonce,
     required this.maxPriorityFeePerGas,
@@ -62,7 +64,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
     required this.data,
     required this.accessList,
     this.signature,
-  });
+  }) : _abiFunction = data.isNotEmpty ? AbiDecoder().decodeInput(data) : null;
 
   /// Decodes the serialized data into an instance of [EthereumEIP1559Transaction].
   factory EthereumEIP1559Transaction.fromSerializedData(Uint8List data) {
@@ -104,6 +106,60 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
       accessList: rlpList.getRLPList(8).data.map((IRLPElement element) => AccessListBytesItem.fromRLP(element as RLPList)).toList(),
       signature: signature,
     );
+  }
+
+  /// Returns decoded ABI function from the transaction data.
+  @override
+  AbiFunction? get abiFunction => _abiFunction;
+
+  /// Returns address of the contract to which the transaction is directed.
+  @override
+  String? get contractAddress {
+    if (abiFunction == null) {
+      return null;
+    } else {
+      return to;
+    }
+  }
+
+  /// Returns the amount of token used.
+  @override
+  TokenAmount getAmount(TokenDenominationType tokenDenominationType) {
+    BigInt amountInWei = value;
+
+    if (amountInWei == BigInt.zero && abiFunction?.amount != null) {
+      return TokenAmount.fromBigInt(denomination: '', amount: abiFunction!.amount!);
+    }
+
+    switch (tokenDenominationType) {
+      case TokenDenominationType.lowest:
+        return TokenAmount.fromBigInt(denomination: EthereumUtils.weiSymbol, amount: amountInWei);
+      case TokenDenominationType.network:
+        return TokenAmount(denomination: EthereumUtils.ethSymbol, amount: EthereumUtils.convertWeiToEth(amountInWei));
+    }
+  }
+
+  /// Returns the fee for the transaction.
+  @override
+  TokenAmount getFee(TokenDenominationType tokenDenominationType) {
+    BigInt estimatedFeeInWei = maxFeePerGas * gasLimit;
+
+    switch (tokenDenominationType) {
+      case TokenDenominationType.lowest:
+        return TokenAmount.fromBigInt(denomination: EthereumUtils.weiSymbol, amount: estimatedFeeInWei);
+      case TokenDenominationType.network:
+        return TokenAmount(denomination: EthereumUtils.ethSymbol, amount: EthereumUtils.convertWeiToEth(estimatedFeeInWei));
+    }
+  }
+
+  /// Returns the recipient address of the transaction.
+  @override
+  String? get recipientAddress {
+    if (abiFunction == null) {
+      return to;
+    } else {
+      return abiFunction?.recipient;
+    }
   }
 
   /// Serializes the transaction into a byte array.
