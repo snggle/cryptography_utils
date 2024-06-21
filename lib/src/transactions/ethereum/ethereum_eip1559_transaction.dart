@@ -4,14 +4,15 @@
 // Mozilla Public License Version 2.0
 import 'dart:typed_data';
 
+import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/abi_decoder.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/abi_library.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/registry/abi_input.dart';
 import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
-import 'package:cryptography_utils/src/signer/ethereum/ethereum_signature.dart';
-import 'package:cryptography_utils/src/transactions/ethereum/access_list_bytes_item.dart';
-import 'package:cryptography_utils/src/transactions/ethereum/i_ethereum_transaction.dart';
-import 'package:equatable/equatable.dart';
+import 'package:cryptography_utils/src/utils/ethereum_utils.dart';
 
 /// Represents an Ethereum transaction adhering to the EIP-1559 standard.
-class EthereumEIP1559Transaction extends Equatable implements IEthereumTransaction {
+class EthereumEIP1559Transaction extends AEthereumTransaction {
   /// Type identifier for EIP-1559 transactions.
   static const int txType = 2;
 
@@ -39,9 +40,8 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
   /// The amount of ether (in wei) to be transferred from the sender to the recipient.
   final BigInt value;
 
-  /// Encoded call data sent with the transaction. This can include function signatures and arguments
-  /// for contract interactions.
-  final Uint8List data;
+  /// ABI data sent with the transaction
+  final ABIInput? data;
 
   /// An access list specifying storage keys and addresses that the transaction intends to access.
   final List<AccessListBytesItem> accessList;
@@ -92,6 +92,9 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
       );
     }
 
+    Uint8List abiDataBytes = rlpList.getUint8List(7);
+
+    print('0x${HexEncoder.encode(abiDataBytes)}');
     return EthereumEIP1559Transaction(
       chainId: rlpList.getBigInt(0),
       nonce: rlpList.getBigInt(1),
@@ -100,7 +103,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
       gasLimit: rlpList.getBigInt(4),
       to: rlpList.getHex(5),
       value: rlpList.getBigInt(6),
-      data: rlpList.getUint8List(7),
+      data: abiDataBytes.isNotEmpty ? ABIDecoder(AbiLibrary.uniswap).decodeInput(abiDataBytes) : null,
       accessList: rlpList.getRLPList(8).data.map((IRLPElement element) => AccessListBytesItem.fromRLP(element as RLPList)).toList(),
       signature: signature,
     );
@@ -114,6 +117,52 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
     return Uint8List.fromList(<int>[txType, ...serializedData]);
   }
 
+  @override
+  TokenAmount getAmount(TokenDenominationType tokenDenominationType) {
+    BigInt amountInWei = value;
+
+    if( amountInWei == BigInt.zero && data?.amount != null ) {
+      return TokenAmount.fromBigInt(denomination: '', amount: data!.amount!);
+    }
+
+    switch (tokenDenominationType) {
+      case TokenDenominationType.lowest:
+        return TokenAmount.fromBigInt(denomination: EthereumUtils.weiSymbol, amount: amountInWei);
+      case TokenDenominationType.network:
+        return TokenAmount(denomination: EthereumUtils.ethSymbol, amount: EthereumUtils.convertWeiToEth(amountInWei));
+    }
+  }
+
+  @override
+  TokenAmount getFee(TokenDenominationType tokenDenominationType) {
+    BigInt estimatedFeeInWei = maxFeePerGas * gasLimit;
+
+    switch (tokenDenominationType) {
+      case TokenDenominationType.lowest:
+        return TokenAmount.fromBigInt(denomination: EthereumUtils.weiSymbol, amount: estimatedFeeInWei);
+      case TokenDenominationType.network:
+        return TokenAmount(denomination: EthereumUtils.ethSymbol, amount: EthereumUtils.convertWeiToEth(estimatedFeeInWei));
+    }
+  }
+
+  @override
+  String? get recipientAddress {
+    if (data == null) {
+      return to;
+    } else {
+      return data?.recipient;
+    }
+  }
+
+  @override
+  String? get contractAddress {
+    if (data == null) {
+      return null;
+    } else {
+      return to;
+    }
+  }
+
   /// Encodes the transaction into an RLP-encoded data.
   IRLPElement _toRLP() {
     List<IRLPElement> values = <IRLPElement>[
@@ -124,7 +173,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
       RLPBytes.fromBigInt(gasLimit),
       RLPBytes.fromHex(to),
       RLPBytes.fromBigInt(value),
-      RLPBytes(data),
+      RLPBytes(data != null ? HexEncoder.decode(data!.functionData) : Uint8List(0)),
       RLPList(accessList.map((AccessListBytesItem e) => e.toRLP()).toList()),
     ];
 
