@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function.dart';
 import 'package:equatable/equatable.dart';
 
 /// Generic abstract class defining Ethereum transaction
@@ -25,6 +26,9 @@ abstract class AEthereumTransaction extends Equatable {
       throw UnimplementedError('Legacy transactions are not supported yet.');
     }
   }
+
+  /// Returns decoded ABI function from the transaction data.
+  AbiFunction? get abiFunction => null;
 
   /// Returns address of the contract to which the transaction is directed.
   String? get contractAddress => null;
