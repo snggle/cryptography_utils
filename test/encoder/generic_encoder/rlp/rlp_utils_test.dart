@@ -32,5 +32,19 @@ void main() {
 
       expect(actualEncodedLength, expectedEncodedLength);
     });
+
+    test('Should [return encoded length] for [length >= 256]', () {
+      // Arrange
+      int actualLength = 257;
+      int actualOffset = 128;
+
+      // Act
+      Uint8List actualEncodedLength = RLPUtils.encodeLength(actualLength, actualOffset);
+
+      // Assert
+      Uint8List expectedEncodedLength = Uint8List.fromList(<int>[185, 1, 1]);
+
+      expect(actualEncodedLength, expectedEncodedLength);
+    });
   });
 }
