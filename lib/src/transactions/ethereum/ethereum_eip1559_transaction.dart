@@ -123,7 +123,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
       RLPBytes.fromBigInt(maxFeePerGas),
       RLPBytes.fromBigInt(gasLimit),
       RLPBytes.fromHex(to),
-      RLPBytes.fromBigInt(value),
+      if (value == BigInt.zero) RLPBytes.empty() else RLPBytes.fromBigInt(value),
       RLPBytes(data),
       RLPList(accessList.map((AccessListBytesItem e) => e.toRLP()).toList()),
     ];

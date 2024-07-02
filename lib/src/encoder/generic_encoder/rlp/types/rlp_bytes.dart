@@ -18,6 +18,9 @@ class RLPBytes extends Equatable implements IRLPElement {
   /// Constructs an [RLPBytes] instance from HEX data.
   RLPBytes.fromHex(String value) : data = HexEncoder.decode(value);
 
+  /// Constructs an empty [RLPBytes] instance
+  RLPBytes.empty() : data = Uint8List(0);
+
   /// Encodes the byte array into RLP format. If the data is a single byte less than "0x80", it returns the data directly.
   /// Otherwise, it prepends the length of the data to the data itself, adjusting for RLP encoding requirements.
   @override

@@ -12,10 +12,16 @@ class RLPUtils {
   static Uint8List encodeLength(int length, int offset) {
     if (length < 56) {
       return Uint8List.fromList(<int>[length + offset]);
+    } else {
+      Uint8List binaryLength = _convertLengthToBytes(length);
+      return Uint8List.fromList(<int>[binaryLength.length + offset + 55, ...binaryLength]);
     }
-    String lengthHex = length.toRadixString(16).padLeft(2, '0');
-    int lengthOfLength = lengthHex.length ~/ 2;
-    String firstByte = (offset + 55 + lengthOfLength).toRadixString(16).padLeft(2, '0');
-    return Uint8List.fromList(HexEncoder.decode('$firstByte$lengthHex'));
+  }
+
+  static Uint8List _convertLengthToBytes(int x) {
+    if (x == 0) {
+      return Uint8List(0);
+    }
+    return Uint8List.fromList(<int>[..._convertLengthToBytes(x ~/ 256), (x % 256)]);
   }
 }
