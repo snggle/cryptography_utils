@@ -1,6 +1,6 @@
 name: cryptography_utils
 description: "Cryptography utils"
-version: 0.0.11
+version: 0.0.12
 
 environment:
   sdk: ">=3.1.4"
@@ -25,6 +25,10 @@ dependencies:
   # Flutter's compute function made available for all non-Flutter Dart programs
   # https://pub.dev/packages/compute
   compute: 1.0.2
+
+  # The decimal package allows you to deal with decimal numbers without losing precision.
+  # https://pub.dev/packages/decimal
+  decimal: 2.3.3
 
 dev_dependencies:
   test: 1.25.5

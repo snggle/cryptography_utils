@@ -22,13 +22,12 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// Represents an Ethereum digital signature, encapsulating the typical components of an ECDSA signature used
 /// in Ethereum transactions. Ethereum signatures consist of the values [r], [s], and [v], where [r] and [s]
 /// are components of the signature itself, and [v] is the recovery ID, which can help in recovering the public
 /// key that corresponds to the private key used to generate the signature.
-class EthereumSignature extends Equatable {
+class EthereumSignature extends ASignature {
   /// The standard length of Ethereum signatures, excluding the recovery ID.
   static const int ethSignatureLength = 64;
 
@@ -46,11 +45,15 @@ class EthereumSignature extends Equatable {
   /// chain-specific reasons in more recent Ethereum standards.
   final int _v;
 
+  /// Returns whether the signature is compliant with EIP-155, which adjusts the recovery ID
+  final bool eip155Bool;
+
   /// Constructs an instance of [EthereumSignature] with the specified [s], [r], and [v] components.
   const EthereumSignature({
     required this.s,
     required this.r,
     required int v,
+    this.eip155Bool = false,
   }) : _v = v;
 
   /// Constructs an instance of [EthereumSignature] from a byte array.
@@ -61,6 +64,7 @@ class EthereumSignature extends Equatable {
     List<int> rBytes = bytes.sublist(0, Curves.secp256k1.baselen);
     List<int> sBytes = bytes.sublist(Curves.secp256k1.baselen, Curves.secp256k1.baselen * 2);
 
+    bool eip155Bool = bytes.elementAtOrNull(ethSignatureLength) != null && bytes[ethSignatureLength] >= 27;
     int v;
     if (bytes.length == ethSignatureLength) {
       v = (sBytes[0] & 0x80) != 0 ? 28 : 27;
@@ -69,9 +73,9 @@ class EthereumSignature extends Equatable {
       v = _getSignatureV(bytes[ethSignatureLength]);
     }
 
-    final BigInt r = BigIntUtils.decode(rBytes);
-    final BigInt s = BigIntUtils.decode(sBytes);
-    return EthereumSignature(s: s, r: r, v: v);
+    BigInt r = BigIntUtils.decode(rBytes);
+    BigInt s = BigIntUtils.decode(sBytes);
+    return EthereumSignature(s: s, r: r, v: v, eip155Bool: eip155Bool);
   }
 
   /// Gets the recovery id from the [v] component.
@@ -89,12 +93,23 @@ class EthereumSignature extends Equatable {
   }
 
   /// Gets the byte representation of the 'r', 's', and 'v' components.
-  Uint8List toBytes({bool eip155Bool = true}) {
-    return Uint8List.fromList(<int>[...rBytes, ...sBytes, getV(eip155Bool: eip155Bool)]);
+  @override
+  Uint8List get bytes {
+    return Uint8List.fromList(<int>[...rBytes, ...sBytes, v]);
   }
 
-  /// Gets the recovery ID from the signature.
-  int getV({bool eip155Bool = true}) {
+  /// Returns new [EthereumSignature] instance with the overridden values.
+  EthereumSignature copyWith({BigInt? s, BigInt? r, int? v, bool? eip155Bool}) {
+    return EthereumSignature(
+      s: s ?? this.s,
+      r: r ?? this.r,
+      v: v ?? _v,
+      eip155Bool: eip155Bool ?? this.eip155Bool,
+    );
+  }
+
+  /// Gets the recovery ID from the signature with adjusted 'v' according to EIP-155.
+  int get v {
     return eip155Bool ? _v : _v - 27;
   }
 
@@ -104,6 +119,9 @@ class EthereumSignature extends Equatable {
   /// Gets the [s] component as a byte array.
   Uint8List get sBytes => BigIntUtils.changeToBytes(s, length: Curves.secp256k1.baselen);
 
+  // @override
+  // String toString() => hex;
+
   @override
-  List<Object?> get props => <Object?>[s, r, _v];
+  List<Object?> get props => <Object?>[s, r, _v, eip155Bool];
 }

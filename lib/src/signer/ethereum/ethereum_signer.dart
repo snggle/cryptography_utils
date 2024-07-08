@@ -45,7 +45,7 @@ class EthereumSigner {
     String prefix = _ethPersonalSignPrefix + (payloadLength?.toString() ?? digest.length.toString());
     Uint8List prefixBytes = ascii.encode(prefix);
     EthereumSignature ethereumSignature = sign(Uint8List.fromList(<int>[...prefixBytes, ...digest]));
-    return ethereumSignature;
+    return ethereumSignature.copyWith(eip155Bool: true);
   }
 
   /// Signs a digest and returns the signature as an [EthereumSignature]. This method can optionally hash the
@@ -55,13 +55,13 @@ class EthereumSigner {
     EthereumVerifier ethereumVerifier = EthereumVerifier(_ecPrivateKey.ecPublicKey);
 
     Uint8List hash = hashMessage ? Keccak(256).process(digest) : digest;
-    if (hash.length != Curves.secp256k1.baselen) {
-      throw FormatException('Invalid digest: Digest length must be ${Curves.secp256k1.baselen} got ${digest.length}');
+    if (hash.length != _ecPrivateKey.G.curve.baselen) {
+      throw FormatException('Invalid digest: Digest length must be ${_ecPrivateKey.G.curve.baselen} got ${digest.length}');
     }
 
     ECSignature ecSignature = ecdsaSigner.sign(hash);
     if (ecSignature.s > (_ecPrivateKey.G.n >> 1)) {
-      ecSignature = ECSignature(r: ecSignature.r, s: _ecPrivateKey.G.n - ecSignature.s);
+      ecSignature = ECSignature(r: ecSignature.r, s: _ecPrivateKey.G.n - ecSignature.s, ecCurve: _ecPrivateKey.G.curve);
     }
     EthereumSignature ethereumSignature = EthereumSignature.fromBytes(ecSignature.bytes);
 
