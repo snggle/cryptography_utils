@@ -106,6 +106,32 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
     );
   }
 
+  EthereumEIP1559Transaction copyWith({
+    BigInt? chainId,
+    BigInt? nonce,
+    BigInt? maxPriorityFeePerGas,
+    BigInt? maxFeePerGas,
+    BigInt? gasLimit,
+    String? to,
+    BigInt? value,
+    Uint8List? data,
+    List<AccessListBytesItem>? accessList,
+    EthereumSignature? signature,
+  }) {
+    return EthereumEIP1559Transaction(
+      chainId: chainId ?? this.chainId,
+      nonce: nonce ?? this.nonce,
+      maxPriorityFeePerGas: maxPriorityFeePerGas ?? this.maxPriorityFeePerGas,
+      maxFeePerGas: maxFeePerGas ?? this.maxFeePerGas,
+      gasLimit: gasLimit ?? this.gasLimit,
+      to: to ?? this.to,
+      value: value ?? this.value,
+      data: data ?? this.data,
+      accessList: accessList ?? this.accessList,
+      signature: signature ?? this.signature,
+    );
+  }
+
   /// Serializes the transaction into a byte array.
   @override
   Uint8List serialize() {
@@ -123,7 +149,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
       RLPBytes.fromBigInt(maxFeePerGas),
       RLPBytes.fromBigInt(gasLimit),
       RLPBytes.fromHex(to),
-      RLPBytes.fromBigInt(value),
+      if (value == BigInt.zero) RLPBytes.empty() else RLPBytes.fromBigInt(value),
       RLPBytes(data),
       RLPList(accessList.map((AccessListBytesItem e) => e.toRLP()).toList()),
     ];

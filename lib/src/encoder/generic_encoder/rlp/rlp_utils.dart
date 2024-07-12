@@ -1,7 +1,24 @@
-// Class was shaped by the influence of JavaScript key sources including:
-// https://github.com/ethereumjs/ethereumjs-monorepo/tree/master/packages/rlp
+// Class was shaped by the influence of several key sources including:
+// "rlp" Copyright (c) 2018 Max Holman <max@holmn.com>
+// https://github.com/maxholman/rlp/
 //
-// Mozilla Public License Version 2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 part of 'rlp_coder.dart';
 
 /// A utility class providing static methods related to the Recursive Length Prefix (RLP) encoding.
@@ -12,10 +29,17 @@ class RLPUtils {
   static Uint8List encodeLength(int length, int offset) {
     if (length < 56) {
       return Uint8List.fromList(<int>[length + offset]);
+    } else {
+      Uint8List binaryLength = _convertLengthToBytes(length);
+      return Uint8List.fromList(<int>[binaryLength.length + offset + 55, ...binaryLength]);
     }
-    String lengthHex = length.toRadixString(16).padLeft(2, '0');
-    int lengthOfLength = lengthHex.length ~/ 2;
-    String firstByte = (offset + 55 + lengthOfLength).toRadixString(16).padLeft(2, '0');
-    return Uint8List.fromList(HexEncoder.decode('$firstByte$lengthHex'));
+  }
+
+  /// Converts the specified length to a list of bytes.
+  static Uint8List _convertLengthToBytes(int length) {
+    if (length == 0) {
+      return Uint8List(0);
+    }
+    return Uint8List.fromList(<int>[..._convertLengthToBytes(length ~/ 256), (length % 256)]);
   }
 }

@@ -20,6 +20,10 @@ class HexEncoder {
     if (hex.startsWith('0x')) {
       tmpHex = hex.substring(2);
     }
+    if (tmpHex.length % 2 != 0) {
+      tmpHex = '0$tmpHex';
+    }
+
     List<String> hexString = tmpHex.split('');
     List<String> hexPairs = <String>[];
 
