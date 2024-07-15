@@ -24,6 +24,7 @@ void main() {
         s: BigInt.parse('36222244382827590323135961201757911250681705622179828894477285117051514176442'),
         r: BigInt.parse('79811951847007813003344473820027835692028927650397904684881010183343632217467'),
         v: 27,
+        eip155Bool: true,
       );
 
       expect(actualEthereumSignature, expectedEthereumSignature);
@@ -48,6 +49,7 @@ void main() {
         s: BigInt.parse('41325114421089270084607549817718071559637014516154979292181930199612617974047'),
         r: BigInt.parse('30514973747782274981305901633014540627078654233732090597450528845397372093654'),
         v: 28,
+        eip155Bool: false,
       );
 
       expect(actualEthereumSignature, expectedEthereumSignature);

@@ -4,14 +4,12 @@
 // Mozilla Public License Version 2.0
 import 'dart:typed_data';
 
+import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
-import 'package:cryptography_utils/src/signer/ethereum/ethereum_signature.dart';
-import 'package:cryptography_utils/src/transactions/ethereum/access_list_bytes_item.dart';
-import 'package:cryptography_utils/src/transactions/ethereum/i_ethereum_transaction.dart';
-import 'package:equatable/equatable.dart';
+import 'package:cryptography_utils/src/utils/ethereum_utils.dart';
 
 /// Represents an Ethereum transaction adhering to the EIP-1559 standard.
-class EthereumEIP1559Transaction extends Equatable implements IEthereumTransaction {
+class EthereumEIP1559Transaction extends AEthereumTransaction {
   /// Type identifier for EIP-1559 transactions.
   static const int txType = 2;
 
@@ -39,8 +37,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
   /// The amount of ether (in wei) to be transferred from the sender to the recipient.
   final BigInt value;
 
-  /// Encoded call data sent with the transaction. This can include function signatures and arguments
-  /// for contract interactions.
+  /// ABI data sent with the transaction
   final Uint8List data;
 
   /// An access list specifying storage keys and addresses that the transaction intends to access.
@@ -132,12 +129,66 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
     );
   }
 
+  /// Returns address of the contract to which the transaction is directed.
+  @override
+  String? get contractAddress {
+    if (data.isEmpty) {
+      return null;
+    } else {
+      return to;
+    }
+  }
+
+  /// Returns the amount of token used.
+  @override
+  TokenAmount getAmount(TokenDenominationType tokenDenominationType) {
+    BigInt amountInWei = value;
+
+    switch (tokenDenominationType) {
+      case TokenDenominationType.lowest:
+        return TokenAmount.fromBigInt(denomination: EthereumUtils.weiSymbol, amount: amountInWei);
+      case TokenDenominationType.network:
+        return TokenAmount(denomination: EthereumUtils.ethSymbol, amount: EthereumUtils.convertWeiToEth(amountInWei));
+    }
+  }
+
+  /// Returns the fee for the transaction.
+  @override
+  TokenAmount getFee(TokenDenominationType tokenDenominationType) {
+    BigInt estimatedFeeInWei = maxFeePerGas * gasLimit;
+
+    switch (tokenDenominationType) {
+      case TokenDenominationType.lowest:
+        return TokenAmount.fromBigInt(denomination: EthereumUtils.weiSymbol, amount: estimatedFeeInWei);
+      case TokenDenominationType.network:
+        return TokenAmount(denomination: EthereumUtils.ethSymbol, amount: EthereumUtils.convertWeiToEth(estimatedFeeInWei));
+    }
+  }
+
+  /// Returns the recipient address of the transaction.
+  @override
+  String? get recipientAddress {
+    if (data.isEmpty) {
+      return to;
+    } else {
+      return null;
+    }
+  }
+
   /// Serializes the transaction into a byte array.
   @override
   Uint8List serialize() {
     IRLPElement rlpElement = _toRLP();
     Uint8List serializedData = RLPCoder.encode(rlpElement);
     return Uint8List.fromList(<int>[txType, ...serializedData]);
+  }
+
+  /// Returns the signature of the signed transaction.
+  @override
+  EthereumSignature sign(ECPrivateKey ecPrivateKey) {
+    EthereumSigner ethereumSigner = EthereumSigner(ecPrivateKey);
+    EthereumSignature ethereumSignature = ethereumSigner.sign(serialize());
+    return ethereumSignature;
   }
 
   /// Encodes the transaction into an RLP-encoded data.
@@ -156,7 +207,7 @@ class EthereumEIP1559Transaction extends Equatable implements IEthereumTransacti
 
     if (signature != null) {
       values.addAll(<IRLPElement>[
-        RLPBytes.fromBigInt(BigInt.from(signature!.getV(eip155Bool: true))),
+        RLPBytes.fromBigInt(BigInt.from(signature!.v)),
         RLPBytes(signature!.rBytes),
         RLPBytes(signature!.sBytes),
       ]);

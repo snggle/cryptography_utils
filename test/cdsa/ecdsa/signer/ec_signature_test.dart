@@ -11,12 +11,13 @@ void main() {
       String actualSignature = 'pdDhYhioe7vKtGcmyLDP0m8qbeHwOy7R8WprnKWDpztSVKTWrNfxeJk8Zo9qd7Ef2IFeIej8RJN+YO+a+lDoRw==';
 
       // Act
-      ECSignature actualECSignature = ECSignature.fromBase64(actualSignature);
+      ECSignature actualECSignature = ECSignature.fromBase64(actualSignature, ecCurve: Curves.secp256k1);
 
       // Assert
       ECSignature expectedECSignature = ECSignature(
         r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
         s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
+        ecCurve: Curves.secp256k1,
       );
 
       expect(actualECSignature, expectedECSignature);
@@ -30,33 +31,19 @@ void main() {
       Uint8List actualSignatureBytes = base64Decode(actualSignature);
 
       // Act
-      ECSignature actualECSignature = ECSignature.fromBytes(actualSignatureBytes);
+      ECSignature actualECSignature = ECSignature.fromBytes(
+        actualSignatureBytes,
+        ecCurve: Curves.secp256k1,
+      );
 
       // Assert
       ECSignature expectedECSignature = ECSignature(
         r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
         s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
+        ecCurve: Curves.secp256k1,
       );
 
       expect(actualECSignature, expectedECSignature);
-    });
-  });
-
-  group('Tests of ECSignature.base64 getter', () {
-    test('Should [return String] representing signature in base64 format', () {
-      // Arrange
-      ECSignature actualECSignature = ECSignature(
-        r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
-        s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
-      );
-
-      // Act
-      String actualSignature = actualECSignature.base64;
-
-      // Assert
-      String expectedSignature = 'pdDhYhioe7vKtGcmyLDP0m8qbeHwOy7R8WprnKWDpztSVKTWrNfxeJk8Zo9qd7Ef2IFeIej8RJN+YO+a+lDoRw==';
-
-      expect(actualSignature, expectedSignature);
     });
   });
 
@@ -66,6 +53,7 @@ void main() {
       ECSignature actualECSignature = ECSignature(
         r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
         s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
+        ecCurve: Curves.secp256k1,
       );
 
       // Act
@@ -79,12 +67,52 @@ void main() {
     });
   });
 
+  group('Tests of ECSignature.base64 getter', () {
+    test('Should [return String] representing signature in base64 format', () {
+      // Arrange
+      ECSignature actualECSignature = ECSignature(
+        r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
+        s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
+        ecCurve: Curves.secp256k1,
+      );
+
+      // Act
+      String actualSignature = actualECSignature.base64;
+
+      // Assert
+      String expectedSignature = 'pdDhYhioe7vKtGcmyLDP0m8qbeHwOy7R8WprnKWDpztSVKTWrNfxeJk8Zo9qd7Ef2IFeIej8RJN+YO+a+lDoRw==';
+
+      expect(actualSignature, expectedSignature);
+    });
+  });
+
+  group('Tests of ECSignature.hex getter', () {
+    test('Should [return HEX] representing signature in HEX format', () {
+      // Arrange
+      ECSignature actualECSignature = ECSignature(
+        r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
+        s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
+        ecCurve: Curves.secp256k1,
+      );
+
+      // Act
+      String actualSignature = actualECSignature.hex;
+
+      // Assert
+      String expectedSignature =
+          '0xa5d0e16218a87bbbcab46726c8b0cfd26f2a6de1f03b2ed1f16a6b9ca583a73b5254a4d6acd7f178993c668f6a77b11fd8815e21e8fc44937e60ef9afa50e847';
+
+      expect(actualSignature, expectedSignature);
+    });
+  });
+
   group('Tests of ECSignature.length getter', () {
     test('Should [return integer] representing signature length', () {
       // Arrange
       ECSignature actualECSignature = ECSignature(
         r: BigInt.parse('75000679743312464303387321273076902476064249087509773163224163340661081483067'),
         s: BigInt.parse('37239206411301236619021693398877473693701268858384632524554556980614942222407'),
+        ecCurve: Curves.secp256k1,
       );
 
       // Act
@@ -104,6 +132,7 @@ void main() {
       ECSignature actualECSignature = ECSignature(
         r: BigInt.parse('21165175836978812381665558937913198224702266563755240335786634922159270665737'),
         s: BigInt.parse('67243574932862348866046687334828474181280536427312945072404625477687067369325'),
+        ecCurve: Curves.secp256k1,
       );
 
       // Act

@@ -24,6 +24,7 @@ void main() {
       ECSignature expectedECSignature = ECSignature(
         r: BigInt.parse('21165175836978812381665558937913198224702266563755240335786634922159270665737'),
         s: BigInt.parse('67243574932862348866046687334828474181280536427312945072404625477687067369325'),
+        ecCurve: Curves.secp256k1,
       );
 
       expect(actualECSignature, expectedECSignature);

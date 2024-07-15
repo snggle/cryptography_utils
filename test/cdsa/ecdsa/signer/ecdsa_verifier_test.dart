@@ -13,6 +13,7 @@ void main() {
       ECSignature actualECSignature = ECSignature(
         r: BigInt.parse('21165175836978812381665558937913198224702266563755240335786634922159270665737'),
         s: BigInt.parse('67243574932862348866046687334828474181280536427312945072404625477687067369325'),
+        ecCurve: Curves.secp256k1,
       );
       ECPublicKey actualECPublicKey = ECPublicKey(
         CurvePoints.generatorSecp256k1,
@@ -41,6 +42,7 @@ void main() {
       ECSignature actualECSignature = ECSignature(
         r: BigInt.parse('102978385277191726159329221235853931845740505117174969823872713913281673197520'),
         s: BigInt.parse('473230762751246026821318165514853945171650154379161213745716102690305699328'),
+        ecCurve: Curves.secp256k1,
       );
       ECPublicKey actualECPublicKey = ECPublicKey(
         CurvePoints.generatorSecp256k1,

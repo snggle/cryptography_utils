@@ -39,12 +39,11 @@ class EthereumVerifier {
   /// supports an option to hash the digest before verification, which should be used if the original message
   /// rather than a precomputed hash was signed.
   bool isSignatureValid(Uint8List digest, EthereumSignature ethereumSignature, {bool hashMessage = true}) {
-    Uint8List signature = ethereumSignature.toBytes(eip155Bool: true);
-    Uint8List sigBytes = signature.sublist(0, EthereumSignature.ethSignatureLength);
+    Uint8List signatureBytes = ethereumSignature.bytes.sublist(0, EthereumSignature.ethSignatureLength);
     Uint8List hashDigest = hashMessage ? Keccak(256).process(digest) : digest;
 
     ECDSAVerifier ecdsaVerifier = ECDSAVerifier(hashFunction: sha256, ecPublicKey: _ecPublicKey);
-    ECSignature ecSignature = ECSignature.fromBytes(sigBytes);
+    ECSignature ecSignature = ECSignature.fromBytes(signatureBytes, ecCurve: _ecPublicKey.G.curve);
     return ecdsaVerifier.isSignatureValid(hashDigest, ecSignature);
   }
 }

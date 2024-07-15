@@ -58,6 +58,6 @@ class ECDSASigner {
       s = (k.modInverse(n) * (e + (ecPrivateKey.d * r) % n)) % n;
     } while (s == BigInt.zero);
 
-    return ECSignature(r: r, s: s);
+    return ECSignature(r: r, s: s, ecCurve: ecPrivateKey.G.curve);
   }
 }
