@@ -9,7 +9,17 @@ import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi
 /// allowing developers to interpret and utilize the data encoded in the ABI (Application Binary Interface) format.
 class AbiDecoder {
   /// List of supported ABI libraries
-  static final List<List<Map<String, Object>>> _supportedAbi = <List<Map<String, Object>>>[AbiLibrary.erc20];
+  static final List<List<Map<String, Object>>> _supportedAbi = <List<Map<String, Object>>>[
+    AbiLibrary.erc20,
+    AbiLibrary.uniswapUniversalRouter,
+    AbiLibrary.uniswapV2Router02,
+    AbiLibrary.uniswapV3Router,
+    AbiLibrary.uniswapV3SwapRouter,
+    AbiLibrary.uniswapV3SwapRouter02,
+    AbiLibrary.tether,
+    AbiLibrary.sereshForwarder,
+    AbiLibrary.test,
+  ];
 
   /// List of decoded supported ABI libraries
   final List<AbiFunctionDefinition> _functionDefinitions;
