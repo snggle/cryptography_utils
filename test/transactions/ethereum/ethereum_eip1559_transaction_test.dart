@@ -2,6 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function_definition.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_param_definition.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/erc20/abi_erc20_transfer_function.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/solidity_types/solidity_address_type.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/solidity_types/solidity_int_type.dart';
 import 'package:decimal/decimal.dart';
 import 'package:test/test.dart';
 
@@ -29,6 +35,71 @@ void main() {
       );
 
       expect(actualEthereumEIP1559Transaction, expectedEthereumEIP1559Transaction);
+    });
+  });
+
+  group('Tests of EthereumEIP1559Transaction.abiFunction getter', () {
+    test('Should [return decoded AbiFunction] from given EthereumEIP1559Transaction if [ABI definition EXISTS]', () {
+      // Arrange
+      EthereumEIP1559Transaction actualEthereumEIP1559Transaction = EthereumEIP1559Transaction(
+        chainId: BigInt.parse('11155111'),
+        nonce: BigInt.one,
+        maxPriorityFeePerGas: BigInt.parse('1500000000'),
+        maxFeePerGas: BigInt.parse('1539081801'),
+        gasLimit: BigInt.parse('21000'),
+        to: '0x16980b3B4a3f9D89E33311B5aa8f80303E5ca4F8',
+        value: BigInt.parse('5000000000000000'),
+        data: HexEncoder.decode(
+          '0xa9059cbb0000000000000000000000001234567890abcdef1234567890abcdef1234567800000000000000000000000000000000000000000000000000000000000003e8',
+        ),
+        accessList: const <AccessListBytesItem>[],
+        signature: null,
+      );
+
+      // Act
+      AbiFunction? actualAbiFunction = actualEthereumEIP1559Transaction.abiFunction;
+
+      // Assert
+      AbiFunction expectedAbiFunction = AbiERC20TransferFunction(
+        selector: 'a9059cbb',
+        data: '0000000000000000000000001234567890abcdef1234567890abcdef1234567800000000000000000000000000000000000000000000000000000000000003e8',
+        json: const <String, dynamic>{'recipient': '0x1234567890abcdef1234567890abcdef12345678', 'amount': '1000'},
+        abiFunctionDefinition: AbiFunctionDefinition(
+          name: 'transfer',
+          inputs: <AbiParamDefinition>[
+            AbiParamDefinition(name: 'recipient', type: SolidityAddressType()),
+            AbiParamDefinition(name: 'amount', type: SolidityIntType('uint256')),
+          ],
+        ),
+        amount: BigInt.parse('1000'),
+        recipient: '0x1234567890abcdef1234567890abcdef12345678',
+      );
+
+      expect(actualAbiFunction, expectedAbiFunction);
+    });
+
+    test('Should [return encoded AbiFunction] from given EthereumEIP1559Transaction if [ABI definition NOT EXISTS]', () {
+      // Arrange
+      EthereumEIP1559Transaction actualEthereumEIP1559Transaction = EthereumEIP1559Transaction(
+        chainId: BigInt.parse('11155111'),
+        nonce: BigInt.one,
+        maxPriorityFeePerGas: BigInt.parse('1500000000'),
+        maxFeePerGas: BigInt.parse('1539081801'),
+        gasLimit: BigInt.parse('21000'),
+        to: '0x16980b3B4a3f9D89E33311B5aa8f80303E5ca4F8',
+        value: BigInt.parse('5000000000000000'),
+        data: HexEncoder.decode('0xd0e30db0'),
+        accessList: const <AccessListBytesItem>[],
+        signature: null,
+      );
+
+      // Act
+      AbiFunction? actualAbiFunction = actualEthereumEIP1559Transaction.abiFunction;
+
+      // Assert
+      AbiFunction expectedAbiFunction = const AbiFunction(selector: 'd0e30db0', data: '');
+
+      expect(actualAbiFunction, expectedAbiFunction);
     });
   });
 

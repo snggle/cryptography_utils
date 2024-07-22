@@ -5,6 +5,8 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/abi_decoder.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function.dart';
 import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
 import 'package:cryptography_utils/src/utils/ethereum_utils.dart';
 
@@ -47,8 +49,11 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
   /// This field is null when the transaction is unsigned.
   final EthereumSignature? signature;
 
+  /// The decoded ABI function from the transaction data.
+  final AbiFunction? _abiFunction;
+
   /// Creates a new instance of [EthereumEIP1559Transaction] with the specified parameters.
-  const EthereumEIP1559Transaction({
+  EthereumEIP1559Transaction({
     required this.chainId,
     required this.nonce,
     required this.maxPriorityFeePerGas,
@@ -59,7 +64,7 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
     required this.data,
     required this.accessList,
     this.signature,
-  });
+  }) : _abiFunction = data.isNotEmpty ? AbiDecoder().decodeInput(data) : null;
 
   /// Decodes the serialized data into an instance of [EthereumEIP1559Transaction].
   factory EthereumEIP1559Transaction.fromSerializedData(Uint8List data) {
@@ -129,10 +134,14 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
     );
   }
 
+  /// Returns decoded ABI function from the transaction data.
+  @override
+  AbiFunction? get abiFunction => _abiFunction;
+
   /// Returns address of the contract to which the transaction is directed.
   @override
   String? get contractAddress {
-    if (data.isEmpty) {
+    if (abiFunction == null) {
       return null;
     } else {
       return to;
@@ -143,6 +152,10 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
   @override
   TokenAmount getAmount(TokenDenominationType tokenDenominationType) {
     BigInt amountInWei = value;
+
+    if (amountInWei == BigInt.zero && abiFunction?.amount != null) {
+      return TokenAmount.fromBigInt(denomination: '', amount: abiFunction!.amount!);
+    }
 
     switch (tokenDenominationType) {
       case TokenDenominationType.lowest:
@@ -168,10 +181,10 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
   /// Returns the recipient address of the transaction.
   @override
   String? get recipientAddress {
-    if (data.isEmpty) {
+    if (abiFunction == null) {
       return to;
     } else {
-      return null;
+      return abiFunction?.recipient;
     }
   }
 
