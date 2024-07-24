@@ -1,22 +1,37 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/bech32/bech32_pair.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Tests of Bech32Encoder.encode()', () {
     test('Should [return String] encoded by Bech32', () {
       // Arrange
-      Uint8List actualDataToEncode = base64Decode('KxmiVli7oFEs8N5rjnzLtw7eym0=');
+      Bech32Pair actualBech32Pair = Bech32Pair(hrp: 'crypto', data: base64Decode('KxmiVli7oFEs8N5rjnzLtw7eym0='));
 
       // Act
-      String actualEncodedData = Bech32Encoder.encode('crypto', actualDataToEncode);
+      String actualEncodedData = Bech32Encoder.encode(actualBech32Pair);
 
       // Assert
       String expectedEncodedData = 'crypto19vv6y4jchws9zt8sme4culxtku8dajndgyhdm2';
 
       expect(actualEncodedData, expectedEncodedData);
+    });
+  });
+
+  group('Tests of Bech32Encoder.decode()', () {
+    test('Should [return Bech32Pair] decoded by Bech32', () {
+      // Arrange
+      String actualDataToDecode = 'crypto19vv6y4jchws9zt8sme4culxtku8dajndgyhdm2';
+
+      // Act
+      Bech32Pair actualBech32Pair = Bech32Encoder.decode(actualDataToDecode);
+
+      // Assert
+      Bech32Pair expectedBech32Pair = Bech32Pair(hrp: 'crypto', data: base64Decode('KxmiVli7oFEs8N5rjnzLtw7eym0='));
+
+      expect(actualBech32Pair, expectedBech32Pair);
     });
   });
 }

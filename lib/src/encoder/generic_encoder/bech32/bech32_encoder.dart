@@ -1,16 +1,25 @@
 import 'dart:typed_data';
 
 import 'package:bech32/bech32.dart';
+import 'package:cryptography_utils/src/encoder/generic_encoder/bech32/bech32_pair.dart';
 
 /// The [Bech32Encoder] class is designed for encoding data using the Bech32 encoding scheme.
 /// The specification for Bech32 encoding can be found in BIP-0173 and BIP-0350:
 /// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
 /// https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
 class Bech32Encoder {
-  static String encode(String hrp, List<int> data) {
-    Uint8List convertedData = _convertBits(data, 8, 5);
-    // TODO(dominik): Implement custom BECH32 encoder
-    return bech32.encode(Bech32(hrp, convertedData));
+  static String encode(Bech32Pair bech32pair) {
+    Uint8List convertedData = _convertBits(bech32pair.data, 8, 5);
+    // TODO(dominik): Implement custom Bech32 encoding
+    return bech32.encode(Bech32(bech32pair.hrp, convertedData));
+  }
+
+  static Bech32Pair decode(String bechAddress) {
+    Bech32 decodedBech32 = bech32.decode(bechAddress);
+    // TODO(dominik): Implement custom Bech32 decoding
+    Uint8List convertedData = _convertBits(decodedBech32.data, 5, 8, padBool: false);
+
+    return Bech32Pair(data: convertedData, hrp: decodedBech32.hrp);
   }
 
   static Uint8List _convertBits(

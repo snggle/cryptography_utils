@@ -1,10 +1,15 @@
 export 'address_encoder/bitcoin/bitcoin_p2pkh_address_encoder.dart';
 export 'address_encoder/bitcoin/bitcoin_p2sh_address_encoder.dart';
 export 'address_encoder/bitcoin/bitcoin_p2wpkh_address_encoder.dart';
-export 'address_encoder/cosmos_address_encoder.dart';
+export 'address_encoder/cosmos/cosmos_acc_address.dart';
+export 'address_encoder/cosmos/cosmos_address_encoder.dart';
 export 'address_encoder/ethereum_address_encoder.dart';
 export 'address_encoder/i_blockchain_address_encoder.dart';
 export 'generic_encoder/base/base58_encoder.dart';
 export 'generic_encoder/bech32/bech32_encoder.dart';
 export 'generic_encoder/bech32/segwit_bech32_encoder.dart';
 export 'generic_encoder/hex_encoder.dart';
+export 'generic_encoder/protobuf/protobuf_any.dart';
+export 'generic_encoder/protobuf/protobuf_encoder.dart';
+export 'generic_encoder/protobuf/protobuf_enum.dart';
+export 'generic_encoder/protobuf/protobuf_mixin.dart';
