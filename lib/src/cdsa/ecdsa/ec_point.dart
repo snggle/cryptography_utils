@@ -32,6 +32,7 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/curve_utils.dart';
 import 'package:equatable/equatable.dart';
 
 /// `ECPoint` represents a point on an elliptic curve in the context of elliptic curve cryptography (ECC).
@@ -59,6 +60,7 @@ class ECPoint extends Equatable {
   /// Used only for projective ECPoint representation. In case of affine ECPoint, the value is always one.
   final BigInt z;
 
+  /// Creates a new [ECPoint] with the specified curve, order, and coordinates.
   ECPoint({
     required this.curve,
     required this.n,
@@ -69,10 +71,54 @@ class ECPoint extends Equatable {
         y = y ?? BigInt.zero,
         z = z ?? BigInt.one;
 
+  /// Creates a new [ECPoint] representing the infinity point on the elliptic curve.
   factory ECPoint.infinityFrom(ECPoint ecPoint) {
     return ECPoint(curve: ecPoint.curve, n: ecPoint.n);
   }
 
+  /// Creates a new [ECPoint] from compressed bytes.
+  factory ECPoint.fromCompressedBytes(List<int> bytes, ECPoint G) {
+    if (bytes[0] != 0x02 && bytes[0] != 0x03) {
+      throw StateError('Malformed compressed point encoding');
+    }
+
+    bool evenBool = bytes[0] == 0x02;
+    BigInt x = BigIntUtils.decode(bytes.sublist(1));
+    BigInt p = G.curve.p;
+
+    BigInt alpha = (x.modPow(BigInt.from(3), p) + G.curve.a * x + G.curve.b) % p;
+    BigInt beta = CurveUtils.findModularSquareRoot(a: alpha, p: p);
+
+    bool betaEvenBool = (beta & BigInt.one) != BigInt.zero;
+    if (evenBool == betaEvenBool) {
+      BigInt y = p - beta;
+      return ECPoint(curve: G.curve, n: G.n, x: x, y: y);
+    } else {
+      return ECPoint(curve: G.curve, n: G.n, x: x, y: beta);
+    }
+  }
+
+  /// Creates a new [ECPoint] from uncompressed bytes.
+  factory ECPoint.fromUncompressedBytes(List<int> data, ECPoint G) {
+    int rawEncodingLength = 2 * BigIntUtils.calculateByteLength(G.curve.p);
+    if (data.length != rawEncodingLength) {
+      throw StateError('Malformed uncompressed point encoding');
+    }
+
+    List<int> xs = data.sublist(0, rawEncodingLength ~/ 2);
+    List<int> ys = data.sublist(rawEncodingLength ~/ 2);
+
+    if (xs.length != rawEncodingLength ~/ 2 || ys.length != rawEncodingLength ~/ 2) {
+      throw StateError('Malformed uncompressed point encoding');
+    }
+
+    BigInt x = BigIntUtils.decode(xs);
+    BigInt y = BigIntUtils.decode(ys);
+
+    return ECPoint(curve: G.curve, n: G.n, x: x, y: y);
+  }
+
+  /// Creates a new [ECPoint] with overridden values.
   ECPoint copyWith({ECCurve? curve, BigInt? n, BigInt? x, BigInt? y, BigInt? z}) {
     return ECPoint(
       curve: curve ?? this.curve,

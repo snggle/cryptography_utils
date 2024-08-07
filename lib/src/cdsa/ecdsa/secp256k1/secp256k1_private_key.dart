@@ -8,9 +8,14 @@ class Secp256k1PrivateKey extends ABip32PrivateKey {
   final ECPrivateKey ecPrivateKey;
 
   const Secp256k1PrivateKey({
-    required super.metadata,
     required this.ecPrivateKey,
+    super.metadata,
   });
+
+  factory Secp256k1PrivateKey.fromBytes(Uint8List bytes, {Bip32KeyMetadata? metadata}) {
+    ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(bytes, CurvePoints.generatorSecp256k1);
+    return Secp256k1PrivateKey(ecPrivateKey: ecPrivateKey, metadata: metadata);
+  }
 
   /// Returns the private key as a byte array.
   @override
@@ -30,5 +35,5 @@ class Secp256k1PrivateKey extends ABip32PrivateKey {
   }
 
   @override
-  List<Object?> get props => <Object>[ecPrivateKey, metadata];
+  List<Object?> get props => <Object?>[ecPrivateKey, metadata];
 }

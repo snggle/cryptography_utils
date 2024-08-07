@@ -10,9 +10,19 @@ class Secp256k1PublicKey extends ABip32PublicKey {
   final ECPublicKey ecPublicKey;
 
   const Secp256k1PublicKey({
-    required super.metadata,
     required this.ecPublicKey,
+    super.metadata,
   });
+
+  factory Secp256k1PublicKey.fromCompressedBytes(List<int> bytes, {Bip32KeyMetadata? metadata}) {
+    ECPublicKey ecPublicKey = ECPublicKey.fromCompressedBytes(bytes, CurvePoints.generatorSecp256k1);
+    return Secp256k1PublicKey(ecPublicKey: ecPublicKey, metadata: metadata);
+  }
+
+  factory Secp256k1PublicKey.fromUncompressedBytes(List<int> bytes, {Bip32KeyMetadata? metadata}) {
+    ECPublicKey ecPublicKey = ECPublicKey.fromUncompressedBytes(bytes, CurvePoints.generatorSecp256k1);
+    return Secp256k1PublicKey(ecPublicKey: ecPublicKey, metadata: metadata);
+  }
 
   @override
   Uint8List get bytes => compressed;
@@ -24,5 +34,5 @@ class Secp256k1PublicKey extends ABip32PublicKey {
   Uint8List get uncompressed => ecPublicKey.uncompressed;
 
   @override
-  List<Object?> get props => <Object>[ecPublicKey, metadata];
+  List<Object?> get props => <Object?>[ecPublicKey, metadata];
 }

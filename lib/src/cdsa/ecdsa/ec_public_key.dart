@@ -14,6 +14,16 @@ class ECPublicKey extends Equatable {
 
   const ECPublicKey(this.G, this.Q);
 
+  factory ECPublicKey.fromCompressedBytes(List<int> bytes, ECPoint G) {
+    ECPoint Q = ECPoint.fromCompressedBytes(bytes, G);
+    return ECPublicKey(G, Q);
+  }
+
+  factory ECPublicKey.fromUncompressedBytes(List<int> bytes, ECPoint G) {
+    ECPoint Q = ECPoint.fromUncompressedBytes(bytes.sublist(1), G);
+    return ECPublicKey(G, Q);
+  }
+
   Uint8List get compressed {
     return Q.toBytes(compressedBool: true);
   }

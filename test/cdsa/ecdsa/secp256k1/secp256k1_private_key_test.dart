@@ -5,6 +5,26 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('Tests of Secp256k1PrivateKey.fromBytes() constructor', () {
+    test('Should [return Secp256k1PrivateKey] constructed from bytes', () {
+      // Arrange
+      Uint8List actualPrivateKeyBytes = base64Decode('IxMiv7h+lmU8ouyK8Ds+wP5EL/n1Kv0TKJft3E0Kf8M=');
+
+      // Act
+      Secp256k1PrivateKey actualSecp256k1PrivateKey = Secp256k1PrivateKey.fromBytes(actualPrivateKeyBytes);
+
+      // Assert
+      Secp256k1PrivateKey expectedSecp256k1PrivateKey = Secp256k1PrivateKey(
+        ecPrivateKey: ECPrivateKey(
+          CurvePoints.generatorSecp256k1,
+          BigInt.parse('15864759622800253937020257025334897817812874204769186060960403729801414344643'),
+        ),
+      );
+
+      expect(actualSecp256k1PrivateKey, expectedSecp256k1PrivateKey);
+    });
+  });
+
   group('Tests of Secp256k1PrivateKey.getExtendedPrivateKey() getter', () {
     test('Should [return xpriv] representing extended private key', () {
       // Arrange
@@ -51,7 +71,7 @@ void main() {
       );
 
       // Act
-      Bip32KeyMetadata actualBip32KeyMetadata = actualSecp256k1PrivateKey.metadata;
+      Bip32KeyMetadata actualBip32KeyMetadata = actualSecp256k1PrivateKey.metadata!;
 
       // Assert
       Bip32KeyMetadata expectedBip32KeyMetadata = Bip32KeyMetadata(
