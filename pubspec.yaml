@@ -1,6 +1,6 @@
 name: cryptography_utils
 description: "Dart package containing utility methods for common cryptographic and blockchain-specific operations"
-version: 0.0.14
+version: 0.0.15
 
 environment:
   sdk: ">=3.2.6"

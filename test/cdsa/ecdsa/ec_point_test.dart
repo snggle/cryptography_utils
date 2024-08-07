@@ -39,6 +39,48 @@ void main() {
     });
   });
 
+  group('Tests of ECPoint.fromCompressedBytes() constructor', () {
+    test('Should [return ECPoint] from [COMPRESSED bytes]', () {
+      // Arrange
+      Uint8List actualCompressedBytes = base64Decode('Ar+tLoQUarMHBlWt2YHvheCerhvBi3VacJya8XNUx2Yj');
+
+      // Act
+      ECPoint actualECPoint = ECPoint.fromCompressedBytes(actualCompressedBytes, CurvePoints.generatorSecp256k1);
+
+      // Assert
+      ECPoint expectedECPoint = ECPoint(
+        curve: Curves.secp256k1,
+        n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
+        x: BigInt.parse('109809582697629541179477143463768131161650648020283737506803606109779771350309'),
+        y: BigInt.parse('93904199375389538639503047221917403320671286887529822165996195593332713512966'),
+        z: BigInt.parse('15114296647857780461657875995579731758281183768828053400819025202844531705682'),
+      );
+
+      expect(actualECPoint, expectedECPoint);
+    });
+  });
+
+  group('Tests of ECPoint.fromUncompressedBytes() constructor', () {
+    test('Should [return ECPoint] from [UNCOMPRESSED bytes]', () {
+      // Arrange
+      Uint8List actualUncompressedBytes = base64Decode('v60uhBRqswcGVa3Zge+F4J6uG8GLdVpwnJrxc1THZiNF2HjK8gm8RXiyE3BzH9skj5ZSZ7cMZ/LVK5GUGY8Dig==');
+
+      // Act
+      ECPoint actualECPoint = ECPoint.fromUncompressedBytes(actualUncompressedBytes, CurvePoints.generatorSecp256k1);
+
+      // Assert
+      ECPoint expectedECPoint = ECPoint(
+        curve: Curves.secp256k1,
+        n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
+        x: BigInt.parse('109809582697629541179477143463768131161650648020283737506803606109779771350309'),
+        y: BigInt.parse('93904199375389538639503047221917403320671286887529822165996195593332713512966'),
+        z: BigInt.parse('15114296647857780461657875995579731758281183768828053400819025202844531705682'),
+      );
+
+      expect(actualECPoint, expectedECPoint);
+    });
+  });
+
   group('Tests of ECPoint - (negation) operator overload', () {
     test('Should [return ECPoint] with negated y coordinate', () {
       // Arrange

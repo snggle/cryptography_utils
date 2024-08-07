@@ -41,12 +41,13 @@ class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {
   /// Derives a [Secp256k1PrivateKey] from a mnemonic pharse and full derivation path
   @override
   Future<Secp256k1PrivateKey> derivePath(Mnemonic mnemonic, LegacyDerivationPath legacyDerivationPath) async {
-    Secp256k1PrivateKey masterPrivateKey = await deriveMasterKey(mnemonic);
-    Secp256k1PrivateKey childPrivateKey = masterPrivateKey;
+    Secp256k1PrivateKey masterSecp256k1PrivateKey = await deriveMasterKey(mnemonic);
+    Secp256k1PrivateKey childSecp256k1PrivateKey = masterSecp256k1PrivateKey;
     for (LegacyDerivationPathElement derivationPathElement in legacyDerivationPath.pathElements) {
-      childPrivateKey = deriveChildKey(childPrivateKey, derivationPathElement);
+      childSecp256k1PrivateKey = deriveChildKey(childSecp256k1PrivateKey, derivationPathElement);
     }
-    return childPrivateKey;
+
+    return childSecp256k1PrivateKey;
   }
 
   /// Derives a master [Secp256k1PrivateKey] from a mnemonic phrase
@@ -60,92 +61,114 @@ class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {
     Uint8List chainCode = hmacHash.sublist(32);
 
     ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(privateKey, CurvePoints.generatorSecp256k1);
-    BigInt masterFingerprint = _calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
+    BigInt masterFingerprint = ABip32PublicKey.calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
 
     return Secp256k1PrivateKey(
-        ecPrivateKey: ecPrivateKey,
-        metadata: Bip32KeyMetadata(
-          depth: 0,
-          chainCode: chainCode,
-          fingerprint: masterFingerprint,
-          parentFingerprint: BigInt.from(0x00000000),
-          masterFingerprint: masterFingerprint,
-        ));
+      ecPrivateKey: ecPrivateKey,
+      metadata: Bip32KeyMetadata(
+        depth: 0,
+        chainCode: chainCode,
+        fingerprint: masterFingerprint,
+        parentFingerprint: BigInt.from(0x00000000),
+        masterFingerprint: masterFingerprint,
+      ),
+    );
   }
 
   /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single element of a derivation path
   @override
-  Secp256k1PrivateKey deriveChildKey(Secp256k1PrivateKey privateKey, LegacyDerivationPathElement derivationPathElement) {
+  Secp256k1PrivateKey deriveChildKey(Secp256k1PrivateKey parentSecp256k1PrivateKey, LegacyDerivationPathElement derivationPathElement) {
     if (derivationPathElement.isHardened) {
-      return _deriveHard(privateKey, derivationPathElement);
+      return _deriveHard(parentSecp256k1PrivateKey, derivationPathElement);
     } else {
-      return _deriveSoft(privateKey, derivationPathElement);
+      return _deriveSoft(parentSecp256k1PrivateKey, derivationPathElement);
     }
   }
 
-  /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single hardened element of a derivation path
-  Secp256k1PrivateKey _deriveHard(Secp256k1PrivateKey secp256k1privateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
-    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...secp256k1privateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
+  Secp256k1PublicKey derivePublicKey(Secp256k1PublicKey parentSecp256k1PublicKey, LegacyDerivationPathElement legacyDerivationPathElement) {
+    Bip32KeyMetadata? parentBip32KeyMetadata = parentSecp256k1PublicKey.metadata;
+    if (parentBip32KeyMetadata.chainCode == null) {
+      throw ArgumentError('Cannot derive hardened key without chain code');
+    } else if (legacyDerivationPathElement.isHardened) {
+      throw ArgumentError('Hardened derivation is not supported for public key derivation');
+    }
 
-    Uint8List hmacHash = HMAC(hash: sha512, key: secp256k1privateKey.metadata.chainCode).process(data);
+    List<int> data = <int>[...parentSecp256k1PublicKey.compressed, ...legacyDerivationPathElement.toBytes()];
+    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
+
+    Uint8List scalarBytes = hmacHash.sublist(0, 32);
+    Uint8List chainCodeBytes = hmacHash.sublist(32);
+    BigInt scalar = BigIntUtils.decode(scalarBytes);
+
+    ECPoint Q = parentSecp256k1PublicKey.ecPublicKey.Q + (CurvePoints.generatorSecp256k1 * scalar);
+    ECPublicKey ecPublicKey = ECPublicKey(CurvePoints.generatorSecp256k1, Q);
+
+    return Secp256k1PublicKey(
+      ecPublicKey: ecPublicKey,
+      metadata: parentBip32KeyMetadata.deriveNext(
+        newChainCode: chainCodeBytes,
+        newCompressedPublicKey: ecPublicKey.compressed,
+        newShiftedIndex: legacyDerivationPathElement.shiftedIndex,
+      ),
+    );
+  }
+
+  /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single hardened element of a derivation path
+  Secp256k1PrivateKey _deriveHard(Secp256k1PrivateKey parentSecp256k1PrivateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
+    Bip32KeyMetadata? parentBip32KeyMetadata = parentSecp256k1PrivateKey.metadata;
+    if (parentBip32KeyMetadata.chainCode == null) {
+      throw ArgumentError('Cannot derive hardened key without chain code');
+    }
+
+    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...parentSecp256k1PrivateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
+    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
 
     BigInt scalar = BigIntUtils.decode(scalarBytes);
-    BigInt privateKeyScalar = BigIntUtils.decode(secp256k1privateKey.bytes);
+    BigInt privateKeyScalar = BigIntUtils.decode(parentSecp256k1PrivateKey.bytes);
     BigInt privateKey = (scalar + privateKeyScalar) % CurvePoints.generatorSecp256k1.n;
-    Uint8List privateKeyBytes = BigIntUtils.changeToBytes(privateKey, length: secp256k1privateKey.length);
+    Uint8List privateKeyBytes = BigIntUtils.changeToBytes(privateKey, length: parentSecp256k1PrivateKey.length);
 
     ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(privateKeyBytes, CurvePoints.generatorSecp256k1);
-    BigInt fingerprint = _calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
 
     return Secp256k1PrivateKey(
       ecPrivateKey: ecPrivateKey,
-      metadata: Bip32KeyMetadata(
-        depth: secp256k1privateKey.metadata.depth + 1,
-        shiftedIndex: legacyDerivationPathElement.shiftedIndex,
-        chainCode: chainCodeBytes,
-        fingerprint: fingerprint,
-        parentFingerprint: secp256k1privateKey.metadata.fingerprint,
-        masterFingerprint: secp256k1privateKey.metadata.masterFingerprint,
+      metadata: parentBip32KeyMetadata.deriveNext(
+        newChainCode: chainCodeBytes,
+        newCompressedPublicKey: ecPrivateKey.ecPublicKey.compressed,
+        newShiftedIndex: legacyDerivationPathElement.shiftedIndex,
       ),
     );
   }
 
   /// Derives a child [Secp256k1PrivateKey] from a parent [Secp256k1PrivateKey] and a single non-hardened element of a derivation path
-  Secp256k1PrivateKey _deriveSoft(Secp256k1PrivateKey secp256k1privateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
-    Uint8List data = Uint8List.fromList(<int>[...secp256k1privateKey.publicKey.compressed, ...legacyDerivationPathElement.toBytes()]);
+  Secp256k1PrivateKey _deriveSoft(Secp256k1PrivateKey parentSecp256k1PrivateKey, LegacyDerivationPathElement legacyDerivationPathElement) {
+    Bip32KeyMetadata? parentBip32KeyMetadata = parentSecp256k1PrivateKey.metadata;
+    if (parentBip32KeyMetadata.chainCode == null) {
+      throw ArgumentError('Cannot derive hardened key without chain code');
+    }
 
-    Uint8List hmacHash = HMAC(hash: sha512, key: secp256k1privateKey.metadata.chainCode).process(data);
+    Uint8List data = Uint8List.fromList(<int>[...parentSecp256k1PrivateKey.publicKey.compressed, ...legacyDerivationPathElement.toBytes()]);
+    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
 
     BigInt scalar = BigIntUtils.decode(scalarBytes);
-    BigInt privateKeyScalar = BigIntUtils.decode(secp256k1privateKey.bytes);
+    BigInt privateKeyScalar = BigIntUtils.decode(parentSecp256k1PrivateKey.bytes);
     BigInt privateKey = (scalar + privateKeyScalar) % CurvePoints.generatorSecp256k1.n;
-    Uint8List privateKeyBytes = BigIntUtils.changeToBytes(privateKey, length: secp256k1privateKey.length);
-
+    Uint8List privateKeyBytes = BigIntUtils.changeToBytes(privateKey, length: parentSecp256k1PrivateKey.length);
     ECPrivateKey ecPrivateKey = ECPrivateKey.fromBytes(privateKeyBytes, CurvePoints.generatorSecp256k1);
-    BigInt fingerprint = _calcFingerprint(ecPrivateKey.ecPublicKey.compressed);
 
     return Secp256k1PrivateKey(
       ecPrivateKey: ecPrivateKey,
-      metadata: Bip32KeyMetadata(
-        depth: secp256k1privateKey.metadata.depth + 1,
-        shiftedIndex: legacyDerivationPathElement.shiftedIndex,
-        chainCode: chainCodeBytes,
-        fingerprint: fingerprint,
-        parentFingerprint: secp256k1privateKey.metadata.fingerprint,
-        masterFingerprint: secp256k1privateKey.metadata.masterFingerprint,
+      metadata: parentBip32KeyMetadata.deriveNext(
+        newChainCode: chainCodeBytes,
+        newCompressedPublicKey: ecPrivateKey.ecPublicKey.compressed,
+        newShiftedIndex: legacyDerivationPathElement.shiftedIndex,
       ),
     );
-  }
-
-  BigInt _calcFingerprint(Uint8List publicKeyBytes) {
-    Uint8List sha256Fingerprint = Uint8List.fromList(sha256.convert(publicKeyBytes).bytes);
-    Uint8List ripemd160Fingerprint = Uint8List.fromList(Ripemd160().process(sha256Fingerprint));
-    return BigIntUtils.decode(ripemd160Fingerprint.sublist(0, 4));
   }
 }

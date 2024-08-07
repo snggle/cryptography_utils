@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
@@ -47,6 +48,29 @@ void main() {
       List<int> expectedPaddedBytes = base64Decode('ZXhjbHVkZSB3ZXN0IG5vYmxlIHB1cml0eSBiZXlvbmQ=');
 
       expect(actualPaddedBytes, expectedPaddedBytes);
+    });
+  });
+
+  group('Tests of BytesUtils.chunkBytes()', () {
+    test('Should [return chunked bytes] with specified chunk sized', () {
+      // Arrange
+      Uint8List actualBytesToChunk = Uint8List.fromList(<int>[1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6]);
+      List<int> actualChunkSizes = <int>[1, 2, 3, 4, 5, 6];
+
+      // Act
+      List<Uint8List> actualChunkedBytes = BytesUtils.chunkBytes(bytes: actualBytesToChunk, chunkSizes: actualChunkSizes);
+
+      // Assert
+      List<Uint8List> expectedChunkedBytes = <Uint8List>[
+        Uint8List.fromList(<int>[1]),
+        Uint8List.fromList(<int>[2, 2]),
+        Uint8List.fromList(<int>[3, 3, 3]),
+        Uint8List.fromList(<int>[4, 4, 4, 4]),
+        Uint8List.fromList(<int>[5, 5, 5, 5, 5]),
+        Uint8List.fromList(<int>[6, 6, 6, 6, 6, 6]),
+      ];
+
+      expect(actualChunkedBytes, expectedChunkedBytes);
     });
   });
 }
