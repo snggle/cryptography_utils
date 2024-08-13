@@ -11,8 +11,6 @@ class Bip84WalletsConfig {
   static LegacyWalletConfig<Secp256k1PrivateKey> bitcoin = LegacyWalletConfig<Secp256k1PrivateKey>(
     addressEncoder: BitcoinP2WPKHAddressEncoder(hrp: Slip173.bitcoin),
     derivator: Secp256k1Derivator(),
-    coinIndex: Slip44.bitcoin,
     curveType: CurveType.secp256k1,
-    purpose: BipProposalType.bip84,
   );
 }

@@ -2,11 +2,12 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/address_encoder/address_encoder_type.dart';
 
 /// The [BitcoinP2PKHAddressEncoder] class is designed for encoding P2PKH (Pay-to-PubKey-Hash) addresses in accordance with Bitcoin.
 /// P2SH addresses utilize the RIPEMD-160 and SHA-256 hash functions to generate addresses from a script's hash.
 /// Through these methods, it produces addresses prefixed with '1 and encoded with Base58Check'.
-class BitcoinP2PKHAddressEncoder implements IBlockchainAddressEncoder<Secp256k1PublicKey> {
+class BitcoinP2PKHAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKey> {
   static const List<int> _networkVersionBytes = <int>[0x00];
   final PublicKeyMode publicKeyMode;
 
@@ -23,4 +24,10 @@ class BitcoinP2PKHAddressEncoder implements IBlockchainAddressEncoder<Secp256k1P
 
     return Base58Encoder.encodeWithChecksum(Uint8List.fromList(<int>[..._networkVersionBytes, ...publicKeyHash]));
   }
+
+  @override
+  List<String> get args => <String>[publicKeyMode.name];
+
+  @override
+  AddressEncoderType get addressEncoderType => AddressEncoderType.bitcoinP2PKH;
 }

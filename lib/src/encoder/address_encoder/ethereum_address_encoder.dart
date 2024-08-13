@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/encoder/address_encoder/address_encoder_type.dart';
 
 /// The [EthereumAddressEncoder] class is designed for encoding addresses in accordance with the Ethereum network.
 /// Ethereum uses the Keccak-256 hash function to generate addresses from public keys, resulting in 40 hexadecimal characters prefixed with "0x".
 /// https://info.etherscan.com/what-is-an-ethereum-address/
-class EthereumAddressEncoder implements IBlockchainAddressEncoder<Secp256k1PublicKey> {
+class EthereumAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKey> {
   static const int _startByte = 24;
 
   final bool skipChecksumBool;
@@ -41,4 +42,10 @@ class EthereumAddressEncoder implements IBlockchainAddressEncoder<Secp256k1Publi
 
     return addressWithChecksum.join();
   }
+
+  @override
+  List<String> get args => <String>[skipChecksumBool.toString()];
+
+  @override
+  AddressEncoderType get addressEncoderType => AddressEncoderType.ethereum;
 }
