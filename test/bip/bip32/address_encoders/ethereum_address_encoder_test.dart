@@ -24,6 +24,34 @@ void main() {
     ),
   );
 
+  group('Tests of EthereumAddressEncoder.serializeType()', () {
+    test('Should [return "ethereum(true)"] for EthereumAddressEncoder with [skipChecksumBool == TRUE]', () {
+      // Arrange
+      EthereumAddressEncoder actualEthereumAddressEncoder = EthereumAddressEncoder(skipChecksumBool: true);
+
+      // Act
+      String actualSerializedType = actualEthereumAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'ethereum(true)';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+
+    test('Should [return "ethereum(false)"] for EthereumAddressEncoder with [skipChecksumBool == FALSE]', () {
+      // Arrange
+      EthereumAddressEncoder actualEthereumAddressEncoder = EthereumAddressEncoder(skipChecksumBool: false);
+
+      // Act
+      String actualSerializedType = actualEthereumAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'ethereum(false)';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+  });
+
   group('Tests of EthereumAddressEncoder.encodePublicKey()', () {
     test('Should [return Etherum address] [WITH checksum] for given public key', () {
       // Arrange

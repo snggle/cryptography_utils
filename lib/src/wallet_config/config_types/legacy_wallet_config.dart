@@ -1,23 +1,17 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 class LegacyWalletConfig<T extends ABip32PrivateKey> extends AWalletConfig {
-  final int coinIndex;
   final CurveType curveType;
-  final BipProposalType purpose;
 
   const LegacyWalletConfig({
-    required ILegacyDerivator<T> derivator,
+    required ALegacyDerivator<T> derivator,
     required super.addressEncoder,
-    required this.coinIndex,
     required this.curveType,
-    required this.purpose,
   }) : super(derivator: derivator);
 
   @override
-  ILegacyDerivator<T> get derivator => super.derivator as ILegacyDerivator<T>;
-
-  String get baseDerivationPath => "m/${purpose.proposalNumber}'/$coinIndex'";
+  ALegacyDerivator<T> get derivator => super.derivator as ALegacyDerivator<T>;
 
   @override
-  List<Object?> get props => <Object>[derivator, coinIndex, curveType, purpose];
+  List<Object?> get props => <Object>[derivator.serializeType(), addressEncoder.serializeType(), curveType];
 }

@@ -33,11 +33,15 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/bip/bip32/derivators/derivator_type.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 /// [Secp256k1Derivator] is a class that implements the derivation of [Secp256k1PrivateKey] objects.
-class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {
+class Secp256k1Derivator extends ALegacyDerivator<Secp256k1PrivateKey> {
   static const List<int> _hardenedPrivateKeyPrefix = <int>[0x00];
+
+  @override
+  DerivatorType get derivatorType => DerivatorType.secp256k1;
 
   /// Derives a [Secp256k1PrivateKey] from a mnemonic pharse and full derivation path
   @override
