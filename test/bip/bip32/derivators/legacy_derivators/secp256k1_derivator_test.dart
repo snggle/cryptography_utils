@@ -1,12 +1,38 @@
 import 'dart:convert';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/bip/bip32/derivators/derivator_type.dart';
 import 'package:test/test.dart';
 
 void main() {
   Secp256k1Derivator actualSecp256k1Derivator = Secp256k1Derivator();
   Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase(
-      'require point property company tongue busy bench burden caution gadget knee glance thought bulk assist month cereal report quarter tool section often require shield');
+    'require point property company tongue busy bench burden caution gadget knee glance thought bulk assist month cereal report quarter tool section often require shield',
+  );
+
+  group('Secp256k1Derivator.derivatorType getter', () {
+    test('Should [return DerivatorType.secp256k1] for Secp256k1Derivator', () {
+      // Act
+      DerivatorType actualDerivatorType = actualSecp256k1Derivator.derivatorType;
+
+      // Assert
+      DerivatorType expectedDerivatorType = DerivatorType.secp256k1;
+
+      expect(actualDerivatorType, expectedDerivatorType);
+    });
+  });
+
+  group('Secp256k1Derivator.toType()', () {
+    test('Should [return "secp256k1"] for Secp256k1Derivator', () {
+      // Act
+      String actualType = actualSecp256k1Derivator.serializeType();
+
+      // Assert
+      String expectedType = 'secp256k1';
+
+      expect(actualType, expectedType);
+    });
+  });
 
   group('Secp256k1Derivator.derivePath()', () {
     test("Should [return Secp256k1PrivateKey] constructed from mnemonic and derivation path (m/44'/)", () async {

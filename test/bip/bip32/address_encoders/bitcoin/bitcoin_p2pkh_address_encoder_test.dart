@@ -24,6 +24,34 @@ void main() {
     ),
   );
 
+  group('Tests of BitcoinP2PKHAddressEncoder.serializeType()', () {
+    test('Should [return "bitcoinP2PKH(compressed)"] for BitcoinP2PKHAddressEncoder with PublicKeyMode.compressed', () {
+      // Arrange
+      BitcoinP2PKHAddressEncoder actualBitcoinP2PKHAddressEncoder = BitcoinP2PKHAddressEncoder(publicKeyMode: PublicKeyMode.compressed);
+
+      // Act
+      String actualSerializedType = actualBitcoinP2PKHAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'bitcoinP2PKH(compressed)';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+
+    test('Should [return "bitcoinP2PKH(uncompressed)"] for BitcoinP2PKHAddressEncoder with PublicKeyMode.uncompressed', () {
+      // Arrange
+      BitcoinP2PKHAddressEncoder actualBitcoinP2PKHAddressEncoder = BitcoinP2PKHAddressEncoder(publicKeyMode: PublicKeyMode.uncompressed);
+
+      // Act
+      String actualSerializedType = actualBitcoinP2PKHAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'bitcoinP2PKH(uncompressed)';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+  });
+
   group('Tests of BitcoinP2PKHAddressEncoder.encodePublicKey()', () {
     test('Should [return Bitcoin P2PKH address] for given public key (public key COMPRESSED)', () {
       // Arrange

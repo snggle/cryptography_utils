@@ -24,6 +24,21 @@ void main() {
     ),
   );
 
+  group('Tests of BitcoinP2WPKHAddressEncoder.serializeType()', () {
+    test('Should [return "bitcoinP2SH()"] for BitcoinP2WPKHAddressEncoder with "bc" hrp', () {
+      // Arrange
+      BitcoinP2WPKHAddressEncoder actualBitcoinP2PKHAddressEncoder = BitcoinP2WPKHAddressEncoder(hrp: 'bc');
+
+      // Act
+      String actualSerializedType = actualBitcoinP2PKHAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'bitcoinP2WPKH(bc)';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+  });
+
   group('Tests of BitcoinP2WPKHAddressEncoder.encodePublicKey()', () {
     test('Should [return Bitcoin P2WPKH address] for given public key', () {
       // Arrange

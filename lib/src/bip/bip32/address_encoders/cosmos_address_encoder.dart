@@ -8,10 +8,16 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 /// Cosmos addresses are encoded using the Bech32 algorithm, which is specified in BIP-0173 and BIP-0350:
 /// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
 /// https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
-class CosmosAddressEncoder implements IBlockchainAddressEncoder<Secp256k1PublicKey> {
+class CosmosAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKey> {
   final String hrp;
 
   CosmosAddressEncoder({required this.hrp});
+
+  @override
+  AddressEncoderType get addressEncoderType => AddressEncoderType.cosmos;
+
+  @override
+  List<String> get args => <String>[hrp];
 
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
