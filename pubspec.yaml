@@ -1,9 +1,9 @@
 name: cryptography_utils
-description: "Cryptography utils"
-version: 0.0.13
+description: "Dart package containing utility methods for common cryptographic and blockchain-specific operations"
+version: 0.0.14
 
 environment:
-  sdk: ">=3.1.4"
+  sdk: ">=3.2.6"
 
 dependencies:
   # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
@@ -20,7 +20,7 @@ dependencies:
 
   # A Dart library implementing cryptographic algorithms and primitives, modeled on the BouncyCastle library.
   # https://pub.dev/packages/pointycastle
-  pointycastle: 3.7.4
+  pointycastle: 3.9.1
 
   # Flutter's compute function made available for all non-Flutter Dart programs
   # https://pub.dev/packages/compute
@@ -31,4 +31,6 @@ dependencies:
   decimal: 2.3.3
 
 dev_dependencies:
+  # A full featured library for writing and running Dart tests across platforms.
+  # https://pub.dev/packages/test
   test: 1.25.5
