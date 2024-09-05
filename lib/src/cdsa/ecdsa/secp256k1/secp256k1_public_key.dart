@@ -10,19 +10,52 @@ class Secp256k1PublicKey extends ABip32PublicKey {
   final ECPublicKey ecPublicKey;
 
   const Secp256k1PublicKey({
-    required super.metadata,
     required this.ecPublicKey,
+    required super.metadata,
   });
 
-  @override
-  Uint8List get bytes => compressed;
+  factory Secp256k1PublicKey.fromCompressedBytes(List<int> bytes, {Bip32KeyMetadata? metadata}) {
+    ECPublicKey ecPublicKey = ECPublicKey.fromCompressedBytes(bytes, CurvePoints.generatorSecp256k1);
+    Bip32KeyMetadata updatedMetadata = metadata ?? Bip32KeyMetadata.fromCompressedPublicKey(compressedPublicKey: ecPublicKey.compressed);
+    return Secp256k1PublicKey(ecPublicKey: ecPublicKey, metadata: updatedMetadata);
+  }
+
+  factory Secp256k1PublicKey.fromUncompressedBytes(List<int> bytes, {Bip32KeyMetadata? metadata}) {
+    ECPublicKey ecPublicKey = ECPublicKey.fromUncompressedBytes(bytes, CurvePoints.generatorSecp256k1);
+    Bip32KeyMetadata updatedMetadata = metadata ?? Bip32KeyMetadata.fromCompressedPublicKey(compressedPublicKey: ecPublicKey.compressed);
+    return Secp256k1PublicKey(ecPublicKey: ecPublicKey, metadata: updatedMetadata);
+  }
+
+  factory Secp256k1PublicKey.fromExtendedPublicKey(String extendedPublicKey) {
+    Uint8List decodedXPub = Base58Encoder.decode(extendedPublicKey);
+    List<Uint8List> decodedXPubParts = BytesUtils.chunkBytes(bytes: decodedXPub, chunkSizes: ABip32PublicKey.xpubChunkSizes);
+
+    BigInt depth = BigIntUtils.decode(decodedXPubParts[1]);
+    BigInt parentFingerprint = BigIntUtils.decode(decodedXPubParts[2]);
+    BigInt shiftedIndex = BigIntUtils.decode(decodedXPubParts[3]);
+    Uint8List chainCode = decodedXPubParts[4];
+    Uint8List compressedPublicKey = decodedXPubParts[5];
+
+    return Secp256k1PublicKey.fromCompressedBytes(
+      compressedPublicKey,
+      metadata: Bip32KeyMetadata.fromCompressedPublicKey(
+        compressedPublicKey: compressedPublicKey,
+        depth: depth.toInt(),
+        chainCode: chainCode,
+        parentFingerprint: parentFingerprint,
+        shiftedIndex: shiftedIndex.toInt(),
+      ),
+    );
+  }
 
   /// Returns the compressed form of the public key.
+  @override
   Uint8List get compressed => ecPublicKey.compressed;
 
   /// Returns the uncompressed form of the public key.
+  @override
   Uint8List get uncompressed => ecPublicKey.uncompressed;
 
   @override
-  List<Object?> get props => <Object>[ecPublicKey, metadata];
+  List<Object?> get props => <Object?>[ecPublicKey, metadata];
 }

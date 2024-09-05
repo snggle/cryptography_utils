@@ -5,8 +5,56 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('Tests of Secp256k1PrivateKey.fromBytes() constructor', () {
+    test('Should [return Secp256k1PrivateKey] constructed from bytes', () {
+      // Arrange
+      Uint8List actualPrivateKeyBytes = base64Decode('IxMiv7h+lmU8ouyK8Ds+wP5EL/n1Kv0TKJft3E0Kf8M=');
+
+      // Act
+      Secp256k1PrivateKey actualSecp256k1PrivateKey = Secp256k1PrivateKey.fromBytes(actualPrivateKeyBytes);
+
+      // Assert
+      Secp256k1PrivateKey expectedSecp256k1PrivateKey = Secp256k1PrivateKey(
+        ecPrivateKey: ECPrivateKey(
+          CurvePoints.generatorSecp256k1,
+          BigInt.parse('15864759622800253937020257025334897817812874204769186060960403729801414344643'),
+        ),
+        metadata: Bip32KeyMetadata(fingerprint: BigInt.parse('83580899')),
+      );
+
+      expect(actualSecp256k1PrivateKey, expectedSecp256k1PrivateKey);
+    });
+  });
+
+  group('Tests of Secp256k1PrivateKey.fromExtendedPrivateKey() constructor', () {
+    test('Should [return Secp256k1PrivateKey] constructed from xprv', () {
+      // Arrange
+      String actualExtendedPrivateKey = 'xprvA2VojMGQ8s55ciBWHZFdQm8Y4fUPs8ZKRH4qgsoPw8cjfpHFKoutqeXsD1N9p5ShLBM8vBDGmDMaEFTERkMC1FvqWPDoVK2kFG3ffLAikXM';
+
+      // Act
+      Secp256k1PrivateKey actualSecp256k1PrivateKey = Secp256k1PrivateKey.fromExtendedPrivateKey(actualExtendedPrivateKey);
+
+      // Assert
+      Secp256k1PrivateKey expectedSecp256k1PrivateKey = Secp256k1PrivateKey(
+        ecPrivateKey: ECPrivateKey(
+          CurvePoints.generatorSecp256k1,
+          BigInt.parse('91850346642365090382529827989594437164777469345439968194889143349494450093883'),
+        ),
+        metadata: Bip32KeyMetadata(
+          depth: 5,
+          shiftedIndex: 0,
+          fingerprint: BigInt.parse('2837893204'),
+          parentFingerprint: BigInt.parse('162080603'),
+          chainCode: base64Decode('YsN74zJ6p9/kjsFCM5UUBq470XR3CEssHXyawdn7xBw='),
+        ),
+      );
+
+      expect(actualSecp256k1PrivateKey, expectedSecp256k1PrivateKey);
+    });
+  });
+
   group('Tests of Secp256k1PrivateKey.getExtendedPrivateKey() getter', () {
-    test('Should [return xpriv] representing extended private key', () {
+    test('Should [return xprv] representing extended private key', () {
       // Arrange
       Secp256k1PrivateKey actualSecp256k1PrivateKey = Secp256k1PrivateKey(
         ecPrivateKey: ECPrivateKey(

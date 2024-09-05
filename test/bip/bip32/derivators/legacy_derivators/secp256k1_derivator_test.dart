@@ -405,4 +405,116 @@ void main() {
       expect(actualChildSecp256k1PrivateKey, expectedChildSecp256k1PrivateKey);
     });
   });
+
+  group('Secp256k1Derivator.derivePublicKey()', () {
+    test("Should [return Secp256k1PublicKey] constructed from Secp256k1PublicKey and DerivationPathElement (m/44'/60'/0'/ -> m/44'/60'/0'/0/)", () {
+      // Arrange
+      LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse('0');
+
+      // Private key derived from m/44'/60'/0' derivation path (value calculated in the previous test)
+      Secp256k1PublicKey actualSecp256k1PublicKey = Secp256k1PublicKey(
+        ecPublicKey: ECPublicKey(
+          CurvePoints.generatorSecp256k1,
+          ECPoint(
+            curve: Curves.secp256k1,
+            n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
+            x: BigInt.parse('75511275616717823953127492513872404089510520934241368065606359089209257930911'),
+            y: BigInt.parse('80307866468962207790115496269216787987906781244125604767016195777199780913020'),
+            z: BigInt.parse('48316583892506475825569737992841455467679195882745032601597666604627327182481'),
+          ),
+        ),
+        metadata: Bip32KeyMetadata(
+          depth: 3,
+          shiftedIndex: 2147483648,
+          chainCode: base64Decode('5gvokyLRAipECLgT5AnkPLX6thREo+E27t5wUBpna9w='),
+          fingerprint: BigInt.parse('2583323534'),
+          parentFingerprint: BigInt.parse('2923058245'),
+          masterFingerprint: BigInt.parse('83580899'),
+        ),
+      );
+
+      // Act
+      Secp256k1PublicKey actualChildSecp256k1PublicKey = actualSecp256k1Derivator.derivePublicKey(actualSecp256k1PublicKey, actualDerivationPathElement);
+
+      // Assert
+      // Public key derived from m/44'/60'/0'/0 derivation path
+      Secp256k1PublicKey expectedSecp256k1PublicKey = Secp256k1PublicKey(
+        ecPublicKey: ECPublicKey(
+          CurvePoints.generatorSecp256k1,
+          ECPoint(
+            curve: Curves.secp256k1,
+            n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
+            x: BigInt.parse('7391357532699440077661224140469825051828763295397368622370962838828358580994'),
+            y: BigInt.parse('96993176887215260937294338881510705358928133747744922014432146730509477720447'),
+            z: BigInt.parse('61878165241971238318861094125952078285108407352520420552419041993662987147055'),
+          ),
+        ),
+        metadata: Bip32KeyMetadata(
+          depth: 4,
+          shiftedIndex: 0,
+          chainCode: base64Decode('FK0bd1Z1KEZpXlZ45+GufE0HsweNVoh7EkZndgnxmVA='),
+          fingerprint: BigInt.parse('162080603'),
+          parentFingerprint: BigInt.parse('2583323534'),
+          masterFingerprint: BigInt.parse('83580899'),
+        ),
+      );
+
+      expect(actualChildSecp256k1PublicKey, expectedSecp256k1PublicKey);
+    });
+
+    test("Should [return Secp256k1PublicKey] constructed from Secp256k1PublicKey and DerivationPathElement (m/44'/60'/0'/0/ -> m/44'/60'/0'/0/0)", () {
+      // Arrange
+      LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse('0');
+
+      // Private key derived from m/44'/60'/0'/0 derivation path (value calculated in the previous test)
+      Secp256k1PublicKey actualSecp256k1PublicKey = Secp256k1PublicKey(
+        ecPublicKey: ECPublicKey(
+          CurvePoints.generatorSecp256k1,
+          ECPoint(
+            curve: Curves.secp256k1,
+            n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
+            x: BigInt.parse('7391357532699440077661224140469825051828763295397368622370962838828358580994'),
+            y: BigInt.parse('96993176887215260937294338881510705358928133747744922014432146730509477720447'),
+            z: BigInt.parse('61878165241971238318861094125952078285108407352520420552419041993662987147055'),
+          ),
+        ),
+        metadata: Bip32KeyMetadata(
+          depth: 4,
+          shiftedIndex: 0,
+          chainCode: base64Decode('FK0bd1Z1KEZpXlZ45+GufE0HsweNVoh7EkZndgnxmVA='),
+          fingerprint: BigInt.parse('162080603'),
+          parentFingerprint: BigInt.parse('2583323534'),
+          masterFingerprint: BigInt.parse('83580899'),
+        ),
+      );
+
+      // Act
+      Secp256k1PublicKey actualChildSecp256k1PublicKey = actualSecp256k1Derivator.derivePublicKey(actualSecp256k1PublicKey, actualDerivationPathElement);
+
+      // Assert
+      // Public key derived from m/44'/60'/0'/0/0 derivation path
+      Secp256k1PublicKey expectedSecp256k1PublicKey = Secp256k1PublicKey(
+        ecPublicKey: ECPublicKey(
+          CurvePoints.generatorSecp256k1,
+          ECPoint(
+            curve: Curves.secp256k1,
+            n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
+            x: BigInt.parse('9232382608412632023364058986292255060162006357143939392524352546547404109067'),
+            y: BigInt.parse('24525960969333389592602277560509258313992338161474124632221076070267967860241'),
+            z: BigInt.parse('19124601255334300034768219253657747232341817211804968472451971716379867526946'),
+          ),
+        ),
+        metadata: Bip32KeyMetadata(
+          depth: 5,
+          shiftedIndex: 0,
+          chainCode: base64Decode('YsN74zJ6p9/kjsFCM5UUBq470XR3CEssHXyawdn7xBw='),
+          fingerprint: BigInt.parse('2837893204'),
+          parentFingerprint: BigInt.parse('162080603'),
+          masterFingerprint: BigInt.parse('83580899'),
+        ),
+      );
+
+      expect(actualChildSecp256k1PublicKey, expectedSecp256k1PublicKey);
+    });
+  });
 }
