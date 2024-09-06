@@ -4,7 +4,7 @@
 // Mozilla Public License Version 2.0
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
+import 'package:codec_utils/codec_utils.dart';
 import 'package:equatable/equatable.dart';
 
 /// Represents an item within an Ethereum transaction's access list, as defined by EIP-2930. An access list is a collection

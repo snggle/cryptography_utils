@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/bytes_utils.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_function.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_function_definition.dart';
@@ -49,7 +50,7 @@ void main() {
         gasLimit: BigInt.parse('21000'),
         to: '0x16980b3B4a3f9D89E33311B5aa8f80303E5ca4F8',
         value: BigInt.parse('5000000000000000'),
-        data: HexEncoder.decode(
+        data: HexCodec.decode(
           '0xa9059cbb0000000000000000000000001234567890abcdef1234567890abcdef1234567800000000000000000000000000000000000000000000000000000000000003e8',
         ),
         accessList: const <AccessListBytesItem>[],
@@ -88,7 +89,7 @@ void main() {
         gasLimit: BigInt.parse('21000'),
         to: '0x16980b3B4a3f9D89E33311B5aa8f80303E5ca4F8',
         value: BigInt.parse('5000000000000000'),
-        data: HexEncoder.decode('0xd0e30db0'),
+        data: HexCodec.decode('0xd0e30db0'),
         accessList: const <AccessListBytesItem>[],
         signature: null,
       );
@@ -114,7 +115,7 @@ void main() {
         gasLimit: BigInt.parse('21000'),
         to: '0x16980b3B4a3f9D89E33311B5aa8f80303E5ca4F8',
         value: BigInt.parse('5000000000000000'),
-        data: HexEncoder.decode(
+        data: HexCodec.decode(
           '0xa9059cbb0000000000000000000000001234567890abcdef1234567890abcdef1234567800000000000000000000000000000000000000000000000000000000000003e8',
         ),
         accessList: const <AccessListBytesItem>[],
@@ -259,7 +260,7 @@ void main() {
 
       // Act
       EthereumSignature actualEthereumSignature = actualEthereumEIP1559Transaction.sign(ECPrivateKey.fromBytes(
-        HexEncoder.decode('cd23c9f2e2c096ee3be3c4e0e58199800c0036ea27b7cd4e838bbde8b21788b3'),
+        HexCodec.decode('cd23c9f2e2c096ee3be3c4e0e58199800c0036ea27b7cd4e838bbde8b21788b3'),
         CurvePoints.generatorSecp256k1,
       ));
 

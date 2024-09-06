@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/solidity_types/solidity_int_type.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 /// Dart representation of the Solidity's [address] type used in the ABI (Application Binary Interface) encoding.
 ///

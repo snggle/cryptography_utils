@@ -4,8 +4,8 @@
 // Mozilla Public License Version 2.0
 import 'dart:typed_data';
 
+import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/abi_decoder.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_function.dart';
 import 'package:cryptography_utils/src/utils/ethereum_utils.dart';
@@ -74,7 +74,7 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
     }
 
     Uint8List serializedEIP1559Transaction = data.sublist(1);
-    IRLPElement rlpElement = RLPCoder.decode(serializedEIP1559Transaction);
+    IRLPElement rlpElement = RLPCodec.decode(serializedEIP1559Transaction);
 
     return EthereumEIP1559Transaction._fromRLP(rlpElement as RLPList);
   }
@@ -192,7 +192,7 @@ class EthereumEIP1559Transaction extends AEthereumTransaction {
   @override
   Uint8List serialize() {
     IRLPElement rlpElement = _toRLP();
-    Uint8List serializedData = RLPCoder.encode(rlpElement);
+    Uint8List serializedData = RLPCodec.encode(rlpElement);
     return Uint8List.fromList(<int>[txType, ...serializedData]);
   }
 

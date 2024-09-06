@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
@@ -82,7 +83,7 @@ void main() {
 
       // Act
       EthereumSignature actualEthereumSignature = actualEthereumRawBytesTransaction.sign(ECPrivateKey.fromBytes(
-        HexEncoder.decode('cd23c9f2e2c096ee3be3c4e0e58199800c0036ea27b7cd4e838bbde8b21788b3'),
+        HexCodec.decode('cd23c9f2e2c096ee3be3c4e0e58199800c0036ea27b7cd4e838bbde8b21788b3'),
         CurvePoints.generatorSecp256k1,
       ));
 

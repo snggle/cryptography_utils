@@ -1,4 +1,5 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/ec_point_utils.dart';
 import 'package:test/test.dart';
 
 void main() {

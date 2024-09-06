@@ -22,6 +22,8 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
+import 'package:cryptography_utils/src/utils/ec_point_utils.dart';
 
 /// This class implements the functionality necessary to verify digital signatures using
 /// the ECDSA (Elliptic Curve Digital Signature Algorithm). By using the public key associated with
