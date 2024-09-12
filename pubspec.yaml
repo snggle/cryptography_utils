@@ -1,6 +1,7 @@
 name: cryptography_utils
 description: "Dart package containing utility methods for common cryptographic and blockchain-specific operations"
-version: 0.0.15
+publish_to: none
+version: 0.0.16
 
 environment:
   sdk: ">=3.2.6"
@@ -29,6 +30,12 @@ dependencies:
   # The decimal package allows you to deal with decimal numbers without losing precision.
   # https://pub.dev/packages/decimal
   decimal: 2.3.3
+
+  # Dart package containing utility methods for data encoding and decoding.
+  codec_utils:
+    git:
+      url: https://github.com/snggle/codec_utils.git
+      ref: master
 
 dev_dependencies:
   # A full featured library for writing and running Dart tests across platforms.

@@ -5,9 +5,9 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/abi_decoder.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function.dart';
 import 'package:cryptography_utils/src/encoder/generic_encoder/rlp/rlp_coder.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/abi_decoder.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_function.dart';
 import 'package:cryptography_utils/src/utils/ethereum_utils.dart';
 
 /// Represents an Ethereum transaction adhering to the EIP-1559 standard.
