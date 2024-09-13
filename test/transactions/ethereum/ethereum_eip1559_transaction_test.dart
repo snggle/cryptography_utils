@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_function_definition.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/abi_param_definition.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/functions/erc20/abi_erc20_transfer_function.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/solidity_types/solidity_address_type.dart';
-import 'package:cryptography_utils/src/encoder/generic_encoder/abi/solidity_types/solidity_int_type.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_function.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_function_definition.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_param_definition.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/erc20/abi_erc20_transfer_function.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/solidity_types/solidity_address_type.dart';
+import 'package:cryptography_utils/src/transactions/ethereum/abi/solidity_types/solidity_int_type.dart';
 import 'package:decimal/decimal.dart';
 import 'package:test/test.dart';
 
