@@ -22,6 +22,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 /// This class implements the functionality necessary to generate and verify digital signatures using
 /// the ECDSA algorithm, a cryptographic algorithm used for creating a digital signature of data

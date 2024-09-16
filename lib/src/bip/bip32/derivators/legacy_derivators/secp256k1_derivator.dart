@@ -33,6 +33,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 /// [Secp256k1Derivator] is a class that implements the derivation of [Secp256k1PrivateKey] objects.
 class Secp256k1Derivator implements ILegacyDerivator<Secp256k1PrivateKey> {

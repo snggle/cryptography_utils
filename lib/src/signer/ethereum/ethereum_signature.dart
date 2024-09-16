@@ -22,6 +22,7 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 /// Represents an Ethereum digital signature, encapsulating the typical components of an ECDSA signature used
 /// in Ethereum transactions. Ethereum signatures consist of the values [r], [s], and [v], where [r] and [s]

@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
+import 'package:cryptography_utils/src/utils/bytes_utils.dart';
 
 /// [Secp256k1PrivateKey] represents [ECPrivateKey] constructed with specific Curve (secp256k1) and chain code.
 class Secp256k1PrivateKey extends ABip32PrivateKey {
@@ -19,7 +22,7 @@ class Secp256k1PrivateKey extends ABip32PrivateKey {
   }
 
   factory Secp256k1PrivateKey.fromExtendedPrivateKey(String extendedPrivateKey) {
-    Uint8List decodedXPrv = Base58Encoder.decode(extendedPrivateKey);
+    Uint8List decodedXPrv = Base58Codec.decode(extendedPrivateKey);
     List<Uint8List> decodedXPubParts = BytesUtils.chunkBytes(bytes: decodedXPrv, chunkSizes: ABip32PrivateKey.xprvChunkSizes);
 
     BigInt depth = BigIntUtils.decode(decodedXPubParts[1]);

@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/solidity_types/a_solidity_type.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 /// Dart representation of the Solidity's dynamic int/uint type used in the ABI (Application Binary Interface) encoding.
 /// - uint<M>: unsigned integer type of M bits, 0 < M <= 256, M % 8 == 0. e.g. uint32, uint8, uint256

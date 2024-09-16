@@ -1,4 +1,4 @@
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:equatable/equatable.dart';
 
 /// `ECCurve` represents an elliptic curve used in elliptic curve cryptography (ECC).

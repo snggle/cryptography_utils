@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ABip32PrivateKey extends Equatable {
@@ -42,7 +44,7 @@ abstract class ABip32PrivateKey extends Equatable {
       ...<int>[0x00, ...bytes],
     ]);
 
-    return Base58Encoder.encodeWithChecksum(serializedPrivateKey);
+    return Base58Codec.encodeWithChecksum(serializedPrivateKey);
   }
 
   int get length => bytes.length;

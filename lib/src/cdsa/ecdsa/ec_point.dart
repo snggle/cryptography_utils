@@ -32,7 +32,9 @@
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:cryptography_utils/src/utils/curve_utils.dart';
+import 'package:cryptography_utils/src/utils/ec_point_utils.dart';
 import 'package:equatable/equatable.dart';
 
 /// `ECPoint` represents a point on an elliptic curve in the context of elliptic curve cryptography (ECC).

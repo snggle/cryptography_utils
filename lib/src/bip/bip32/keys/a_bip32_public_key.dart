@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:codec_utils/codec_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ABip32PublicKey extends Equatable {
@@ -49,7 +51,7 @@ abstract class ABip32PublicKey extends Equatable {
       ...compressed
     ]);
 
-    return Base58Encoder.encodeWithChecksum(serializedPublicKey);
+    return Base58Codec.encodeWithChecksum(serializedPublicKey);
   }
 
   Uint8List get compressed;

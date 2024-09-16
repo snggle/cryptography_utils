@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
 class BytesUtils {
   static Uint8List changeToOctetsWithOrderPadding(List<int> data, BigInt padding) {

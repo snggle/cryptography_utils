@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/binary_utils.dart';
+import 'package:cryptography_utils/src/utils/secure_random.dart';
 
 import 'package:equatable/equatable.dart';
 

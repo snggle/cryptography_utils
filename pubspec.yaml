@@ -1,7 +1,7 @@
 name: cryptography_utils
 description: "Dart package containing utility methods for common cryptographic and blockchain-specific operations"
 publish_to: none
-version: 0.0.16
+version: 0.0.17
 
 environment:
   sdk: ">=3.2.6"
@@ -14,10 +14,6 @@ dependencies:
   # Implementations of SHA, MD5, and HMAC cryptographic functions.
   # https://pub.dev/packages/crypto
   crypto: 3.0.3
-
-  # Library implementing Bitcoins BIP173 (Bech32 encoding) specification in a Flutter friendly fashion.
-  # https://pub.dev/packages/bech32
-  bech32: 0.2.2
 
   # A Dart library implementing cryptographic algorithms and primitives, modeled on the BouncyCastle library.
   # https://pub.dev/packages/pointycastle

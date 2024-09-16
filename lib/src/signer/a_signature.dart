@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:codec_utils/codec_utils.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ASignature extends Equatable {
@@ -14,7 +14,7 @@ abstract class ASignature extends Equatable {
   String get base64 => base64Encode(bytes);
 
   /// Returns signature as hex string
-  String get hex => '0x${HexEncoder.encode(bytes)}';
+  String get hex => HexCodec.encode(bytes, includePrefixBool: true);
 
   /// Returns signature length
   int get length => bytes.length;

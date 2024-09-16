@@ -22,6 +22,8 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/big_int_utils.dart';
+import 'package:cryptography_utils/src/utils/bytes_utils.dart';
 
 /// The `RFC6979` class implements the deterministic generation of the ephemeral key 'k' for ECDSA signatures as outlined in RFC 6979.
 /// https://www.rfc-editor.org/rfc/rfc6979.html#section-3.2
