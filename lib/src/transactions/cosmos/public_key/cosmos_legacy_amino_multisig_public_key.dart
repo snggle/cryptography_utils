@@ -5,7 +5,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// [CosmosLegacyAminoMultisigPublicKey] specifies a public key type which nests multiple public keys and a threshold, it uses legacy amino address rules.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/crypto/multisig/keys.proto
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/crypto/multisig/keys.proto#L13
 class CosmosLegacyAminoMultisigPublicKey extends CosmosPublicKey {
   /// The threshold number of signatures required for the multisig public key.
   final int threshold;
@@ -13,6 +13,7 @@ class CosmosLegacyAminoMultisigPublicKey extends CosmosPublicKey {
   /// The list of simple public keys involved in the multisig.
   final List<CosmosSimplePublicKey> publicKeys;
 
+  /// Constructs a [CosmosLegacyAminoMultisigPublicKey] with the given key.
   const CosmosLegacyAminoMultisigPublicKey({
     required this.threshold,
     required this.publicKeys,

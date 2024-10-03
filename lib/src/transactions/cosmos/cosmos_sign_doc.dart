@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 /// [CosmosSignDoc] is the type used for generating sign bytes for SIGN_MODE_DIRECT
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L50
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L51
 class CosmosSignDoc with EquatableMixin {
   /// The processable content of the transaction.
   final CosmosTxBody txBody;

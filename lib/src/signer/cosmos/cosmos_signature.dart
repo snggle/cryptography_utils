@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
-/// Represents an Cosmos digital signature, encapsulating the typical components of an ECDSA signature used in Cosmos transactions.
+/// Represents a Cosmos digital signature, encapsulating the typical components of an ECDSA signature used in Cosmos transactions.
 class CosmosSignature extends ASignature {
   /// Part of the signature that corresponds to the x-coordinate of the ephemeral public key,
   /// serving as a representation of the signature on the elliptic curve. Typically denoted as 'r'.

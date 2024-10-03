@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 
 /// Mode info for a multisig public key
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L201
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L206
 class CosmosModeInfoMulti with ProtobufMixin, EquatableMixin {
   /// Specifies which keys within the multisig are signing
   final CosmosCompactBitArray bitArray;

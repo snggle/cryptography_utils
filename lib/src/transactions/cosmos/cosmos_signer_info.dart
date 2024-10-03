@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 /// [CosmosSignerInfo] describes the public key and signing mode of a single top-level signer.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L164
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L169
 class CosmosSignerInfo with ProtobufMixin, EquatableMixin {
   /// The public key of the signer. It is optional for accounts that already exist in state.
   /// If unset, the verifier can use the required signer address for this position and lookup the public key.

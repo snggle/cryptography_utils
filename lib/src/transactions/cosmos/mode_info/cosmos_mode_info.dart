@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 
 /// [CosmosModeInfo] describes the signing mode of a single or nested multisig signer.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L181
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L186
 class CosmosModeInfo with ProtobufMixin, EquatableMixin {
   /// Represents a single signer
   final CosmosModeInfoSingle? single;

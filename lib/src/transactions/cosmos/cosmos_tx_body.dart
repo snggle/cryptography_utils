@@ -5,13 +5,13 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:equatable/equatable.dart';
 
 /// [CosmosTxBody] is the body of a transaction that all signers sign over.
+///
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L96
 class CosmosTxBody with ProtobufMixin, EquatableMixin {
   /// List of messages to be executed. The required signers of those messages define the number and order
   /// of elements in [CosmosAuthInfo]'s [signerInfos] and [CosmosTx]'s signatures. Each required signer address is added to
   /// the list only the first time it occurs. By convention, the first required signer (usually from the first message)
   /// is referred to as the primary signer and pays the fee for the whole transaction.
-  ///
-  /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L95
   final List<ProtobufAny> messages;
 
   /// Defines any arbitrary note/comment to be added to the transaction.

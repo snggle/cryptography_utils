@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 /// [CosmosFee] includes the amount of coins paid in fees and the maximum gas to be used by the transaction.
 /// The ratio yields an effective "gasprice", which must be above some minimum to be accepted into the mempool.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L214
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L219
 class CosmosFee with ProtobufMixin, EquatableMixin {
   /// The amount of coins to be paid as a fee
   final List<CosmosCoin> amount;

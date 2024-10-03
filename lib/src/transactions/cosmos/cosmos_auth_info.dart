@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 /// [CosmosAuthInfo] describes the fee and signer modes that are used to sign a transaction.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L143
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L148
 class CosmosAuthInfo with ProtobufMixin, EquatableMixin {
   /// Defines the signing modes for the required signers.
   /// The number and order of elements must match the required signers from TxBody's messages.

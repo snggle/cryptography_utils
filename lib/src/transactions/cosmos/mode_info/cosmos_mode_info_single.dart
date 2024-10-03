@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 /// Mode info for a single signer. It is structured as a message to allow
 /// for additional fields such as locale for SIGN_MODE_TEXTUAL in the future
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L195
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L200
 class CosmosModeInfoSingle with ProtobufMixin, EquatableMixin {
   /// Signing mode of the single signer
   final CosmosSignMode signMode;

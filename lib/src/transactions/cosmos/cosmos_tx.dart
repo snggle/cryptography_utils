@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 /// [CosmosTx] is the standard type used for broadcasting transactions.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L15
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L16
 class CosmosTx with ProtobufMixin, EquatableMixin {
   /// The processable content of the transaction
   final CosmosTxBody body;

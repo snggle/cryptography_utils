@@ -6,12 +6,12 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// Data object holding the SIMPLE public key component of an account or signature.
 ///
-/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/crypto/secp256k1/keys.proto#L15
+/// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/crypto/secp256k1/keys.proto#L14
 class CosmosSimplePublicKey extends CosmosPublicKey {
   /// Represents public key bytes.
   final Uint8List key;
 
-  /// Constructs a [SimplePublicKey] with the given key.
+  /// Constructs a [CosmosSimplePublicKey] with the given key.
   const CosmosSimplePublicKey(this.key) : super(typeUrl: '/cosmos.crypto.secp256k1.PubKey');
 
   /// Converts the object to a list of bytes compatible with Protobuf.
