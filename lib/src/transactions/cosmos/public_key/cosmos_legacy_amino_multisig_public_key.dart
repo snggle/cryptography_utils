@@ -22,10 +22,10 @@ class CosmosLegacyAminoMultisigPublicKey extends CosmosPublicKey {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, threshold),
-      ...ProtobufEncoder.encode(2, publicKeys),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField?>{
+      1: ProtobufInt32(threshold),
+      2: ProtobufList(publicKeys),
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.

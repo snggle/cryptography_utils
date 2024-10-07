@@ -2,12 +2,11 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// [CosmosModeInfo] describes the signing mode of a single or nested multisig signer.
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L186
-class CosmosModeInfo with ProtobufMixin, EquatableMixin {
+class CosmosModeInfo extends AProtobufObject {
   /// Represents a single signer
   final CosmosModeInfoSingle? single;
 
@@ -32,10 +31,10 @@ class CosmosModeInfo with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, single),
-      ...ProtobufEncoder.encode(2, multi),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField?>{
+      1: single,
+      2: multi,
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.

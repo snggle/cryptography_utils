@@ -3,12 +3,11 @@ import 'dart:typed_data';
 import 'package:codec_utils/codec_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// [CosmosTx] is the standard type used for broadcasting transactions.
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L16
-class CosmosTx with ProtobufMixin, EquatableMixin {
+class CosmosTx extends AProtobufObject {
   /// The processable content of the transaction
   final CosmosTxBody body;
 
@@ -35,11 +34,11 @@ class CosmosTx with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, body),
-      ...ProtobufEncoder.encode(2, authInfo),
-      ...ProtobufEncoder.encode(3, signatures.map((CosmosSignature e) => e.bytes).toList()),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: body,
+      2: authInfo,
+      3: ProtobufList(signatures.map((CosmosSignature e) => ProtobufBytes(e.bytes)).toList()),
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.

@@ -20,7 +20,7 @@ class CosmosSignature extends ASignature {
     required this.s,
   });
 
-  /// Returns new [EthereumSignature] instance with the overridden values.
+  /// Returns new [CosmosSignature] instance with the overridden values.
   @override
   Uint8List get bytes {
     List<int> rBytes = BigIntUtils.changeToBytes(r, length: 32);

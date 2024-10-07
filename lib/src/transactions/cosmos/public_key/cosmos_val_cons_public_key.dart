@@ -18,9 +18,9 @@ class CosmosValConsPublicKey extends CosmosPublicKey {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, key),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: ProtobufBytes(key),
+    });
   }
 
   @override

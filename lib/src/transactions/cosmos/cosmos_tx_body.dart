@@ -2,12 +2,11 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// [CosmosTxBody] is the body of a transaction that all signers sign over.
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L96
-class CosmosTxBody with ProtobufMixin, EquatableMixin {
+class CosmosTxBody extends AProtobufObject {
   /// List of messages to be executed. The required signers of those messages define the number and order
   /// of elements in [CosmosAuthInfo]'s [signerInfos] and [CosmosTx]'s signatures. Each required signer address is added to
   /// the list only the first time it occurs. By convention, the first required signer (usually from the first message)
@@ -55,14 +54,14 @@ class CosmosTxBody with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, messages),
-      if (memo.isNotEmpty) ...ProtobufEncoder.encode(2, memo),
-      if (timeoutHeight != BigInt.zero) ...ProtobufEncoder.encode(3, timeoutHeight),
-      if (unordered == true) ...ProtobufEncoder.encode(4, unordered),
-      if (extensionOptions.isNotEmpty == true) ...ProtobufEncoder.encode(1023, extensionOptions),
-      if (nonCriticalExtensionOptions.isNotEmpty == true) ...ProtobufEncoder.encode(2047, nonCriticalExtensionOptions),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField?>{
+      1: ProtobufList(messages),
+      2: ProtobufString(memo),
+      3: ProtobufInt64(timeoutHeight),
+      4: ProtobufBool(unordered),
+      1023: ProtobufList(extensionOptions),
+      2047: ProtobufList(nonCriticalExtensionOptions),
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.
@@ -72,7 +71,7 @@ class CosmosTxBody with ProtobufMixin, EquatableMixin {
       'messages': messages.map((ProtobufAny e) => e.toProtoJson()).toList(),
       'memo': memo,
       'timeout_height': timeoutHeight.toString(),
-      if (unordered == true) 'unordered': unordered,
+      if (unordered) 'unordered': unordered,
       'extension_options': extensionOptions.map((ProtobufAny e) => e.toProtoJson()).toList(),
       'non_critical_extension_options': nonCriticalExtensionOptions.map((ProtobufAny e) => e.toProtoJson()).toList(),
     };

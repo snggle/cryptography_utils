@@ -1,12 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// [CosmosCoin] defines a token with a denomination and an amount.
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/base/v1beta1/coin.proto
-class CosmosCoin with ProtobufMixin, EquatableMixin {
+class CosmosCoin extends AProtobufObject {
   /// Denomination of the token
   final String denom;
 
@@ -30,10 +29,10 @@ class CosmosCoin with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, denom),
-      ...ProtobufEncoder.encode(2, amount.toString()),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: ProtobufString(denom),
+      2: ProtobufString(amount.toString()),
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.

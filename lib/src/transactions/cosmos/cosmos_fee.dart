@@ -2,13 +2,12 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/src/transactions/cosmos/cosmos_coin.dart';
-import 'package:equatable/equatable.dart';
 
 /// [CosmosFee] includes the amount of coins paid in fees and the maximum gas to be used by the transaction.
 /// The ratio yields an effective "gasprice", which must be above some minimum to be accepted into the mempool.
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L219
-class CosmosFee with ProtobufMixin, EquatableMixin {
+class CosmosFee extends AProtobufObject {
   /// The amount of coins to be paid as a fee
   final List<CosmosCoin> amount;
 
@@ -27,8 +26,8 @@ class CosmosFee with ProtobufMixin, EquatableMixin {
 
   /// Constructs a [CosmosFee] with the provided amount, gas limit, payer, and granter.
   CosmosFee({
-    required this.gasLimit,
     required this.amount,
+    required this.gasLimit,
     this.payer,
     this.granter,
   });
@@ -36,20 +35,20 @@ class CosmosFee with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, amount.toProtoBytes()),
-      ...ProtobufEncoder.encode(2, gasLimit),
-      ...ProtobufEncoder.encode(3, payer),
-      ...ProtobufEncoder.encode(4, granter),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField?>{
+      1: ProtobufList(amount),
+      2: ProtobufInt64(gasLimit),
+      3: payer != null ? ProtobufString(payer!) : null,
+      4: granter != null ? ProtobufString(granter!) : null,
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.
   @override
   Map<String, dynamic> toProtoJson() {
     return <String, dynamic>{
-      'gas_limit': gasLimit.toString(),
       'amount': amount.map((CosmosCoin e) => e.toProtoJson()).toList(),
+      'gas_limit': gasLimit.toString(),
       'payer': payer,
       'granter': granter,
     };

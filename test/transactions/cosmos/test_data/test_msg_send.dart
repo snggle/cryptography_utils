@@ -24,11 +24,11 @@ class TestMsgSend extends ProtobufAny {
 
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, fromAddress),
-      ...ProtobufEncoder.encode(2, toAddress),
-      ...ProtobufEncoder.encode(3, amount),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: ProtobufString(fromAddress),
+      2: ProtobufString(toAddress),
+      3: ProtobufList(amount),
+    });
   }
 
   @override

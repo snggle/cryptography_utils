@@ -48,7 +48,7 @@ void main() {
     ),
   );
 
-  group('Tests of EthereumVerifier.isSignatureValid()', () {
+  group('Tests of CosmosVerifier.isSignatureValid()', () {
     test('Should [return TRUE] if [signature VALID]', () {
       // Arrange
       CosmosSignature actualCosmosSignature = CosmosSignature(

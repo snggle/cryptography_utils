@@ -32,12 +32,12 @@ class CosmosSignDoc with EquatableMixin {
 
   /// Converts the object to a list of bytes compatible with Protobuf.
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, txBody),
-      ...ProtobufEncoder.encode(2, authInfo),
-      ...ProtobufEncoder.encode(3, chainId),
-      ...ProtobufEncoder.encode(4, accountNumber),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: txBody,
+      2: authInfo,
+      3: ProtobufString(chainId),
+      4: ProtobufInt32(accountNumber),
+    });
   }
 
   /// Returns the sign bytes for SIGN_MODE_DIRECT

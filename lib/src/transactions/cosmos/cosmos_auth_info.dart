@@ -3,12 +3,11 @@ import 'dart:typed_data';
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/src/transactions/cosmos/cosmos_fee.dart';
 import 'package:cryptography_utils/src/transactions/cosmos/cosmos_signer_info.dart';
-import 'package:equatable/equatable.dart';
 
 /// [CosmosAuthInfo] describes the fee and signer modes that are used to sign a transaction.
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L148
-class CosmosAuthInfo with ProtobufMixin, EquatableMixin {
+class CosmosAuthInfo extends AProtobufObject {
   /// Defines the signing modes for the required signers.
   /// The number and order of elements must match the required signers from TxBody's messages.
   /// The first element is the primary signer and the one which pays the fee.
@@ -29,10 +28,10 @@ class CosmosAuthInfo with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, signerInfos),
-      ...ProtobufEncoder.encode(2, fee),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: ProtobufList(signerInfos),
+      2: fee,
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.

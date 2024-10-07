@@ -2,12 +2,11 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// Mode info for a multisig public key
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L206
-class CosmosModeInfoMulti with ProtobufMixin, EquatableMixin {
+class CosmosModeInfoMulti extends AProtobufObject {
   /// Specifies which keys within the multisig are signing
   final CosmosCompactBitArray bitArray;
 
@@ -23,10 +22,10 @@ class CosmosModeInfoMulti with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, bitArray),
-      ...ProtobufEncoder.encode(2, modeInfos),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: bitArray,
+      2: ProtobufList(modeInfos),
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.

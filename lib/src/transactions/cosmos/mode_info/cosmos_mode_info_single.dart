@@ -2,13 +2,12 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:equatable/equatable.dart';
 
 /// Mode info for a single signer. It is structured as a message to allow
 /// for additional fields such as locale for SIGN_MODE_TEXTUAL in the future
 ///
 /// https://github.com/cosmos/cosmos-sdk/blob/main/proto/cosmos/tx/v1beta1/tx.proto#L200
-class CosmosModeInfoSingle with ProtobufMixin, EquatableMixin {
+class CosmosModeInfoSingle extends AProtobufObject {
   /// Signing mode of the single signer
   final CosmosSignMode signMode;
 
@@ -18,9 +17,9 @@ class CosmosModeInfoSingle with ProtobufMixin, EquatableMixin {
   /// Converts the object to a list of bytes compatible with Protobuf.
   @override
   Uint8List toProtoBytes() {
-    return Uint8List.fromList(<int>[
-      ...ProtobufEncoder.encode(1, signMode),
-    ]);
+    return ProtobufEncoder.encode(<int, AProtobufField>{
+      1: signMode,
+    });
   }
 
   /// Converts the object to a JSON object compatible with Protobuf.
