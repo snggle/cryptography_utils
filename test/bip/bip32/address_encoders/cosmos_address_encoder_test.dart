@@ -24,6 +24,21 @@ void main() {
     ),
   );
 
+  group('Tests of CosmosAddressEncoder.serializeType()', () {
+    test('Should [return "cosmos(cosmos)"] for CosmosAddressEncoder with "cosmos" hrp', () {
+      // Arrange
+      CosmosAddressEncoder actualCosmosAddressEncoder = CosmosAddressEncoder(hrp: 'cosmos');
+
+      // Act
+      String actualSerializedType = actualCosmosAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'cosmos(cosmos)';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+  });
+
   group('Tests of CosmosAddressEncoder.encodePublicKey()', () {
     test('Should [return Cosmos address] for given public key (cosmos)', () {
       // Arrange

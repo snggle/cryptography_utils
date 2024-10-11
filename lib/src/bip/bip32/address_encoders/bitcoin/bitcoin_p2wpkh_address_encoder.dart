@@ -9,12 +9,18 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 /// P2WPKH addresses are encoded using the Bech32 (Segwit) algorithm, which is specified in BIP-0173 and BIP-0350:
 /// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
 /// https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki
-class BitcoinP2WPKHAddressEncoder implements IBlockchainAddressEncoder<Secp256k1PublicKey> {
+class BitcoinP2WPKHAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKey> {
   static const int _witnessVersion = 0;
 
   final String hrp;
 
   BitcoinP2WPKHAddressEncoder({required this.hrp});
+
+  @override
+  AddressEncoderType get addressEncoderType => AddressEncoderType.bitcoinP2WPKH;
+
+  @override
+  List<String> get args => <String>[hrp];
 
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
