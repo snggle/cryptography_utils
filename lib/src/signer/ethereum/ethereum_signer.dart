@@ -24,6 +24,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
 
 /// Provides functionality for creating Ethereum-compatible digital signatures using an ECDSA private key.
 /// This class supports signing arbitrary messages in a manner that is compliant with Ethereum's standard for
@@ -54,7 +55,7 @@ class EthereumSigner {
     ECDSASigner ecdsaSigner = ECDSASigner(hashFunction: sha256, ecPrivateKey: _ecPrivateKey);
     EthereumVerifier ethereumVerifier = EthereumVerifier(_ecPrivateKey.ecPublicKey);
 
-    Uint8List hash = hashMessage ? Keccak(256).process(digest) : digest;
+    Uint8List hash = hashMessage ? Keccak(KeccakBitLength.keccak256).process(digest) : digest;
     if (hash.length != _ecPrivateKey.G.curve.baselen) {
       throw FormatException('Invalid digest: Digest length must be ${_ecPrivateKey.G.curve.baselen} got ${digest.length}');
     }

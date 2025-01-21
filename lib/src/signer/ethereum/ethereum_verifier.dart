@@ -23,6 +23,7 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/cdsa/ecdsa/signer/ecdsa_verifier.dart';
+import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
 
 /// Provides functionality for verifying Ethereum-compatible digital signatures using an ECDSA public key.
 /// This class is used to confirm that a given signature corresponds to a specific message and was created using
@@ -40,7 +41,7 @@ class EthereumVerifier {
   /// rather than a precomputed hash was signed.
   bool isSignatureValid(Uint8List digest, EthereumSignature ethereumSignature, {bool hashMessage = true}) {
     Uint8List signatureBytes = ethereumSignature.bytes.sublist(0, EthereumSignature.ethSignatureLength);
-    Uint8List hashDigest = hashMessage ? Keccak(256).process(digest) : digest;
+    Uint8List hashDigest = hashMessage ? Keccak(KeccakBitLength.keccak256).process(digest) : digest;
 
     ECDSAVerifier ecdsaVerifier = ECDSAVerifier(hashFunction: sha256, ecPublicKey: _ecPublicKey);
     ECSignature ecSignature = ECSignature.fromBytes(signatureBytes, ecCurve: _ecPublicKey.G.curve);
