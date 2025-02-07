@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
 
 /// The [EthereumAddressEncoder] class is designed for encoding addresses in accordance with the Ethereum network.
 /// Ethereum uses the Keccak-256 hash function to generate addresses from public keys, resulting in 40 hexadecimal characters prefixed with "0x".
@@ -24,7 +25,7 @@ class EthereumAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKe
 
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
-    Uint8List keccakHash = Keccak(256).process(publicKey.uncompressed.sublist(1));
+    Uint8List keccakHash = Keccak(KeccakBitLength.keccak256).process(publicKey.uncompressed.sublist(1));
     String keccakHex = HexCodec.encode(keccakHash, lowercaseBool: true);
 
     String address = keccakHex.substring(_startByte);
@@ -36,7 +37,7 @@ class EthereumAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKe
 
   static String _wrapWithChecksum(String address) {
     Uint8List addressBytes = utf8.encode(address.toLowerCase());
-    Uint8List checksumBytes = Keccak(256).process(addressBytes);
+    Uint8List checksumBytes = Keccak(KeccakBitLength.keccak256).process(addressBytes);
     String checksumHex = HexCodec.encode(checksumBytes, lowercaseBool: true);
 
     List<String> addressWithChecksum = address.split('').asMap().entries.map((MapEntry<int, String> entry) {

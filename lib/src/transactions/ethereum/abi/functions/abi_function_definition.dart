@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/keccak/keccak.dart';
+import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/functions/abi_param_definition.dart';
 import 'package:cryptography_utils/src/transactions/ethereum/abi/solidity_types/solidity_int_type.dart';
 import 'package:equatable/equatable.dart';
@@ -78,7 +79,7 @@ class AbiFunctionDefinition extends Equatable {
   /// The function selector, which is the first 4 bytes of the Keccak-256 hash of the function signature.
   /// This is used to identify the function in transaction data.
   String get functionSelector {
-    Uint8List hash = Keccak(256).process(utf8.encode(functionSignature));
+    Uint8List hash = Keccak(KeccakBitLength.keccak256).process(utf8.encode(functionSignature));
     return HexCodec.encode(hash).substring(0, 8);
   }
 
