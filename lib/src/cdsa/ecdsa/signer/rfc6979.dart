@@ -20,15 +20,15 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/sha/hash/a_hash.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:cryptography_utils/src/utils/bytes_utils.dart';
 
 /// The `RFC6979` class implements the deterministic generation of the ephemeral key 'k' for ECDSA signatures as outlined in RFC 6979.
 /// https://www.rfc-editor.org/rfc/rfc6979.html#section-3.2
 class RFC6979 {
-  late final Hash _hashFunction;
+  late final AHash _hashFunction;
   late final int _hLen;
 
   late final List<int> _m;
@@ -49,7 +49,7 @@ class RFC6979 {
     required BigInt d,
 
     /// RFC6979 H parameter
-    required Hash hashFunction,
+    required AHash hashFunction,
   }) {
     _m = m;
     _n = n;

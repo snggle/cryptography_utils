@@ -20,7 +20,6 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/cdsa/ecdsa/signer/ecdsa_verifier.dart';
 import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
@@ -43,7 +42,7 @@ class EthereumVerifier {
     Uint8List signatureBytes = ethereumSignature.bytes.sublist(0, EthereumSignature.ethSignatureLength);
     Uint8List hashDigest = hashMessage ? Keccak(KeccakBitLength.keccak256).process(digest) : digest;
 
-    ECDSAVerifier ecdsaVerifier = ECDSAVerifier(hashFunction: sha256, ecPublicKey: _ecPublicKey);
+    ECDSAVerifier ecdsaVerifier = ECDSAVerifier(hashFunction: Sha256(), ecPublicKey: _ecPublicKey);
     ECSignature ecSignature = ECSignature.fromBytes(signatureBytes, ecCurve: _ecPublicKey.G.curve);
     return ecdsaVerifier.isSignatureValid(hashDigest, ecSignature);
   }

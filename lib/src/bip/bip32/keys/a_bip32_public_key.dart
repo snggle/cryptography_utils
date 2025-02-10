@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:equatable/equatable.dart';
@@ -32,7 +31,7 @@ abstract class ABip32PublicKey extends Equatable {
   });
 
   static BigInt calcFingerprint(Uint8List publicKeyBytes) {
-    Uint8List sha256Fingerprint = Uint8List.fromList(sha256.convert(publicKeyBytes).bytes);
+    Uint8List sha256Fingerprint = Sha256().convert(publicKeyBytes).byteList;
     Uint8List ripemd160Fingerprint = Uint8List.fromList(Ripemd160().process(sha256Fingerprint));
     return BigIntUtils.decode(ripemd160Fingerprint.sublist(0, 4));
   }

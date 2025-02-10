@@ -31,8 +31,8 @@
 
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/sha/hash/a_hash.dart';
 
 /// The [PBKDF2] class utilizes the PBKDF2 (Password-Based Key Derivation Function 2) hashing algorithm
 /// to generate secure cryptographic keys from passwords. It is frequently applied for hashing passwords
@@ -40,13 +40,13 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 class PBKDF2 {
   final int iterations;
   final int outputLength;
-  final Hash hash;
+  final AHash hash;
 
   PBKDF2({
     this.iterations = 2048,
     this.outputLength = 64,
-    this.hash = sha512,
-  });
+    AHash? hash,
+  }) : hash = hash ?? Sha512();
 
   /// Derives a cryptographic key from the provided password and salt using the PBKDF2 algorithm.
   Uint8List process(Uint8List password, Uint8List salt) {

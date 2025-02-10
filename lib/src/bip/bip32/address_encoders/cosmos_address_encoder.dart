@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// The [CosmosAddressEncoder] class is designed for encoding addresses in accordance with the Cosmos network.
@@ -21,7 +20,7 @@ class CosmosAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKey>
 
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
-    Uint8List publicKeyFingerprint = Uint8List.fromList(sha256.convert(publicKey.compressed).bytes);
+    Uint8List publicKeyFingerprint = Sha256().convert(publicKey.compressed).byteList;
     Uint8List publicKeyHash = Ripemd160().process(publicKeyFingerprint);
 
     return Bech32Codec.encode(Bech32Pair(hrp: hrp, data: publicKeyHash));
