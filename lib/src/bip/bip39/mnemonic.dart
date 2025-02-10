@@ -1,10 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 import 'package:cryptography_utils/src/utils/binary_utils.dart';
 import 'package:cryptography_utils/src/utils/secure_random.dart';
-
 import 'package:equatable/equatable.dart';
 
 /// The [Mnemonic] class is designed for handling mnemonic phrases, which are human-readable sequences of words used to generate and recover cryptographic keys.
@@ -77,7 +76,7 @@ class Mnemonic extends Equatable {
   static String _calculateChecksum(Uint8List entropy) {
     int entropyBitsLength = entropy.length * 8;
     int checksumSize = entropyBitsLength ~/ 32;
-    List<int> hash = sha256.convert(entropy).bytes;
+    List<int> hash = Sha256().convert(entropy).bytesList;
 
     return BinaryUtils.bytesToBinary(hash).substring(0, checksumSize);
   }

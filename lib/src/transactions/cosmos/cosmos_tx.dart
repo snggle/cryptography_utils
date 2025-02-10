@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 
 /// [CosmosTx] is the standard type used for broadcasting transactions.
 ///
@@ -53,7 +53,7 @@ class CosmosTx extends AProtobufObject {
 
   /// Returns the transaction hash.
   String getTransactionHash() {
-    return HexCodec.encode(sha256.convert(toProtoBytes()).bytes, includePrefixBool: true);
+    return HexCodec.encode(Sha256().convert(toProtoBytes()).bytesList, includePrefixBool: true);
   }
 
   @override

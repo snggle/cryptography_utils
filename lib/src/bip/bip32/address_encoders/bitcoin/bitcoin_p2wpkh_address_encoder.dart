@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
+
 
 /// The [BitcoinP2WPKHAddressEncoder] class is designed for encoding P2WPKH (Pay-to-Witness-Public-Key-Hash) addresses in accordance with Bitcoin.
 /// P2SH addresses utilize the RIPEMD-160 and SHA-256 hash functions to generate addresses from a script's hash.
@@ -24,7 +25,7 @@ class BitcoinP2WPKHAddressEncoder extends ABlockchainAddressEncoder<Secp256k1Pub
 
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
-    Uint8List publicKeyFingerprint = Uint8List.fromList(sha256.convert(publicKey.compressed).bytes);
+    Uint8List publicKeyFingerprint = Uint8List.fromList(Sha256().convert(publicKey.compressed).bytesList);
     Uint8List publicKeyHash = Ripemd160().process(publicKeyFingerprint);
 
     return SegwitBech32Codec.encode(hrp, _witnessVersion, publicKeyHash);

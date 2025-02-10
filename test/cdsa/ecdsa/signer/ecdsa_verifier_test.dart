@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
+// import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/cdsa/ecdsa/signer/ecdsa_verifier.dart';
+import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -28,7 +29,7 @@ void main() {
 
       // Act
       bool actualSignatureValidBool = ECDSAVerifier(
-        hashFunction: sha256,
+        hashFunction: Sha256(),
         ecPublicKey: actualECPublicKey,
       ).isSignatureValid(actualMessage, actualECSignature);
 
@@ -57,7 +58,7 @@ void main() {
 
       // Act
       bool actualSignatureValidBool = ECDSAVerifier(
-        hashFunction: sha256,
+        hashFunction: Sha256(),
         ecPublicKey: actualECPublicKey,
       ).isSignatureValid(actualMessage, actualECSignature);
 

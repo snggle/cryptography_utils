@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -16,7 +16,7 @@ void main() {
 
       // Act
       ECSignature actualECSignature = ECDSASigner(
-        hashFunction: sha256,
+        hashFunction: Sha256(),
         ecPrivateKey: actualECPrivateKey,
       ).sign(actualMessage);
 
