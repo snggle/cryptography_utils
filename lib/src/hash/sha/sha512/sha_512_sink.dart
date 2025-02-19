@@ -33,9 +33,6 @@ import 'package:cryptography_utils/src/hash/sha/sha512/a_sha_64bit_sink.dart';
 
 ///[Sha512Sink] initializes the digest state with predefined constants and specifies that the digest length is 16 bytes.
 class Sha512Sink extends ASha64BitSink {
-  @override
-  final int digestBytes = 16;
-
   Sha512Sink(Sink<Digest> sink)
       : super(
           sink,

@@ -125,7 +125,8 @@ class Secp256k1Derivator extends ALegacyDerivator<Secp256k1PrivateKey> {
       throw ArgumentError('Cannot derive hardened key without chain code');
     }
 
-    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...parentSecp256k1PrivateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
+    Uint8List data =
+        Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...parentSecp256k1PrivateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
     Uint8List hmacHash = HMAC(hash: Sha512(), key: parentBip32KeyMetadata.chainCode!).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);

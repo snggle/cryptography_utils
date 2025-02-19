@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-// import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 import 'package:cryptography_utils/src/hash/sha/sha512/sha512.dart';
@@ -102,7 +101,12 @@ void main() {
     test('Should [return HMAC digest] constructed using SHA256 algorithm (key length < digest size)', () {
       // Arrange
       Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
-      List<Uint8List> actualDataChunks = <Uint8List>[base64Decode('RE9HRQ=='), base64Decode('V0lMTA=='), base64Decode('UFVNUA=='), base64Decode('U09PTg==')];
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
 
       // Act
       Uint8List actualHMACResult = HMAC(hash: Sha256(), key: actualHMACKey).processChunks(actualDataChunks);
@@ -116,7 +120,12 @@ void main() {
     test('Should [return HMAC digest] constructed using SHA256 algorithm (key length == digest size)', () {
       // Arrange
       Uint8List actualHMACKey = base64Decode('BucEJucuy4B7Xo9OvwvDO0Z3HokXk3DjIQC51BiJGdU=');
-      List<Uint8List> actualDataChunks = <Uint8List>[base64Decode('RE9HRQ=='), base64Decode('V0lMTA=='), base64Decode('UFVNUA=='), base64Decode('U09PTg==')];
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
 
       // Act
       Uint8List actualHMACResult = HMAC(hash: Sha256(), key: actualHMACKey).processChunks(actualDataChunks);
@@ -131,7 +140,12 @@ void main() {
       // Arrange
       Uint8List actualHMACKey = base64Decode(
           'ZXhjbHVkZSB3ZXN0IG5vYmxlIHB1cml0eSBiZXlvbmQgaWxsbmVzcyBzb3VwIHJlc2VtYmxlIGF0b20gb2J2aW91cyBtZXRob2QgZmVzdGl2YWwgbmFtZSBpZGVudGlmeSBlbGVwaGFudCBzYXRpc2Z5IHdlZGRpbmcgaG9uZXkgY2VydGFpbiB0b2UgZXJvZGU=');
-      List<Uint8List> actualDataChunks = <Uint8List>[base64Decode('RE9HRQ=='), base64Decode('V0lMTA=='), base64Decode('UFVNUA=='), base64Decode('U09PTg==')];
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
 
       // Act
       Uint8List actualHMACResult = HMAC(hash: Sha256(), key: actualHMACKey).processChunks(actualDataChunks);
@@ -147,7 +161,12 @@ void main() {
     test('Should [return HMAC digest] constructed using SHA512 algorithm (key length < digest size)', () {
       // Arrange
       Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
-      List<Uint8List> actualDataChunks = <Uint8List>[base64Decode('RE9HRQ=='), base64Decode('V0lMTA=='), base64Decode('UFVNUA=='), base64Decode('U09PTg==')];
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
 
       // Act
       Uint8List actualHMACResult = HMAC(hash: Sha512(), key: actualHMACKey).processChunks(actualDataChunks);
@@ -161,7 +180,12 @@ void main() {
     test('Should [return HMAC digest] constructed using SHA512 algorithm (key length == digest size)', () {
       // Arrange
       Uint8List actualHMACKey = base64Decode('YLx7mbfIG2DJhqGhJdI0TgJGcDPyouYG/jURk8BZNr5N706v+vpVknd9X4as7jVrOkgBHFOkLmWuGSdWXTkqLw==');
-      List<Uint8List> actualDataChunks = <Uint8List>[base64Decode('RE9HRQ=='), base64Decode('V0lMTA=='), base64Decode('UFVNUA=='), base64Decode('U09PTg==')];
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
 
       // Act
       Uint8List actualHMACResult = HMAC(hash: Sha512(), key: actualHMACKey).processChunks(actualDataChunks);
@@ -176,7 +200,12 @@ void main() {
       // Arrange
       Uint8List actualHMACKey = base64Decode(
           'ZXhjbHVkZSB3ZXN0IG5vYmxlIHB1cml0eSBiZXlvbmQgaWxsbmVzcyBzb3VwIHJlc2VtYmxlIGF0b20gb2J2aW91cyBtZXRob2QgZmVzdGl2YWwgbmFtZSBpZGVudGlmeSBlbGVwaGFudCBzYXRpc2Z5IHdlZGRpbmcgaG9uZXkgY2VydGFpbiB0b2UgZXJvZGU=');
-      List<Uint8List> actualDataChunks = <Uint8List>[base64Decode('RE9HRQ=='), base64Decode('V0lMTA=='), base64Decode('UFVNUA=='), base64Decode('U09PTg==')];
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
 
       // Act
       Uint8List actualHMACResult = HMAC(hash: Sha512(), key: actualHMACKey).processChunks(actualDataChunks);

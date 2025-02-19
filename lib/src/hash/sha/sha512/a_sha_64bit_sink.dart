@@ -54,15 +54,15 @@ abstract class ASha64BitSink extends AHashSink {
   static const int _tmp4Index = _tmp3Index + 2;
   static const int _tmp5Index = _tmp4Index + 2;
 
-  int get digestBytes;
+  final Uint32List _digestUint32List;
+  final Uint32List _extendedUint32List = Uint32List(160);
+
+  static const int digestBytes = 16;
 
   @override
   Uint32List get digestUint32List {
     return Uint32List.view(_digestUint32List.buffer, 0, digestBytes);
   }
-
-  final Uint32List _digestUint32List;
-  final Uint32List _extendedUint32List = Uint32List(160);
 
   final Uint32List _roundConstUint32List = Uint32List.fromList(<int>[
     0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd, //

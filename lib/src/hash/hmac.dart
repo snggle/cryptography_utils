@@ -2,8 +2,6 @@ import 'dart:typed_data';
 
 import 'package:cryptography_utils/src/hash/sha/hash/a_hash.dart';
 
-// import 'package:crypto/crypto.dart';
-
 /// Hash-based Message Authentication Code.
 /// It computes a MAC using a given hash function with a secret key and input data.
 class HMAC {

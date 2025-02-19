@@ -18,11 +18,12 @@ void main() {
       Digest actualValueDigest = actualDigestSink.valueDigest;
 
       // Assert
-      Digest expectedValueDigest = actualDigest2;
+      Digest expectedValueDigest = actualDigest1;
 
       expect(actualValueDigest, expectedValueDigest);
     });
   });
+
   group('Test of DigestSink.close()', () {
     test('Should [return valueDigest] constructed from given data', () {
       // Arrange

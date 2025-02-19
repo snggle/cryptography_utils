@@ -38,11 +38,11 @@ abstract class AHash extends Converter<List<int>, Digest> {
 
   @override
   Digest convert(List<int> input) {
-    DigestSink innerSink = DigestSink();
-    startChunkedConversion(innerSink)
+    DigestSink digestSink = DigestSink();
+    startChunkedConversion(digestSink)
       ..add(input)
       ..close();
-    return innerSink.valueDigest;
+    return digestSink.valueDigest;
   }
 
   @override

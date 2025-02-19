@@ -42,7 +42,7 @@ class Sha256 extends AHash {
   Sha256._();
 
   @override
-  final int blockSize = 16 * _bytesPerWord;
+  int get blockSize => 16 * _bytesPerWord;
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) => ByteConversionSink.from(Sha256Sink(sink));

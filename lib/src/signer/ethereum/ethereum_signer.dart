@@ -22,10 +22,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-// import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
-
 import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 
 /// Provides functionality for creating Ethereum-compatible digital signatures using an ECDSA private key.

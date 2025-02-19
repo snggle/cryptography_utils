@@ -4,7 +4,6 @@ import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 
-
 /// The [BitcoinP2WPKHAddressEncoder] class is designed for encoding P2WPKH (Pay-to-Witness-Public-Key-Hash) addresses in accordance with Bitcoin.
 /// P2SH addresses utilize the RIPEMD-160 and SHA-256 hash functions to generate addresses from a script's hash.
 /// P2WPKH addresses are encoded using the Bech32 (Segwit) algorithm, which is specified in BIP-0173 and BIP-0350:

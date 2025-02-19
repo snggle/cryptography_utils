@@ -31,7 +31,6 @@
 
 import 'dart:typed_data';
 
-// import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/hash/sha/hash/a_hash.dart';
 import 'package:cryptography_utils/src/hash/sha/sha512/sha512.dart';
@@ -48,7 +47,7 @@ class PBKDF2 {
     this.iterations = 2048,
     this.outputLength = 64,
     AHash? hash,
-  }): hash = hash ?? Sha512();
+  }) : hash = hash ?? Sha512();
 
   /// Derives a cryptographic key from the provided password and salt using the PBKDF2 algorithm.
   Uint8List process(Uint8List password, Uint8List salt) {

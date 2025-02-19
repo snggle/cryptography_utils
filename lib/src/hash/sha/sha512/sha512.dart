@@ -42,8 +42,9 @@ class Sha512 extends AHash {
   Sha512._();
 
   @override
-  final int blockSize = 32 * _bytesPerWord;
+  int get blockSize  => 32 * _bytesPerWord;
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) => ByteConversionSink.from(Sha512Sink(sink));
+
 }

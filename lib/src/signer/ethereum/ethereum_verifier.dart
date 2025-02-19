@@ -20,11 +20,9 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import 'dart:typed_data';
 
-// import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/cdsa/ecdsa/signer/ecdsa_verifier.dart';
 import 'package:cryptography_utils/src/hash/keccak/keccak_bit_length.dart';
-
 import 'package:cryptography_utils/src/hash/sha/sha256/sha256.dart';
 
 /// Provides functionality for verifying Ethereum-compatible digital signatures using an ECDSA public key.

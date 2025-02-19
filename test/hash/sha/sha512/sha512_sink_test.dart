@@ -1,84 +1,58 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/src/hash/sha/hash/digest.dart';
 import 'package:cryptography_utils/src/hash/sha/hash/digest_sink.dart';
 import 'package:cryptography_utils/src/hash/sha/sha512/sha_512_sink.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
 // ignore_for_file: cascade_invocations
-
 void main() {
   group('Tests of Sha512Sink', () {
     test('Should [return hash] constructed from given data', () {
       // Arrange
-      Uint8List actualDataToHash = utf8.encode('');
+      String actualDataToHash = '123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+      Uint32List actualUint32List = Uint32List.fromList(actualDataToHash.codeUnits);
 
       // Act
       DigestSink actualDigestSink = DigestSink();
       Sha512Sink actualSha512Sink = Sha512Sink(actualDigestSink);
-      actualSha512Sink.add(actualDataToHash);
-      actualSha512Sink.close();
-      Digest actualDigest = actualDigestSink.valueDigest;
-      String actualDigestString = actualDigest.bytesList.map((int b) => b.toRadixString(16).padLeft(2, '0')).join();
+      actualSha512Sink.updateHash(actualUint32List);
+      Uint32List actualDigestUint32List = actualSha512Sink.digestUint32List;
 
       // Assert
-      String expectedDigestString =
-          'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e';
+      Uint32List expectedDigestUint32List = Uint32List.fromList(<int>[
+        3492118963, 1627087956, 3150871713, 3630638959, //
+        3359712394, 1593454716, 1080073699, 2608846795,
+        1817179099, 2060845797, 3341868678, 1197038725,
+        1082521416, 2706134826, 1898010856, 931400256
+      ]);
 
-      expect(actualDigestString, expectedDigestString);
-    });
-
-    test('Should [return hash] constructed from given data', () {
-      // Arrange
-      Uint8List actualInput = utf8.encode('123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~');
-
-      // Act
-      DigestSink actualDigestSink = DigestSink();
-      Sha512Sink actualSha512Sink = Sha512Sink(actualDigestSink);
-      actualSha512Sink.add(actualInput);
-      actualSha512Sink.close();
-      Digest actualDigest = actualDigestSink.valueDigest;
-      String actualDigestString = actualDigest.bytesList.map((int b) => b.toRadixString(16).padLeft(2, '0')).join();
-
-      // Assert
-      String expectedDigestString =
-          'fa46e4fb04d1ff783cf57fe1de9de9e15f60eb6bac1d458cfb1fdaa851af26d194a804ae7bd0055a6e54734f20e84efa1f13b70ec9077489ee265cd1a959cc49';
-
-      expect(actualDigestString, expectedDigestString);
+      expect(actualDigestUint32List, expectedDigestUint32List);
     });
   });
 
-  group('ASha64BitSink', () {
+  group('Tests of ASha64BitSink()', () {
     test('Should [return hash] constructed from given data', () {
       // Arrange
-      final Uint32List chunk = Uint32List.fromList(<int>[
-        0x61626380, 0x00000000, 0x00000000, 0x00000000, //
-        0x00000000, 0x00000000, 0x00000000, 0x00000000,
-        0x00000000, 0x00000000, 0x00000000, 0x00000000,
-        0x00000000, 0x00000000, 0x00000000, 0x00000018,
-        0x00000000, 0x00000000, 0x00000000, 0x00000000,
-        0x00000000, 0x00000000, 0x00000000, 0x00000000,
-        0x00000000, 0x00000000, 0x00000000, 0x00000000,
-        0x00000000, 0x00000000, 0x00000000, 0x00000000
-      ]);
+      String actualInput = '123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+      Uint32List actualUint32List = Uint32List.fromList(actualInput.codeUnits);
 
       // Act
       DigestSink digestSink = DigestSink();
       Sha512Sink sha512Sink = Sha512Sink(digestSink);
-      sha512Sink.updateHash(chunk);
-      final Uint32List actualUint32List = sha512Sink.digestUint32List;
+      sha512Sink.updateHash(actualUint32List);
+
+      Uint32List actualDigestUint32List = sha512Sink.digestUint32List;
 
       // Assert
-      final Uint32List expectedUint32List = Uint32List.fromList(<int>[
-        3711768430, 2901526140, 2084514828, 2704861844, //
-        1981292127, 2838781325, 1108973179, 3811054921,
-        4159122938, 3247063908, 1578758462, 3138410666,
-        2247727312, 28743375, 471685, 3748495704
+      Uint32List expectedUint32List = Uint32List.fromList(<int>[
+        3492118963, 1627087956, 3150871713, 3630638959, //
+        3359712394, 1593454716, 1080073699, 2608846795,
+        1817179099, 2060845797, 3341868678, 1197038725,
+        1082521416, 2706134826, 1898010856, 931400256
       ]);
 
-      expect(actualUint32List, expectedUint32List);
+      expect(actualDigestUint32List, expectedUint32List);
     });
   });
 }
