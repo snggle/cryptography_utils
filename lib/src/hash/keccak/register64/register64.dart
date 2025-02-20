@@ -18,6 +18,8 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 
 ///[Register64] serve as abstractions for managing the 64-bit lanes and the state matrix of the algorithm, ensuring clean and modular handling
@@ -25,6 +27,7 @@ import 'package:equatable/equatable.dart';
 class Register64 with EquatableMixin {
   static const int _mask5Bits = 0x1F;
   static const int _mask6Bits = 0x3F;
+  static const int _mask8Bits = 0xFF;
   static const int _mask32Bits = 0xFFFFFFFF;
 
   static const List<int> _mask32BitsList = <int>[
@@ -74,6 +77,18 @@ class Register64 with EquatableMixin {
 
   int get upperHalf => _upperHalf;
 
+  int clip8(int input) {
+    return input & _mask8Bits;
+  }
+
+  int clip32(int input) {
+    return input & _mask32Bits;
+  }
+
+  int cRotationLeft32(int input, int offset) {
+    return _rotationLeft32Bits(clip32(input), offset);
+  }
+
   void setInt(int initialValue, [int? lower32Bits]) {
     if (lower32Bits != null) {
       _upperHalf = initialValue;
@@ -87,6 +102,11 @@ class Register64 with EquatableMixin {
   void setRegister64(Register64 initialRegister64) {
     _upperHalf = initialRegister64._upperHalf;
     _lowerHalf = initialRegister64._lowerHalf;
+  }
+
+  void packInput32(int x, Uint8List outputUint8List, int offset, Endian endian) {
+    ByteData.view(outputUint8List.buffer, outputUint8List.offsetInBytes, outputUint8List.length)
+        .setUint32(offset + outputUint8List.offsetInBytes, x, endian);
   }
 
   void performAnd(Register64 otherRegister64) {
@@ -107,6 +127,11 @@ class Register64 with EquatableMixin {
   void performXor(Register64 otherRegister64) {
     _upperHalf ^= otherRegister64._upperHalf;
     _lowerHalf ^= otherRegister64._lowerHalf;
+  }
+
+  int rotationLeft32Bits(int input, int offset) {
+    int maskedOffset = offset & _mask5Bits;
+    return _shiftLeft32Bits(input, maskedOffset) | (input >> (32 - maskedOffset));
   }
 
   void shiftLeft(int shiftValue) {
@@ -141,6 +166,21 @@ class Register64 with EquatableMixin {
     int maskedN = shiftValue & _mask5Bits;
     int maskedX = chunk32Bits & _mask32BitsList[maskedN];
     return (maskedX << maskedN) & _mask32Bits;
+  }
+
+  void sumInt(int input) {
+    int maskedInput = input & _mask32Bits;
+    int sumLowerHalf = _lowerHalf + maskedInput;
+    _lowerHalf = sumLowerHalf & _mask32Bits;
+    if (sumLowerHalf != _lowerHalf) {
+      _upperHalf++;
+      _upperHalf &= _mask32Bits;
+    }
+  }
+
+  int unpackInput32(Uint8List input, int offset, Endian endian) {
+    ByteData byteData = ByteData.view(input.buffer, input.offsetInBytes, input.length);
+    return byteData.getUint32(offset, endian);
   }
 
   @override

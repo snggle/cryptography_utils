@@ -9,6 +9,7 @@ export 'src/hash/ripemd160.dart';
 export 'src/hash/sha/hash/digest.dart';
 export 'src/hash/sha/sha256/sha256.dart';
 export 'src/hash/sha/sha512/sha512.dart';
+export 'src/hash/ripemd160/copy_ripemd160.dart';
 export 'src/signer/export.dart';
 export 'src/slip/slip.dart';
 export 'src/transactions/export.dart';
