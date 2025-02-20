@@ -74,16 +74,6 @@ class Register64 with EquatableMixin {
 
   int get upperHalf => _upperHalf;
 
-  void setInt(int initialValue, [int? lower32Bits]) {
-    if (lower32Bits != null) {
-      _upperHalf = initialValue;
-      _lowerHalf = lower32Bits;
-    } else {
-      _upperHalf = 0;
-      _lowerHalf = initialValue;
-    }
-  }
-
   void setRegister64(Register64 initialRegister64) {
     _upperHalf = initialRegister64._upperHalf;
     _lowerHalf = initialRegister64._lowerHalf;
@@ -107,6 +97,21 @@ class Register64 with EquatableMixin {
   void performXor(Register64 otherRegister64) {
     _upperHalf ^= otherRegister64._upperHalf;
     _lowerHalf ^= otherRegister64._lowerHalf;
+  }
+
+  int rotateLeft32Bits(int chunk32Bits, int offset) {
+    int maskedOffset = offset & _mask5Bits;
+    return _shiftLeft32Bits(chunk32Bits, maskedOffset) | (chunk32Bits >> (32 - maskedOffset));
+  }
+
+  void setInt(int initialValue, [int? lower32Bits]) {
+    if (lower32Bits != null) {
+      _upperHalf = initialValue;
+      _lowerHalf = lower32Bits;
+    } else {
+      _upperHalf = 0;
+      _lowerHalf = initialValue;
+    }
   }
 
   void shiftLeft(int shiftValue) {
@@ -134,6 +139,16 @@ class Register64 with EquatableMixin {
       _lowerHalf = _lowerHalf >> maskedN;
       _lowerHalf |= _shiftLeft32Bits(_upperHalf, 32 - maskedN);
       _upperHalf = upperHalf >> maskedN;
+    }
+  }
+
+  void sumInt(int chunk32Bits) {
+    int maskedChunk32Bits = chunk32Bits & _mask32Bits;
+    int sumLowerHalf = _lowerHalf + maskedChunk32Bits;
+    _lowerHalf = sumLowerHalf & _mask32Bits;
+    if (sumLowerHalf != _lowerHalf) {
+      _upperHalf++;
+      _upperHalf &= _mask32Bits;
     }
   }
 

@@ -33,6 +33,7 @@ import 'package:cryptography_utils/src/hash/sha/hash/digest.dart';
 import 'package:cryptography_utils/src/hash/sha/sha256/sha256_sink.dart';
 
 /// [Sha256] is a singleton implementation of the SHA-256 hashing algorithm - defines the block size.
+/// This class, with its implementation of the SHA-256 algorithm, is not compatible with the AMD4Digest class.
 class Sha256 extends AHash {
   static const int _bytesPerWord = 4;
   static final Sha256 _sha256 = Sha256._();

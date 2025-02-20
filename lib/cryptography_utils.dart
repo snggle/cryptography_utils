@@ -5,7 +5,7 @@ export 'src/cdsa/cdsa.dart';
 export 'src/hash/hmac.dart';
 export 'src/hash/keccak/keccak.dart';
 export 'src/hash/pbkdf2.dart';
-export 'src/hash/ripemd160.dart';
+export 'src/hash/ripemd/ripemd160.dart';
 export 'src/hash/sha/hash/digest.dart';
 export 'src/hash/sha/sha256/sha256.dart';
 export 'src/hash/sha/sha512/sha512.dart';

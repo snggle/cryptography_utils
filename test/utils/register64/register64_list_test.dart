@@ -1,4 +1,4 @@
-import 'package:cryptography_utils/src/hash/keccak/register64/register64_list.dart';
+import 'package:cryptography_utils/src/utils/register64/register64_list.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
