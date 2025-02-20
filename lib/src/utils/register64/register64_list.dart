@@ -20,7 +20,7 @@
 
 import 'dart:core';
 
-import 'package:cryptography_utils/src/hash/keccak/register64/register64.dart';
+import 'package:cryptography_utils/src/utils/register64/register64.dart';
 import 'package:equatable/equatable.dart';
 
 /// [Register64List] manages a list of 64-bit registers for the algorithm's internal state.
