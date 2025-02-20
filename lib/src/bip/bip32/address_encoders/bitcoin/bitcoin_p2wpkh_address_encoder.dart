@@ -25,7 +25,7 @@ class BitcoinP2WPKHAddressEncoder extends ABlockchainAddressEncoder<Secp256k1Pub
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
     Uint8List publicKeyFingerprint = Uint8List.fromList(sha256.convert(publicKey.compressed).bytes);
-    Uint8List publicKeyHash = Ripemd160().process(publicKeyFingerprint);
+    Uint8List publicKeyHash = CopyRipemd160().process(publicKeyFingerprint);
 
     return SegwitBech32Codec.encode(hrp, _witnessVersion, publicKeyHash);
   }

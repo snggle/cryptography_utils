@@ -27,11 +27,11 @@ class BitcoinP2SHAddressEncoder extends ABlockchainAddressEncoder<Secp256k1Publi
 
   List<int> _addScriptSignature(Secp256k1PublicKey publicKey) {
     Uint8List publicKeyFingerprint = Uint8List.fromList(sha256.convert(publicKey.compressed).bytes);
-    Uint8List publicKeyHash = Ripemd160().process(publicKeyFingerprint);
+    Uint8List publicKeyHash = CopyRipemd160().process(publicKeyFingerprint);
 
     Uint8List signatureBytes = Uint8List.fromList(<int>[..._scriptBytes, ...publicKeyHash]);
     Uint8List signatureFingerprint = Uint8List.fromList(sha256.convert(signatureBytes).bytes);
-    Uint8List signatureHash = Ripemd160().process(signatureFingerprint);
+    Uint8List signatureHash = CopyRipemd160().process(signatureFingerprint);
 
     return signatureHash;
   }

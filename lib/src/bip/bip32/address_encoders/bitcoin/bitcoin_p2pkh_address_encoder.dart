@@ -26,7 +26,7 @@ class BitcoinP2PKHAddressEncoder extends ABlockchainAddressEncoder<Secp256k1Publ
     Uint8List publicKeyBytes = publicKeyMode == PublicKeyMode.compressed ? publicKey.compressed : publicKey.uncompressed;
 
     Uint8List publicKeyFingerprint = Uint8List.fromList(sha256.convert(publicKeyBytes).bytes);
-    Uint8List publicKeyHash = Ripemd160().process(publicKeyFingerprint);
+    Uint8List publicKeyHash = CopyRipemd160().process(publicKeyFingerprint);
 
     return Base58Codec.encodeWithChecksum(Uint8List.fromList(<int>[..._networkVersionBytes, ...publicKeyHash]));
   }
