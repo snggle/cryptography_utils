@@ -18,17 +18,8 @@ class Mnemonic extends Equatable {
   // To do this before the object is created - in the factory constructor, all public methods contained in this class must be static,
   // Such a solution would be less readable and less intuitive. For that reason, the validation and exception throwing are done in the constructor.
   Mnemonic(this.mnemonicList) {
-    if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
-      throw const MnemonicException(MnemonicExceptionType.invalidLength);
-    } else if (_mnemonicListIndexes.contains(_mnemonicWordNotFoundInDictionary)) {
-      throw const MnemonicException(MnemonicExceptionType.invalidWord);
-    }
-
-    String extractedChecksum = _extractChecksum();
-    String calculatedChecksum = _calculateChecksum(entropy);
-
-    if (extractedChecksum != calculatedChecksum) {
-      throw const MnemonicException(MnemonicExceptionType.invalidChecksum);
+    if (!isValid(mnemonicList)) {
+      throw const MnemonicException(MnemonicExceptionType.invalidMnemonic);
     }
   }
 
@@ -57,6 +48,24 @@ class Mnemonic extends Equatable {
     List<String> mnemonicList = mnemonicPhrase.split(delimiter);
 
     return Mnemonic(mnemonicList);
+  }
+
+  /// Validates a mnemonic phrase.
+  bool isValid(List<String> mnemonicList) {
+    if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
+      throw const MnemonicException(MnemonicExceptionType.invalidLength);
+    } else if (_mnemonicListIndexes.contains(_mnemonicWordNotFoundInDictionary)) {
+      throw const MnemonicException(MnemonicExceptionType.invalidWord);
+    }
+
+    String extractedChecksum = _extractChecksum();
+    String calculatedChecksum = _calculateChecksum(entropy);
+
+    if (extractedChecksum != calculatedChecksum) {
+      throw const MnemonicException(MnemonicExceptionType.invalidChecksum);
+    }
+
+    return true;
   }
 
   /// Returns the entropy of the mnemonic phrase.
