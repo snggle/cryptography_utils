@@ -13,7 +13,7 @@ class EntropyMnemonicSeedGenerator extends AMnemonicSeedGenerator {
 
   @override
   Future<Uint8List> generateSeed(Mnemonic mnemonic, {String passphrase = ''}) async {
-    Uint8List password = mnemonic.entropy;
+    Uint8List password = Mnemonic.entropy(mnemonic.mnemonicList);
     Uint8List salt = Uint8List.fromList('$_defaultSalt$passphrase'.codeUnits);
     return computeSeed(password: password, salt: salt);
   }
