@@ -8,7 +8,9 @@ void main() {
   group('Tests of Mnemonic() constructor', () {
     test('Should [return Mnemonic] from given mnemonic phrase', () {
       // Arrange
+      // @formatter:off
       List<String> actualMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+      // @formatter:on
 
       // Act
       Mnemonic actualMnemonic = Mnemonic(actualMnemonicList);
@@ -221,6 +223,51 @@ void main() {
         () => Mnemonic.fromMnemonicPhrase('catalog letter frown ramp chest van pole unfold sound unable cool require'),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidChecksum)),
       );
+    });
+  });
+
+  group('Tests of Mnemonic.isValidMnemonic()', () {
+    test('Should [return TRUE] for a valid mnemonic', () {
+      // Arrange
+      // @formatter:off
+      List<String> mnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+      // @formatter:on
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
+
+      // Assert
+      bool expectedValidBool = true;
+
+      expect(actualValidBool, expectedValidBool);
+    });
+
+    test('Should [return FALSE] if mnemonic phrase has invalid length', () {
+      // Arrange
+      List<String> mnemonicList = <String>['catalog', 'letter', 'frown'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
+
+      // Assert
+      bool expectedValidBool = false;
+
+      expect(actualValidBool, expectedValidBool);
+    });
+
+    test('Should [return FALSE] if mnemonic phrase has invalid checksum', () {
+      // Arrange
+      // @formatter:off
+      List<String> mnemonicList = <String>['attend', 'piano', 'mail', 'clap', 'argue', 'square', 'effort', 'cause', 'cook', 'onion', 'mouse', 'delay' ];
+      // @formatter:on
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
+
+      // Assert
+      bool expectedValidBool = false;
+
+      expect(actualValidBool, expectedValidBool);
     });
   });
 
