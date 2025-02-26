@@ -224,6 +224,47 @@ void main() {
     });
   });
 
+  group('Tests of Mnemonic.isValidMnemonic()', () {
+    test('Should [return TRUE] for a valid mnemonic', () {
+      // Arrange
+      List<String> mnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
+
+      // Assert
+      bool expectedValidBool = true;
+ 
+      expect(actualValidBool, expectedValidBool);
+    });
+
+    test('Should [return FALSE] if mnemonic phrase has invalid length', () {
+      // Arrange
+      List<String> mnemonicList = <String>['catalog', 'letter', 'frown'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
+
+      // Assert
+      bool expectedValidBool = false;
+ 
+      expect(actualValidBool, expectedValidBool);
+    });
+
+    test('Should [return FALSE] if mnemonic phrase has invalid checksum', () {
+      // Arrange
+      List<String> mnemonicList = <String>['attend','piano','mail','clap','argue','square','effort','cause','cook','onion','mouse','delay'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
+
+      // Assert
+      bool expectedValidBool = false;
+
+      expect(actualValidBool, expectedValidBool);
+    });
+  });
+
   group('Tests of Mnemonic.entropy getter', () {
     test('Should [return entropy] from [12-word Mnemonic]', () {
       // Arrange
