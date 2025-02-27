@@ -18,7 +18,7 @@ class Mnemonic extends Equatable {
   // To do this before the object is created - in the factory constructor, all public methods contained in this class must be static,
   // Such a solution would be less readable and less intuitive. For that reason, the validation and exception throwing are done in the constructor.
   Mnemonic(this.mnemonicList) {
-    if (!isValid(mnemonicList)) {
+    if (!isValid()) {
       throw const MnemonicException(MnemonicExceptionType.invalidMnemonic);
     }
   }
@@ -51,7 +51,7 @@ class Mnemonic extends Equatable {
   }
 
   /// Validates a mnemonic phrase.
-  bool isValid(List<String> mnemonicList) {
+  bool isValid() {
     if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
       throw const MnemonicException(MnemonicExceptionType.invalidLength);
     } else if (_mnemonicListIndexes.contains(_mnemonicWordNotFoundInDictionary)) {
