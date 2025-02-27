@@ -52,25 +52,20 @@ class Mnemonic extends Equatable {
 
   /// Validates a mnemonic phrase.
   bool isValid() {
-    try {
-      if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
-        throw const MnemonicException(MnemonicExceptionType.invalidLength);
-      } else if (_mnemonicListIndexes.contains(_mnemonicWordNotFoundInDictionary)) {
-        throw const MnemonicException(MnemonicExceptionType.invalidWord);
-      }
-
-      String extractedChecksum = _extractChecksum();
-      String calculatedChecksum = _calculateChecksum(entropy);
-
-      if (extractedChecksum != calculatedChecksum) {
-        throw const MnemonicException(MnemonicExceptionType.invalidChecksum);
-      }
-
-      return true;
-    }
-    catch (e) {
+    if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
+      return false;
+    } else if (_mnemonicListIndexes.contains(_mnemonicWordNotFoundInDictionary)) {
       return false;
     }
+
+    String extractedChecksum = _extractChecksum();
+    String calculatedChecksum = _calculateChecksum(entropy);
+
+    if (extractedChecksum != calculatedChecksum) {
+      return false;
+    }
+
+    return true;
   }
 
   /// Returns the entropy of the mnemonic phrase.
