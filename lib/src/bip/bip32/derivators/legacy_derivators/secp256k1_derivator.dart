@@ -31,7 +31,6 @@
 
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/bip/bip32/derivators/derivator_type.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
@@ -60,7 +59,7 @@ class Secp256k1Derivator extends ALegacyDerivator<Secp256k1PrivateKey> {
   Future<Secp256k1PrivateKey> deriveMasterKey(Mnemonic mnemonic) async {
     LegacyMnemonicSeedGenerator seedGenerator = LegacyMnemonicSeedGenerator();
     Uint8List seed = await seedGenerator.generateSeed(mnemonic);
-    Uint8List hmacHash = HMAC(hash: sha512, key: Bip32HMACKeys.hmacKeySecp256k1Bytes).process(seed);
+    Uint8List hmacHash = HMAC(hash: Sha512(), key: Bip32HMACKeys.hmacKeySecp256k1Bytes).process(seed);
 
     Uint8List privateKey = hmacHash.sublist(0, 32);
     Uint8List chainCode = hmacHash.sublist(32);
@@ -99,7 +98,7 @@ class Secp256k1Derivator extends ALegacyDerivator<Secp256k1PrivateKey> {
     }
 
     List<int> data = <int>[...parentSecp256k1PublicKey.compressed, ...legacyDerivationPathElement.toBytes()];
-    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
+    Uint8List hmacHash = HMAC(hash: Sha512(), key: parentBip32KeyMetadata.chainCode!).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
@@ -125,8 +124,9 @@ class Secp256k1Derivator extends ALegacyDerivator<Secp256k1PrivateKey> {
       throw ArgumentError('Cannot derive hardened key without chain code');
     }
 
-    Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...parentSecp256k1PrivateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
-    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
+    Uint8List data =
+        Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...parentSecp256k1PrivateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
+    Uint8List hmacHash = HMAC(hash: Sha512(), key: parentBip32KeyMetadata.chainCode!).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
@@ -156,7 +156,7 @@ class Secp256k1Derivator extends ALegacyDerivator<Secp256k1PrivateKey> {
     }
 
     Uint8List data = Uint8List.fromList(<int>[...parentSecp256k1PrivateKey.publicKey.compressed, ...legacyDerivationPathElement.toBytes()]);
-    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
+    Uint8List hmacHash = HMAC(hash: Sha512(), key: parentBip32KeyMetadata.chainCode!).process(data);
 
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);

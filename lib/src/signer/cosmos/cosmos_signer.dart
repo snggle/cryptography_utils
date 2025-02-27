@@ -21,7 +21,6 @@
 
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// Provides functionality for creating Cosmos-compatible digital signatures using an ECDSA private key.
@@ -34,11 +33,11 @@ class CosmosSigner {
 
   /// Signs given [CosmosSignDoc] using SIGN_MODE_DIRECT and returns the signature as an [CosmosSignature].
   CosmosSignature signDirect(CosmosSignDoc signDoc) {
-    ECDSASigner ecdsaSigner = ECDSASigner(hashFunction: sha256, ecPrivateKey: _ecPrivateKey);
+    ECDSASigner ecdsaSigner = ECDSASigner(hashFunction: Sha256(), ecPrivateKey: _ecPrivateKey);
     CosmosVerifier cosmosVerifier = CosmosVerifier(_ecPrivateKey.ecPublicKey);
 
     Uint8List signBytes = signDoc.getDirectSignBytes();
-    Uint8List hashedSignBytes = Uint8List.fromList(sha256.convert(signBytes).bytes);
+    Uint8List hashedSignBytes = Sha256().convert(signBytes).byteList;
 
     ECSignature ecSignature = ecdsaSigner.sign(hashedSignBytes);
 

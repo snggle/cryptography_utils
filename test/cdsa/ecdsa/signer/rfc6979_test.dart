@@ -1,4 +1,3 @@
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
@@ -10,7 +9,7 @@ void main() {
       m: 'Hello Word'.codeUnits,
       n: BigInt.parse('115792089237316195423570985008687907852837564279074904382605163141518161494337'),
       d: BigInt.parse('15864759622800253937020257025334897817812874204769186060960403729801414344643'),
-      hashFunction: sha256,
+      hashFunction: Sha256(),
     );
 
     test('Should [return 1st k] for given message', () {

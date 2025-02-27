@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/cdsa/ecdsa/signer/ecdsa_verifier.dart';
 
@@ -17,11 +16,11 @@ class CosmosVerifier {
 
   /// Verifies a signature against a provided digest and the public key stored in this verifier.
   bool isSignatureValid(CosmosSignDoc signDoc, CosmosSignature cosmosSignature) {
-    ECDSAVerifier ecdsaVerifier = ECDSAVerifier(hashFunction: sha256, ecPublicKey: _ecPublicKey);
+    ECDSAVerifier ecdsaVerifier = ECDSAVerifier(hashFunction: Sha256(), ecPublicKey: _ecPublicKey);
     ECSignature ecSignature = ECSignature.fromBytes(cosmosSignature.bytes, ecCurve: _ecPublicKey.G.curve);
 
     Uint8List signBytes = signDoc.getDirectSignBytes();
-    Uint8List hashedSignBytes = Uint8List.fromList(sha256.convert(signBytes).bytes);
+    Uint8List hashedSignBytes = Sha256().convert(signBytes).byteList;
 
     return ecdsaVerifier.isSignatureValid(hashedSignBytes, ecSignature);
   }

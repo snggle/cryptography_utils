@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
+import 'package:cryptography_utils/src/hash/sha/hash/a_hash.dart';
 
 /// Hash-based Message Authentication Code.
 /// It computes a MAC using a given hash function with a secret key and input data.
 class HMAC {
-  final Hash hash;
+  final AHash hash;
   late final List<int> key;
 
   final List<Uint8List> _chunks = <Uint8List>[];
@@ -50,8 +50,8 @@ class HMAC {
   Uint8List get digest {
     Uint8List message = _chunks.fold(Uint8List(0), (Uint8List previous, Uint8List chunk) => Uint8List.fromList(previous + chunk));
 
-    List<int> innerHash = hash.convert(iKeyPad + message).bytes;
-    List<int> finalHash = hash.convert(oKeyPad + innerHash).bytes;
+    List<int> innerHash = hash.convert(iKeyPad + message).byteList;
+    List<int> finalHash = hash.convert(oKeyPad + innerHash).byteList;
 
     return Uint8List.fromList(finalHash);
   }
@@ -60,7 +60,7 @@ class HMAC {
   Uint8List _normalizeKey(List<int> key) {
     Uint8List normalizedKey = Uint8List.fromList(key);
     if (normalizedKey.length > digestSize) {
-      normalizedKey = Uint8List.fromList(hash.convert(key).bytes);
+      normalizedKey = Uint8List.fromList(hash.convert(key).byteList);
     }
     if (normalizedKey.length < digestSize) {
       List<int> padding = List<int>.filled(digestSize - normalizedKey.length, 0);
