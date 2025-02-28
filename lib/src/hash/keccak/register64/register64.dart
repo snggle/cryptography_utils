@@ -86,7 +86,7 @@ class Register64 with EquatableMixin {
   }
 
   int cRotationLeft32(int input, int offset) {
-    return _rotationLeft32Bits(clip32(input), offset);
+    return rotationLeft32Bits(clip32(input), offset);
   }
 
   void setInt(int initialValue, [int? lower32Bits]) {
