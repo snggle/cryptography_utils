@@ -8,40 +8,14 @@ void main() {
   group('Tests of Mnemonic() constructor', () {
     test('Should [return Mnemonic] from given mnemonic phrase', () {
       // Arrange
-      List<String> actualMnemonicList = <String>[
-        'catalog',
-        'letter',
-        'frown',
-        'ramp',
-        'chest',
-        'van',
-        'pole',
-        'unfold',
-        'sound',
-        'unable',
-        'cool',
-        'endorse'
-      ];
+      List<String> actualMnemonicList = <String>['catalog','letter','frown','ramp','chest','van','pole','unfold','sound','unable','cool','endorse'];
 
       // Act
       Mnemonic actualMnemonic = Mnemonic(actualMnemonicList);
 
       // Assert
       // @formatter:off
-      List<String> expectedMnemonicList = <String>[
-        'catalog',
-        'letter',
-        'frown',
-        'ramp',
-        'chest',
-        'van',
-        'pole',
-        'unfold',
-        'sound',
-        'unable',
-        'cool',
-        'endorse'
-      ];
+      List<String> expectedMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
       // @formatter:on
 
       expect(actualMnemonic.mnemonicList, expectedMnemonicList);
@@ -59,20 +33,7 @@ void main() {
       // Assert
       // @formatter:off
       expect(
-        () => const Mnemonic(<String>[
-          'ammonium',
-          'nitrite',
-          'atom',
-          'hydrogen',
-          'cyanide',
-          'carbonate',
-          'chlorate',
-          'chlorite',
-          'perchlorate',
-          'cation',
-          'peroxide',
-          'oxalate'
-        ]),
+        () => const Mnemonic(<String>['ammonium','nitrite','atom','hydrogen','cyanide','carbonate','chlorate','chlorite','perchlorate','cation','peroxide','oxalate']),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidWord)),
       );
       // @formatter:on
