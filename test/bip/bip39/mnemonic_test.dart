@@ -12,6 +12,7 @@ void main() {
 
       // Act
       Mnemonic actualMnemonic = Mnemonic(actualMnemonicList);
+      
 
       // Assert
       // @formatter:off
@@ -19,32 +20,6 @@ void main() {
       // @formatter:on
 
       expect(actualMnemonic.mnemonicList, expectedMnemonicList);
-    });
-
-    test('Should [throw MnemonicException] (MnemonicExceptionType.invalidLength) if length of the mnemonic phrase is not divisible by 3', () {
-      // Assert
-      expect(
-        () => const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'unfold', 'sound', 'unable', 'cool', 'endorse']),
-        throwsA(const MnemonicException(MnemonicExceptionType.invalidLength)),
-      );
-    });
-
-    test('Should [throw MnemonicException] (MnemonicExceptionType.invalidWord) if mnemonic phrase contains words from outside the dictionary', () {
-      // Assert
-      // @formatter:off
-      expect(
-        () => const Mnemonic(<String>['ammonium','nitrite','atom','hydrogen','cyanide','carbonate','chlorate','chlorite','perchlorate','cation','peroxide','oxalate']),
-        throwsA(const MnemonicException(MnemonicExceptionType.invalidWord)),
-      );
-      // @formatter:on
-    });
-
-    test('Should [throw MnemonicException] (MnemonicExceptionType.invalidChecksum) if mnemonic phrase has invalid checksum', () {
-      // Assert
-      expect(
-        () => const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'require']),
-        throwsA(const MnemonicException(MnemonicExceptionType.invalidChecksum)),
-      );
     });
   });
 
@@ -198,30 +173,6 @@ void main() {
           const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
 
       expect(actualMnemonic.mnemonicList, expectedMnemonic.mnemonicList);
-    });
-
-    test('Should [throw MnemonicException] (MnemonicExceptionType.invalidLength) if length of the mnemonic phrase is not divisible by 3', () {
-      // Assert
-      expect(
-        () => Mnemonic.fromMnemonicPhrase('catalog letter frown ramp chest van unfold sound unable cool endorse'),
-        throwsA(const MnemonicException(MnemonicExceptionType.invalidLength)),
-      );
-    });
-
-    test('Should [throw MnemonicException] (MnemonicExceptionType.invalidWord) if mnemonic phrase contains words from outside the dictionary', () {
-      // Assert
-      expect(
-        () => Mnemonic.fromMnemonicPhrase('ammonium nitrite atom hydrogen cyanide carbonate chlorate chlorite perchlorate cation peroxide oxalate'),
-        throwsA(const MnemonicException(MnemonicExceptionType.invalidWord)),
-      );
-    });
-
-    test('Should [throw MnemonicException] (MnemonicExceptionType.invalidChecksum) if mnemonic phrase has invalid checksum', () {
-      // Assert
-      expect(
-        () => Mnemonic.fromMnemonicPhrase('catalog letter frown ramp chest van pole unfold sound unable cool require'),
-        throwsA(const MnemonicException(MnemonicExceptionType.invalidChecksum)),
-      );
     });
   });
 

@@ -14,9 +14,6 @@ class Mnemonic extends Equatable {
   static const int _mnemonicWordNotFoundInDictionary = -1;
   final List<String> mnemonicList;
 
-  // Validation of a mnemonic phrase requires to check its length, checksum and words.
-  // To do this before the object is created - in the factory constructor, all public methods contained in this class must be static,
-  // Such a solution would be less readable and less intuitive. For that reason, the validation and exception throwing are done in the constructor.
   const Mnemonic(this.mnemonicList);
 
   /// Generates a new [Mnemonic] object of the specified size.
