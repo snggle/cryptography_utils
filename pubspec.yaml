@@ -11,10 +11,6 @@ dependencies:
   # https://pub.dev/packages/equatable
   equatable: 2.0.5
 
-  # A Dart library implementing cryptographic algorithms and primitives, modeled on the BouncyCastle library.
-  # https://pub.dev/packages/pointycastle
-  pointycastle: 3.9.1
-
   # Flutter's compute function made available for all non-Flutter Dart programs
   # https://pub.dev/packages/compute
   compute: 1.0.2

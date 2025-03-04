@@ -1,4 +1,4 @@
-import 'package:cryptography_utils/src/hash/keccak/register64/register64.dart';
+import 'package:cryptography_utils/src/hash/register64/register64.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -243,6 +243,92 @@ void main() {
 
       expect(actualUpperValue, expectedUpperValue);
       expect(actualLowerValue, expectedLowerValue);
+    });
+  });
+
+  group('Tests for Register64.rotateLeft32Bits()', () {
+    test('Should [return value] when rotateLeft32Bits() is called and offset is equal to zer', () {
+      // Arrange
+      Register64 actualRegister64 = Register64(0x00000000, 0x12345678);
+
+      // Act
+      int actualValue = actualRegister64.rotateLeft32Bits(actualRegister64.lowerHalf, 0);
+
+      // Assert
+      int expectedValue = 0x12345678;
+
+      expect(actualValue, expectedValue);
+    });
+
+    test('Should [return value] when rotateLeft32Bits() is called and offset is different than zer', () {
+      // Arrange
+      Register64 actualRegister64 = Register64(0x00000000, 0x12345678);
+
+      // Act
+      int actualValue = actualRegister64.rotateLeft32Bits(actualRegister64.lowerHalf, 40);
+
+      // Assert
+      int expectedValue = 0x34567812;
+
+      expect(actualValue, expectedValue);
+    });
+  });
+  group('Tests for Register64.sumInt()', () {
+    test('Should correctly add 32-bit chunk to the lower half with no overflow', () {
+      // Arrange
+      Register64 actualRegister64 = Register64(0x00000001, 0x00000001); // Initial value 0x00000001 in lower half
+      int chunk32Bits = 0x00000002; // Value to add
+
+      // Act
+      actualRegister64.sumInt(chunk32Bits);
+
+      // Assert
+      int actualLowerValue = actualRegister64.lowerHalf;
+      int actualUpperValue = actualRegister64.upperHalf;
+
+      int expectedLowerValue = 0x00000003;
+      int expectedUpperValue = 0x00000001;
+
+      expect(actualLowerValue, expectedLowerValue);
+      expect(actualUpperValue, expectedUpperValue);
+    });
+
+    test('Should correctly add 32-bit chunk with overflow to the upper half', () {
+      // Arrange
+      Register64 actualRegister64 = Register64(0xFFFFFFFF, 0xFFFFFFFF);
+      int chunk32Bits = 0x00000001;
+
+      // Act
+      actualRegister64.sumInt(chunk32Bits);
+
+      // Assert
+      int actualLowerValue = actualRegister64.lowerHalf;
+      int actualUpperValue = actualRegister64.upperHalf;
+
+      int expectedLowerValue = 0x00000000;
+      int expectedUpperValue = 0x00000000;
+
+      expect(actualLowerValue, expectedLowerValue);
+      expect(actualUpperValue, expectedUpperValue);
+    });
+
+    test('Should [return ]handle large sum resulting in overflow of both halves', () {
+      // Arrange
+      Register64 actualRegister64 = Register64(0xFFFFFFFF, 0xFFFFFFFF);
+      int chunk32Bits = 0xFFFFFFFF;
+
+      // Act
+      actualRegister64.sumInt(chunk32Bits);
+
+      // Assert
+      int actualLowerValue = actualRegister64.lowerHalf;
+      int actualUpperValue = actualRegister64.upperHalf;
+
+      int expectedLowerValue = 0xFFFFFFFE;
+      int expectedUpperValue = 0x00000000;
+
+      expect(actualLowerValue, expectedLowerValue);
+      expect(actualUpperValue, expectedUpperValue);
     });
   });
 }

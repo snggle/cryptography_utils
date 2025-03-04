@@ -21,7 +21,7 @@ class CosmosAddressEncoder extends ABlockchainAddressEncoder<Secp256k1PublicKey>
   @override
   String encodePublicKey(Secp256k1PublicKey publicKey) {
     Uint8List publicKeyFingerprint = Sha256().convert(publicKey.compressed).byteList;
-    Uint8List publicKeyHash = CopyRipemd160().process(publicKeyFingerprint);
+    Uint8List publicKeyHash = Ripemd160().process(publicKeyFingerprint);
 
     return Bech32Codec.encode(Bech32Pair(hrp: hrp, data: publicKeyHash));
   }
