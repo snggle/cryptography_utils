@@ -10,7 +10,7 @@ void main() {
   group('Tests of Ripemd160.process()', () {
     test('Should [return Ripemd160 HASH] constructed from given data', () {
       // Act
-      Uint8List actualRipemd160Result = CopyRipemd160().process(actualDataToHash);
+      Uint8List actualRipemd160Result = Ripemd160().process(actualDataToHash);
 
       // Assert
       Uint8List expectedRipemd160Result = base64Decode('iJS43Wf/c7ZqtImU2HYR0laE3q4=');

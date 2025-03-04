@@ -106,7 +106,7 @@ class Register64 with EquatableMixin {
 
   void packInput32(int x, Uint8List outputUint8List, int offset, Endian endian) {
     ByteData.view(outputUint8List.buffer, outputUint8List.offsetInBytes, outputUint8List.length)
-        .setUint32(offset + outputUint8List.offsetInBytes, x, endian);
+        .setUint32(offset, x, endian);
   }
 
   void performAnd(Register64 otherRegister64) {
@@ -181,6 +181,10 @@ class Register64 with EquatableMixin {
   int unpackInput32(Uint8List input, int offset, Endian endian) {
     ByteData byteData = ByteData.view(input.buffer, input.offsetInBytes, input.length);
     return byteData.getUint32(offset, endian);
+  }
+
+  int sum32(int input, int output) {
+    return (input + output) & _mask32Bits;
   }
 
   @override
