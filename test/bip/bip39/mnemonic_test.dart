@@ -24,7 +24,7 @@ void main() {
     test('Should [throw MnemonicException] (MnemonicExceptionType.invalidLength) if length of the mnemonic phrase is not divisible by 3', () {
       // Assert
       expect(
-        () => Mnemonic(const <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'unfold', 'sound', 'unable', 'cool', 'endorse']),
+        () => const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'unfold', 'sound', 'unable', 'cool', 'endorse']),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidLength)),
       );
     });
@@ -33,7 +33,7 @@ void main() {
       // Assert
       // @formatter:off
       expect(
-        () =>  Mnemonic(const <String>['ammonium', 'nitrite', 'atom', 'hydrogen', 'cyanide', 'carbonate', 'chlorate', 'chlorite', 'perchlorate', 'cation', 'peroxide', 'oxalate']),
+        () => const Mnemonic(<String>['ammonium', 'nitrite', 'atom', 'hydrogen', 'cyanide', 'carbonate', 'chlorate', 'chlorite', 'perchlorate', 'cation', 'peroxide', 'oxalate']),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidWord)),
       );
       // @formatter:on
@@ -42,7 +42,7 @@ void main() {
     test('Should [throw MnemonicException] (MnemonicExceptionType.invalidChecksum) if mnemonic phrase has invalid checksum', () {
       // Assert
       expect(
-        () => Mnemonic(const <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'require']),
+        () => const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'require']),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidChecksum)),
       );
     });
@@ -180,7 +180,7 @@ void main() {
 
       // Assert
       Mnemonic expectedMnemonic =
-          Mnemonic(const <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
+          const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
 
       expect(actualMnemonic.mnemonicList, expectedMnemonic.mnemonicList);
     });
@@ -194,7 +194,7 @@ void main() {
 
       // Assert
       Mnemonic expectedMnemonic =
-          Mnemonic(const <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
+          const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
 
       expect(actualMnemonic.mnemonicList, expectedMnemonic.mnemonicList);
     });
@@ -221,6 +221,40 @@ void main() {
         () => Mnemonic.fromMnemonicPhrase('catalog letter frown ramp chest van pole unfold sound unable cool require'),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidChecksum)),
       );
+    });
+  });
+
+  group('Tests of Mnemonic.isValid bool', () {
+    test('Should [return true] for a valid mnemonic', () {
+      // Arrange
+      Mnemonic validMnemonic =
+          const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
+
+      // Assert
+      expect(() => validMnemonic.isValid(), true);
+    });
+    test('Should [return false] if mnemonic phrase contains words from outside of the dictionary', () {
+      // Arrange
+      Mnemonic invalidWordMnemonic =
+          const Mnemonic(<String>['angel', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
+
+      // Assert
+      expect(() => invalidWordMnemonic.isValid(), false);
+    });
+    test('Should [return false] if mnemonic phrase has invalid length', () {
+      // Arrange
+      Mnemonic invalidLengthMnemonic = const Mnemonic(<String>['']);
+
+      // Assert
+      expect(() => invalidLengthMnemonic.isValid(), false);
+    });
+    test('Should [return false] if mnemonic phrase has invalid checksum', () {
+      // Arrange
+      Mnemonic invalidChecksumMnemonic =
+          const Mnemonic(<String>['attend', 'piano', 'mail', 'clap', 'argue', 'square', 'effort', 'cause', 'cook', 'onion', 'mouse', 'delay']);
+
+      // Assert
+      expect(() => invalidChecksumMnemonic.isValid(), false);
     });
   });
 
