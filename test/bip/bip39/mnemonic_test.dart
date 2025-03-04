@@ -8,14 +8,40 @@ void main() {
   group('Tests of Mnemonic() constructor', () {
     test('Should [return Mnemonic] from given mnemonic phrase', () {
       // Arrange
-      List<String> actualMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+      List<String> actualMnemonicList = <String>[
+        'catalog',
+        'letter',
+        'frown',
+        'ramp',
+        'chest',
+        'van',
+        'pole',
+        'unfold',
+        'sound',
+        'unable',
+        'cool',
+        'endorse'
+      ];
 
       // Act
       Mnemonic actualMnemonic = Mnemonic(actualMnemonicList);
 
       // Assert
       // @formatter:off
-      List<String> expectedMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+      List<String> expectedMnemonicList = <String>[
+        'catalog',
+        'letter',
+        'frown',
+        'ramp',
+        'chest',
+        'van',
+        'pole',
+        'unfold',
+        'sound',
+        'unable',
+        'cool',
+        'endorse'
+      ];
       // @formatter:on
 
       expect(actualMnemonic.mnemonicList, expectedMnemonicList);
@@ -33,7 +59,20 @@ void main() {
       // Assert
       // @formatter:off
       expect(
-        () => const Mnemonic(<String>['ammonium', 'nitrite', 'atom', 'hydrogen', 'cyanide', 'carbonate', 'chlorate', 'chlorite', 'perchlorate', 'cation', 'peroxide', 'oxalate']),
+        () => const Mnemonic(<String>[
+          'ammonium',
+          'nitrite',
+          'atom',
+          'hydrogen',
+          'cyanide',
+          'carbonate',
+          'chlorate',
+          'chlorite',
+          'perchlorate',
+          'cation',
+          'peroxide',
+          'oxalate'
+        ]),
         throwsA(const MnemonicException(MnemonicExceptionType.invalidWord)),
       );
       // @formatter:on
@@ -122,7 +161,8 @@ void main() {
       Mnemonic actualMnemonic = Mnemonic.fromEntropy(actualEntropy);
 
       // Assert
-      Mnemonic expectedMnemonic = Mnemonic.fromMnemonicPhrase('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
+      Mnemonic expectedMnemonic =
+          Mnemonic.fromMnemonicPhrase('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
 
       expect(actualMnemonic.mnemonicList, expectedMnemonic.mnemonicList);
     });
@@ -231,7 +271,7 @@ void main() {
           const Mnemonic(<String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
 
       // Assert
-      expect(() => validMnemonic.isValid(), true);
+      expect(validMnemonic.isValid(), true);
     });
     test('Should [return false] if mnemonic phrase contains words from outside of the dictionary', () {
       // Arrange
@@ -239,14 +279,14 @@ void main() {
           const Mnemonic(<String>['angel', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse']);
 
       // Assert
-      expect(() => invalidWordMnemonic.isValid(), false);
+      expect(invalidWordMnemonic.isValid(), false);
     });
     test('Should [return false] if mnemonic phrase has invalid length', () {
       // Arrange
       Mnemonic invalidLengthMnemonic = const Mnemonic(<String>['']);
 
       // Assert
-      expect(() => invalidLengthMnemonic.isValid(), false);
+      expect(invalidLengthMnemonic.isValid(), false);
     });
     test('Should [return false] if mnemonic phrase has invalid checksum', () {
       // Arrange
@@ -254,7 +294,7 @@ void main() {
           const Mnemonic(<String>['attend', 'piano', 'mail', 'clap', 'argue', 'square', 'effort', 'cause', 'cook', 'onion', 'mouse', 'delay']);
 
       // Assert
-      expect(() => invalidChecksumMnemonic.isValid(), false);
+      expect(invalidChecksumMnemonic.isValid(), false);
     });
   });
 
@@ -274,7 +314,8 @@ void main() {
 
     test('Should [return entropy] from [15-word Mnemonic]', () {
       // Arrange
-      Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
+      Mnemonic actualMnemonic =
+          Mnemonic.fromMnemonicPhrase('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
 
       // Act
       Uint8List actualEntropy = actualMnemonic.entropy;
