@@ -227,24 +227,24 @@ void main() {
   group('Tests of Mnemonic.isValidMnemonic bool', () {
     test('Should [return true] for a valid mnemonic', () {
       // Arrange
-      List<String> validMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+      List<String> actualMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
 
       // Assert
-      expect(Mnemonic.isValidMnemonic(validMnemonicList), true);
+      expect(Mnemonic.isValidMnemonic(actualMnemonicList), true);
     });
     test('Should [return false] if mnemonic phrase has invalid length', () {
       // Arrange
-      List<String> invalidLengthMnemonic = <String>['catalog', 'letter', 'frown'];
+      List<String> actualMnemonicList = <String>['catalog', 'letter', 'frown'];
 
       // Assert
-      expect(Mnemonic.isValidMnemonic(invalidLengthMnemonic), false);
+      expect(Mnemonic.isValidMnemonic(actualMnemonicList), false);
     });
     test('Should [return false] if mnemonic phrase has invalid checksum', () {
       // Arrange
-      List<String> invalidChecksumMnemonic = <String>['attend','piano','mail','clap','argue','square','effort','cause','cook','onion','mouse','delay'];
+      List<String> actualMnemonicList = <String>['attend','piano','mail','clap','argue','square','effort','cause','cook','onion','mouse','delay'];
 
       // Assert
-      expect(Mnemonic.isValidMnemonic(invalidChecksumMnemonic), false);
+      expect(Mnemonic.isValidMnemonic(actualMnemonicList), false);
     });
   });
 

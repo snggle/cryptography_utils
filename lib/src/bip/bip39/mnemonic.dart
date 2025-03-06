@@ -57,7 +57,7 @@ class Mnemonic extends Equatable {
     return Mnemonic(mnemonicList);
   }
 
-  /// Validates a mnemonic phrase.
+  /// Validates a mnemonic phrase without creating an object of the Mnemonic class.
   static bool isValidMnemonic(List<String> mnemonicList) {
     String extractedChecksum = _extractChecksum(mnemonicList);
     String calculatedChecksum = _calculateChecksum(entropy(mnemonicList));
