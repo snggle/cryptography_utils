@@ -18,12 +18,14 @@ class Mnemonic extends Equatable {
   Mnemonic(this.mnemonicList) {
     if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
       throw const MnemonicException(MnemonicExceptionType.invalidLength);
-    } else if (_mnemonicListIndexes(mnemonicList).contains(_mnemonicWordNotFoundInDictionary)) {
+    } else if (parseWordsToWordIndexes(mnemonicList).contains(_mnemonicWordNotFoundInDictionary)) {
       throw const MnemonicException(MnemonicExceptionType.invalidWord);
     }
 
-    String extractedChecksum = _extractChecksum(mnemonicList);
-    String calculatedChecksum = _calculateChecksum(entropy(mnemonicList));
+    Uint8List entropy = calcEntropy(mnemonicList);
+
+    String extractedChecksum = extractChecksum(mnemonicList);
+    String calculatedChecksum = calculateChecksum(entropy);
 
     if (extractedChecksum != calculatedChecksum) {
       throw const MnemonicException(MnemonicExceptionType.invalidChecksum);
@@ -40,7 +42,7 @@ class Mnemonic extends Equatable {
   /// Constructs a new [Mnemonic] object from the entropy.
   factory Mnemonic.fromEntropy(Uint8List entropy) {
     String entropyBits = BinaryUtils.bytesToBinary(entropy);
-    String checksumBits = _calculateChecksum(entropy);
+    String checksumBits = calculateChecksum(entropy);
     String mnemonicBits = entropyBits + checksumBits;
 
     List<String> mnemonicListBinaries = BinaryUtils.splitBinary(mnemonicBits, 11);
@@ -59,8 +61,10 @@ class Mnemonic extends Equatable {
 
   /// Validates a mnemonic phrase without creating an object of the Mnemonic class.
   static bool isValidMnemonic(List<String> mnemonicList) {
-    String extractedChecksum = _extractChecksum(mnemonicList);
-    String calculatedChecksum = _calculateChecksum(entropy(mnemonicList));
+    Uint8List entropy = calcEntropy(mnemonicList);
+
+    String extractedChecksum = extractChecksum(mnemonicList);
+    String calculatedChecksum = calculateChecksum(entropy);
 
     if (extractedChecksum != calculatedChecksum || extractedChecksum == '0') {
       return false;
@@ -70,8 +74,8 @@ class Mnemonic extends Equatable {
   }
 
   /// Returns the entropy of the mnemonic phrase.
-  static Uint8List entropy(List<String> mnemonicList) {
-    String mnemonicBits = _mnemonicBits(mnemonicList);
+  static Uint8List calcEntropy(List<String> mnemonicList) {
+    String mnemonicBits = parseWordsToBits(mnemonicList);
 
     int entropyStartIndex = 0;
     int entropyEndIndex = (mnemonicBits.length / 33).floor() * 32;
@@ -84,7 +88,7 @@ class Mnemonic extends Equatable {
   }
 
   /// Calculates the checksum of the mnemonic phrase basing on given entropy.
-  static String _calculateChecksum(Uint8List entropy) {
+  static String calculateChecksum(Uint8List entropy) {
     int entropyBitsLength = entropy.length * 8;
     int checksumSize = entropyBitsLength ~/ 32;
     List<int> hash = Sha256().convert(entropy).byteList;
@@ -93,8 +97,8 @@ class Mnemonic extends Equatable {
   }
 
   /// Returns binary checksum included in the last word of the mnemonic phrase.
-  static String _extractChecksum(List<String> mnemonicList) {
-    String mnemonicBits = _mnemonicBits(mnemonicList);
+  static String extractChecksum(List<String> mnemonicList) {
+    String mnemonicBits = parseWordsToBits(mnemonicList);
 
     int checksumStartIndex = (mnemonicBits.length / 33).floor() * 32;
     int checksumEndIndex = mnemonicBits.length;
@@ -105,7 +109,7 @@ class Mnemonic extends Equatable {
   }
 
   /// Returns the combined mnemonic words in binary format.
-  static String _mnemonicBits(List<String> mnemonicList) {
+  static String parseWordsToBits(List<String> mnemonicList) {
     List<int> mnemonicListIndexes = mnemonicList.map(MnemonicDictionary.english.indexOf).toList();
     List<String> mnemonicListBinaries = mnemonicListIndexes.map((int index) => BinaryUtils.intToBinary(index, padding: 11)).toList();
     String mnemonicBits = mnemonicListBinaries.join('');
@@ -115,9 +119,11 @@ class Mnemonic extends Equatable {
 
   /// Returns dictionary indexes of the mnemonic words.
   /// If a word is not found in the dictionary, it will be represented as -1.
-  static List<int> _mnemonicListIndexes(List<String> mnemonicList) {
+  static List<int> parseWordsToWordIndexes(List<String> mnemonicList) {
     return mnemonicList.map(MnemonicDictionary.english.indexOf).toList();
   }
+  
+  Uint8List get entropy => calcEntropy(mnemonicList);
 
   @override
   String toString() {

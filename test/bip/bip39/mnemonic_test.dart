@@ -224,27 +224,44 @@ void main() {
     });
   });
 
-  group('Tests of Mnemonic.isValidMnemonic bool', () {
-    test('Should [return true] for a valid mnemonic', () {
+  group('Tests of Mnemonic.isValidMnemonic()', () {
+    test('Should [return TRUE] for a valid mnemonic', () {
       // Arrange
-      List<String> actualMnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+      List<String> mnemonicList = <String>['catalog', 'letter', 'frown', 'ramp', 'chest', 'van', 'pole', 'unfold', 'sound', 'unable', 'cool', 'endorse'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
 
       // Assert
-      expect(Mnemonic.isValidMnemonic(actualMnemonicList), true);
+      bool expectedValidBool = true;
+ 
+      expect(actualValidBool, expectedValidBool);
     });
-    test('Should [return false] if mnemonic phrase has invalid length', () {
+
+    test('Should [return FALSE] if mnemonic phrase has invalid length', () {
       // Arrange
-      List<String> actualMnemonicList = <String>['catalog', 'letter', 'frown'];
+      List<String> mnemonicList = <String>['catalog', 'letter', 'frown'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
 
       // Assert
-      expect(Mnemonic.isValidMnemonic(actualMnemonicList), false);
+      bool expectedValidBool = false;
+ 
+      expect(actualValidBool, expectedValidBool);
     });
-    test('Should [return false] if mnemonic phrase has invalid checksum', () {
+
+    test('Should [return FALSE] if mnemonic phrase has invalid checksum', () {
       // Arrange
-      List<String> actualMnemonicList = <String>['attend','piano','mail','clap','argue','square','effort','cause','cook','onion','mouse','delay'];
+      List<String> mnemonicList = <String>['attend','piano','mail','clap','argue','square','effort','cause','cook','onion','mouse','delay'];
+
+      // Act
+      bool actualValidBool = Mnemonic.isValidMnemonic(mnemonicList);
 
       // Assert
-      expect(Mnemonic.isValidMnemonic(actualMnemonicList), false);
+      bool expectedValidBool = false;
+
+      expect(actualValidBool, expectedValidBool);
     });
   });
 
@@ -254,7 +271,7 @@ void main() {
       Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('admit decide brave dinosaur patch fresh april toward elite clutch toy witness');
 
       // Act
-      Uint8List actualEntropy = Mnemonic.entropy(actualMnemonic.mnemonicList);
+      Uint8List actualEntropy = Mnemonic.calcEntropy(actualMnemonic.mnemonicList);
 
       // Assert
       Uint8List expectedEntropy = base64Decode('A6cYbR86DLmCvzBIBZOZ/g==');
@@ -267,7 +284,7 @@ void main() {
       Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('lake stumble pencil clog add scan resource attend huge space three salon hip shift drama');
 
       // Act
-      Uint8List actualEntropy = Mnemonic.entropy(actualMnemonic.mnemonicList);
+      Uint8List actualEntropy = Mnemonic.calcEntropy(actualMnemonic.mnemonicList);
 
       // Assert
       Uint8List expectedEntropy = base64Decode('fLr2ipXAM4Bt4HRuuguEX0a/i5A=');
@@ -281,7 +298,7 @@ void main() {
           'very erosion proud virus remain pony dignity hat tornado art enhance enhance rabbit add hospital buffalo gallery journey');
 
       // Act
-      Uint8List actualEntropy = Mnemonic.entropy(actualMnemonic.mnemonicList);
+      Uint8List actualEntropy = Mnemonic.calcEntropy(actualMnemonic.mnemonicList);
 
       // Assert
       Uint8List expectedEntropy = base64Decode('8umWs3pLWU/Pg0zlYZkqJUsCBlt47V8P');
@@ -295,7 +312,7 @@ void main() {
           'concert tired breeze call boy business chronic fox crater fire arctic universe void remember giraffe fetch hint select sound insect sister');
 
       // Act
-      Uint8List actualEntropy = Mnemonic.entropy(actualMnemonic.mnemonicList);
+      Uint8List actualEntropy = Mnemonic.calcEntropy(actualMnemonic.mnemonicList);
 
       // Assert
       Uint8List expectedEntropy = base64Decode('LrxUbhAxqj4KGuIyiuQs9u9Za1iKqmvYaz86jA==');
@@ -309,7 +326,7 @@ void main() {
           'kiwi prosper empty sphere recall predict border bridge adult grid hunt confirm spread priority decade enrich sentence merry cactus drum example citizen choice tent');
 
       // Act
-      Uint8List actualEntropy = Mnemonic.entropy(actualMnemonic.mnemonicList);
+      Uint8List actualEntropy = Mnemonic.calcEntropy(actualMnemonic.mnemonicList);
 
       // Assert
       Uint8List expectedEntropy = base64Decode('e3WRJOi7N1NGcN4DzM29l30xVc4iWMPxdIAhxOZSig4=');
