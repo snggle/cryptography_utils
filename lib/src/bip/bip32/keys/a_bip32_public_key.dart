@@ -32,7 +32,7 @@ abstract class ABip32PublicKey extends Equatable {
 
   static BigInt calcFingerprint(Uint8List publicKeyBytes) {
     Uint8List sha256Fingerprint = Sha256().convert(publicKeyBytes).byteList;
-    Uint8List ripemd160Fingerprint = Uint8List.fromList(Ripemd160().process(sha256Fingerprint));
+    Uint8List ripemd160Fingerprint = Ripemd160().process(sha256Fingerprint);
     return BigIntUtils.decode(ripemd160Fingerprint.sublist(0, 4));
   }
 
