@@ -13,16 +13,16 @@ class Mnemonic extends Equatable {
   final List<String> mnemonicList;
 
   // Validation of a mnemonic phrase requires to check its length, checksum and words.
-  // To do this before the object is created - in the factory constructor, all public methods contained in this class must be static,
-  // Such a solution would be less readable and less intuitive. For that reason, the validation and exception throwing are done in the constructor.
+  // To do this before a Mnemonic object is created, you can use the isValidMnemonic static method.
+  // Exceptions are left in the constructor mainly in case we want to tell a user the reason why a mnemonic is invalid.
   Mnemonic(this.mnemonicList) {
     if (mnemonicList.length % 3 != 0 || mnemonicList.isEmpty) {
       throw const MnemonicException(MnemonicExceptionType.invalidLength);
-    } else if (_mnemonicListIndexes.contains(_mnemonicWordNotFoundInDictionary)) {
+    } else if (_parseWordsToWordIndexes(mnemonicList).contains(_mnemonicWordNotFoundInDictionary)) {
       throw const MnemonicException(MnemonicExceptionType.invalidWord);
     }
 
-    String extractedChecksum = _extractChecksum();
+    String extractedChecksum = _extractChecksum(mnemonicList);
     String calculatedChecksum = _calculateChecksum(entropy);
 
     if (extractedChecksum != calculatedChecksum) {
@@ -57,9 +57,30 @@ class Mnemonic extends Equatable {
     return Mnemonic(mnemonicList);
   }
 
+  /// Validates a mnemonic phrase without creating an object of the Mnemonic class.
+  static bool isValidMnemonic(List<String> mnemonicList) {
+    Uint8List entropy = _calcEntropy(mnemonicList);
+
+    String extractedChecksum = _extractChecksum(mnemonicList);
+    String calculatedChecksum = _calculateChecksum(entropy);
+
+    if (extractedChecksum != calculatedChecksum || extractedChecksum == '0') {
+      return false;
+    }
+
+    return true;
+  }
+
+  @override
+  String toString() {
+    return mnemonicList.join(' ');
+  }
+
+  Uint8List get entropy => _calcEntropy(mnemonicList);
+
   /// Returns the entropy of the mnemonic phrase.
-  Uint8List get entropy {
-    String mnemonicBits = _mnemonicBits;
+  static Uint8List _calcEntropy(List<String> mnemonicList) {
+    String mnemonicBits = _parseWordsToBits(mnemonicList);
 
     int entropyStartIndex = 0;
     int entropyEndIndex = (mnemonicBits.length / 33).floor() * 32;
@@ -81,8 +102,8 @@ class Mnemonic extends Equatable {
   }
 
   /// Returns binary checksum included in the last word of the mnemonic phrase.
-  String _extractChecksum() {
-    String mnemonicBits = _mnemonicBits;
+  static String _extractChecksum(List<String> mnemonicList) {
+    String mnemonicBits = _parseWordsToBits(mnemonicList);
 
     int checksumStartIndex = (mnemonicBits.length / 33).floor() * 32;
     int checksumEndIndex = mnemonicBits.length;
@@ -93,8 +114,9 @@ class Mnemonic extends Equatable {
   }
 
   /// Returns the combined mnemonic words in binary format.
-  String get _mnemonicBits {
-    List<String> mnemonicListBinaries = _mnemonicListIndexes.map((int index) => BinaryUtils.intToBinary(index, padding: 11)).toList();
+  static String _parseWordsToBits(List<String> mnemonicList) {
+    List<int> mnemonicListIndexes = mnemonicList.map(MnemonicDictionary.english.indexOf).toList();
+    List<String> mnemonicListBinaries = mnemonicListIndexes.map((int index) => BinaryUtils.intToBinary(index, padding: 11)).toList();
     String mnemonicBits = mnemonicListBinaries.join('');
 
     return mnemonicBits;
@@ -102,11 +124,8 @@ class Mnemonic extends Equatable {
 
   /// Returns dictionary indexes of the mnemonic words.
   /// If a word is not found in the dictionary, it will be represented as -1.
-  List<int> get _mnemonicListIndexes => mnemonicList.map(MnemonicDictionary.english.indexOf).toList();
-
-  @override
-  String toString() {
-    return mnemonicList.join(' ');
+  static List<int> _parseWordsToWordIndexes(List<String> mnemonicList) {
+    return mnemonicList.map(MnemonicDictionary.english.indexOf).toList();
   }
 
   @override
