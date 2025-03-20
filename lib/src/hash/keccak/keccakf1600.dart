@@ -20,8 +20,8 @@
 
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/src/hash/keccak/register64/register64.dart';
-import 'package:cryptography_utils/src/hash/keccak/register64/register64_list.dart';
+import 'package:cryptography_utils/src/utils/register64/register64.dart';
+import 'package:cryptography_utils/src/utils/register64/register64_list.dart';
 
 ///[KeccakF1600] This class is essential for processing input data through the sponge construction, ensuring proper diffusion and security
 /// in hash computations. It operates on a 1600-bit state, repeatedly applying a series of transformations to mix the input data and produce
