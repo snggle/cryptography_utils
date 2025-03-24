@@ -12,4 +12,5 @@ export 'src/hash/sha/sha512/sha512.dart';
 export 'src/signer/export.dart';
 export 'src/slip/slip.dart';
 export 'src/transactions/export.dart';
+export 'src/utils/entropy_generator.dart';
 export 'src/wallet_config/wallet_config.dart';

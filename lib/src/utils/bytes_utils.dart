@@ -22,4 +22,16 @@ class BytesUtils {
     }
     return chunks;
   }
+
+  static Uint8List performXor(Uint8List a, Uint8List b) {    
+    final Uint8List result = Uint8List(a.length);
+    for (int i = 0; i < a.length; i++) {
+      result[i] = a[i] ^ b[i];
+    }
+    return result;
+  }
+  
+  static Uint8List truncate({required Uint8List input, required int length}) {    
+    return Uint8List.sublistView(input, 0, length);
+  }
 }
