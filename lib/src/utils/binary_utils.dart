@@ -7,6 +7,11 @@ class BinaryUtils {
     return bytes.map((int byte) => byte.toRadixString(2).padLeft(padding, '0')).join('');
   }
 
+  static int maskTo8Bits(int value) {
+    int mask8Bits = 0xFF;
+    return value & mask8Bits;
+  }
+
   static String intToBinary(int number, {int padding = 8}) {
     return number.toRadixString(2).padLeft(padding, '0');
   }

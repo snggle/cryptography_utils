@@ -34,42 +34,6 @@ void main() {
     });
   });
 
-  group('Tests for Register64.setInt()', () {
-    test('Should [return values] when set is called WITH one parameter.', () {
-      // Arrange
-      Register64 actualRegister64 = Register64();
-
-      // Act
-      actualRegister64.setInt(0x2A);
-      int actualUpperValue = actualRegister64.upperHalf;
-      int actualLowerValue = actualRegister64.lowerHalf;
-
-      // Assert
-      int expectedUpperValue = 0x0;
-      int expectedLowerValue = 0x2A;
-
-      expect(actualUpperValue, expectedUpperValue);
-      expect(actualLowerValue, expectedLowerValue);
-    });
-
-    test('Should [return values] when set is called WITH two parameters.', () {
-      // Arrange
-      Register64 actualRegister64 = Register64();
-
-      // Act
-      actualRegister64.setInt(0x12345678, 0x9ABCDEF0);
-      int actualUpperValue = actualRegister64.upperHalf;
-      int actualLowerValue = actualRegister64.lowerHalf;
-
-      // Assert
-      int expectedUpperValue = 0x12345678;
-      int expectedLowerValue = 0x9ABCDEF0;
-
-      expect(actualUpperValue, expectedUpperValue);
-      expect(actualLowerValue, expectedLowerValue);
-    });
-  });
-
   group('Tests for Register64.setRegister64()', () {
     test('Should [return values] when set is called.', () {
       // Arrange
@@ -105,6 +69,26 @@ void main() {
       // Assert
       int expectedUpperValue = 0x0F0F0F0F;
       int expectedLowerValue = 0x00000000;
+
+      expect(actualUpperValue, expectedUpperValue);
+      expect(actualLowerValue, expectedLowerValue);
+    });
+  });
+
+  group('Tests for Register64.performNot()', () {
+    test('Should [return result of logical NOT operation] when performNot() called', () {
+      // Arrange
+      Register64 actualRegister64 = Register64(0x12345678, 0x9ABCDEF0);
+
+      // Act
+      actualRegister64.performNot();
+
+      int actualUpperValue = actualRegister64.upperHalf;
+      int actualLowerValue = actualRegister64.lowerHalf;
+
+      // Assert
+      int expectedUpperValue = 0xEDCBA987;
+      int expectedLowerValue = 0x6543210F;
 
       expect(actualUpperValue, expectedUpperValue);
       expect(actualLowerValue, expectedLowerValue);
@@ -152,20 +136,36 @@ void main() {
     });
   });
 
-  group('Tests for Register64.performNot()', () {
-    test('Should [return result of logical NOT operation] when performNot() called', () {
+  group('Tests for Register64.setInt()', () {
+    test('Should [return values] when set is called WITH one parameter.', () {
       // Arrange
-      Register64 actualRegister64 = Register64(0x12345678, 0x9ABCDEF0);
+      Register64 actualRegister64 = Register64();
 
       // Act
-      actualRegister64.performNot();
-
+      actualRegister64.setInt(0x2A);
       int actualUpperValue = actualRegister64.upperHalf;
       int actualLowerValue = actualRegister64.lowerHalf;
 
       // Assert
-      int expectedUpperValue = 0xEDCBA987;
-      int expectedLowerValue = 0x6543210F;
+      int expectedUpperValue = 0x0;
+      int expectedLowerValue = 0x2A;
+
+      expect(actualUpperValue, expectedUpperValue);
+      expect(actualLowerValue, expectedLowerValue);
+    });
+
+    test('Should [return values] when set is called WITH two parameters.', () {
+      // Arrange
+      Register64 actualRegister64 = Register64();
+
+      // Act
+      actualRegister64.setInt(0x12345678, 0x9ABCDEF0);
+      int actualUpperValue = actualRegister64.upperHalf;
+      int actualLowerValue = actualRegister64.lowerHalf;
+
+      // Assert
+      int expectedUpperValue = 0x12345678;
+      int expectedLowerValue = 0x9ABCDEF0;
 
       expect(actualUpperValue, expectedUpperValue);
       expect(actualLowerValue, expectedLowerValue);
@@ -190,6 +190,7 @@ void main() {
       expect(actualUpperValue, expectedUpperValue);
       expect(actualLowerValue, expectedLowerValue);
     });
+
     test('Should [return result shifted] when shiftLeft() is called and shiftValue is different than zero', () {
       // Arrange
       Register64 actualRegister64 = Register64(0x00000000, 0x9ABCDEF0);
@@ -227,6 +228,7 @@ void main() {
       expect(actualUpperValue, expectedUpperValue);
       expect(actualLowerValue, expectedLowerValue);
     });
+
     test('Should [return result shifted by the shiftedValue] when shiftRight() is called and shiftValue is different than zero', () {
       // Arrange
       Register64 actualRegister64 = Register64(0x80000000, 0x00000000);
@@ -246,33 +248,6 @@ void main() {
     });
   });
 
-  group('Tests for Register64.rotateLeft32Bits()', () {
-    test('Should [return value] when rotateLeft32Bits() is called and offset is equal to 0', () {
-      // Arrange
-      Register64 actualRegister64 = Register64(0x00000000, 0x12345678);
-
-      // Act
-      int actualValue = actualRegister64.rotateLeft32Bits(actualRegister64.lowerHalf, 0);
-
-      // Assert
-      int expectedValue = 0x12345678;
-
-      expect(actualValue, expectedValue);
-    });
-
-    test('Should [return value] when rotateLeft32Bits() is called and offset is different than 0', () {
-      // Arrange
-      Register64 actualRegister64 = Register64(0x00000000, 0x12345678);
-
-      // Act
-      int actualValue = actualRegister64.rotateLeft32Bits(actualRegister64.lowerHalf, 40);
-
-      // Assert
-      int expectedValue = 0x34567812;
-
-      expect(actualValue, expectedValue);
-    });
-  });
   group('Tests for Register64.sumInt()', () {
     test('Should [return lowerHalf] when sumInt() is called and Chunk32Bits is equal to 0', () {
       // Arrange

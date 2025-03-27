@@ -18,50 +18,14 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import 'package:cryptography_utils/src/utils/int32_utils.dart';
 import 'package:equatable/equatable.dart';
 
 ///[Register64] serve as abstractions for managing the 64-bit lanes and the state matrix of the algorithm, ensuring clean and modular handling
 /// of the algorithm’s 1600-bit internal state. Register64 is object represented by two 32-bit integers, together represent a 64-bit value.
 class Register64 with EquatableMixin {
-  static const int _mask5Bits = 0x1F;
   static const int _mask6Bits = 0x3F;
   static const int _mask32Bits = 0xFFFFFFFF;
-
-  static const List<int> _mask32BitsList = <int>[
-    0xFFFFFFFF,
-    0x7FFFFFFF,
-    0x3FFFFFFF,
-    0x1FFFFFFF,
-    0x0FFFFFFF,
-    0x07FFFFFF,
-    0x03FFFFFF,
-    0x01FFFFFF,
-    0x00FFFFFF,
-    0x007FFFFF,
-    0x003FFFFF,
-    0x001FFFFF,
-    0x000FFFFF,
-    0x0007FFFF,
-    0x0003FFFF,
-    0x0001FFFF,
-    0x0000FFFF,
-    0x00007FFF,
-    0x00003FFF,
-    0x00001FFF,
-    0x00000FFF,
-    0x000007FF,
-    0x000003FF,
-    0x000001FF,
-    0x000000FF,
-    0x0000007F,
-    0x0000003F,
-    0x0000001F,
-    0x0000000F,
-    0x00000007,
-    0x00000003,
-    0x00000001,
-    0x00000000
-  ];
 
   late int _lowerHalf;
   late int _upperHalf;
@@ -99,11 +63,6 @@ class Register64 with EquatableMixin {
     _lowerHalf ^= otherRegister64._lowerHalf;
   }
 
-  int rotateLeft32Bits(int chunk32Bits, int offset) {
-    int maskedOffset = offset & _mask5Bits;
-    return _shiftLeft32Bits(chunk32Bits, maskedOffset) | (chunk32Bits >> (32 - maskedOffset));
-  }
-
   void setInt(int initialValue, [int? lower32Bits]) {
     if (lower32Bits != null) {
       _upperHalf = initialValue;
@@ -119,12 +78,12 @@ class Register64 with EquatableMixin {
     if (maskedN == 0) {
       return;
     } else if (maskedN >= 32) {
-      _upperHalf = _shiftLeft32Bits(_lowerHalf, maskedN - 32);
+      _upperHalf = Int32Utils.shiftLeft(_lowerHalf, maskedN - 32);
       _lowerHalf = 0;
     } else {
-      _upperHalf = _shiftLeft32Bits(_upperHalf, maskedN);
+      _upperHalf = Int32Utils.shiftLeft(_upperHalf, maskedN);
       _upperHalf |= _lowerHalf >> (32 - maskedN);
-      _lowerHalf = _shiftLeft32Bits(_lowerHalf, maskedN);
+      _lowerHalf = Int32Utils.shiftLeft(_lowerHalf, maskedN);
     }
   }
 
@@ -137,7 +96,7 @@ class Register64 with EquatableMixin {
       _upperHalf = 0;
     } else {
       _lowerHalf = _lowerHalf >> maskedN;
-      _lowerHalf |= _shiftLeft32Bits(_upperHalf, 32 - maskedN);
+      _lowerHalf |= Int32Utils.shiftLeft(_upperHalf, 32 - maskedN);
       _upperHalf = upperHalf >> maskedN;
     }
   }
@@ -150,12 +109,6 @@ class Register64 with EquatableMixin {
       _upperHalf++;
       _upperHalf &= _mask32Bits;
     }
-  }
-
-  int _shiftLeft32Bits(int chunk32Bits, int shiftValue) {
-    int maskedN = shiftValue & _mask5Bits;
-    int maskedX = chunk32Bits & _mask32BitsList[maskedN];
-    return (maskedX << maskedN) & _mask32Bits;
   }
 
   @override

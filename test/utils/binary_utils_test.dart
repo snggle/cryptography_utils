@@ -76,6 +76,26 @@ void main() {
     });
   });
 
+  group('Tests for BinaryUtils.maskTo8Bits()', () {
+    test('Should [return value within 8-bit range] constructed from given data', () {
+      // Act
+      int actualValue = BinaryUtils.maskTo8Bits(0x7F);
+
+      // Assert
+      int expectedValue = 0x7F;
+      expect(actualValue, expectedValue);
+    });
+
+    test('Should [return value within 8-bit range] constructed frm given data which is beyond 8-bits', () {
+      // Act
+      int actualValue = BinaryUtils.maskTo8Bits(0x1FF);
+
+      // Assert
+      int expectedValue = 0xFF;
+      expect(actualValue, expectedValue);
+    });
+  });
+
   group('Tests of BinaryUtils.intToBinary()', () {
     test('Should [return binary] from given int (default padding)', () {
       // Assert
