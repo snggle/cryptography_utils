@@ -22,6 +22,10 @@ dependencies:
   # Utility functions and classes related to the dart:typed_data library.
   # https://pub.dev/packages/typed_data
   typed_data: ^1.3.0
+#
+#  # A set of high-level APIs over PointyCastle for two-way cryptography.
+#  # https://pub.dev/packages/encrypt
+#  encrypt: 5.0.3
 
   # Dart package containing utility methods for data encoding and decoding.
   codec_utils:
@@ -33,3 +37,4 @@ dev_dependencies:
   # A full featured library for writing and running Dart tests across platforms.
   # https://pub.dev/packages/test
   test: 1.25.5
+

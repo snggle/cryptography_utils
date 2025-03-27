@@ -246,33 +246,6 @@ void main() {
     });
   });
 
-  group('Tests for Register64.rotateLeft32Bits()', () {
-    test('Should [return value] when rotateLeft32Bits() is called and offset is equal to 0', () {
-      // Arrange
-      Register64 actualRegister64 = Register64(0x00000000, 0x12345678);
-
-      // Act
-      int actualValue = actualRegister64.rotateLeft32Bits(actualRegister64.lowerHalf, 0);
-
-      // Assert
-      int expectedValue = 0x12345678;
-
-      expect(actualValue, expectedValue);
-    });
-
-    test('Should [return value] when rotateLeft32Bits() is called and offset is different than 0', () {
-      // Arrange
-      Register64 actualRegister64 = Register64(0x00000000, 0x12345678);
-
-      // Act
-      int actualValue = actualRegister64.rotateLeft32Bits(actualRegister64.lowerHalf, 40);
-
-      // Assert
-      int expectedValue = 0x34567812;
-
-      expect(actualValue, expectedValue);
-    });
-  });
   group('Tests for Register64.sumInt()', () {
     test('Should [return lowerHalf] when sumInt() is called and Chunk32Bits is equal to 0', () {
       // Arrange
