@@ -38,40 +38,20 @@ import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 /// This class implements the functionality necessary to generate and verify digital signatures using
 /// the EdDSA algorithm, a cryptographic algorithm used for creating a digital signature of data
 /// which can then be verified by others with the signer's public key.
-class ED25519Signer {
+class ED25519Verifier {
   /// The hash function used for generating the message digest.
   final AHash hashFunction;
 
   /// The EdDSA private key used for signing the message.
-  final ED25519PrivateKey privateKey;
+  final ED25519PublicKey publicKey;
 
-  ED25519Signer({
+  ED25519Verifier({
     required this.hashFunction,
-    required this.privateKey,
+    required this.publicKey,
   });
-
-  /// Generates a deterministic signature for a given message using [ED25519PrivateKey].
-  EDSignature sign(Uint8List message) {
-    List<int> publicKey = privateKey.publicKey.bytes;
-    List<int> h = hashFunction.convert(privateKey.bytes).byteList;
-    List<int> prefix = h.sublist(privateKey.length);
-
-    BigInt r = BigIntUtils.decode(hashFunction.convert(<int>[...prefix, ...message]).byteList, order: Endian.little);
-    List<int> R = (CurvePoints.generatorED25519 * r).toBytes();
-
-    BigInt k = BigIntUtils.decode(hashFunction.convert(<int>[...R, ...publicKey, ...message]).byteList, order: Endian.little);
-    k %= CurvePoints.generatorED25519.n;
-
-    BigInt s = (r + k * privateKey.edPrivateKey.prunedPrivateKey) % CurvePoints.generatorED25519.n;
-    return EDSignature(
-      r: Uint8List.fromList(R),
-      s: BigIntUtils.changeToBytes(s, length: privateKey.length, order: Endian.little),
-    );
-  }
 
   /// Verifies an ED25519 signature against given message.
   bool verifySignature(Uint8List message, EDSignature edSignature) {
-    ED25519PublicKey publicKey = privateKey.publicKey;
     EDPoint R = EDPoint.fromBytes(CurvePoints.generatorED25519, edSignature.r);
     BigInt S = BigIntUtils.decode(edSignature.s, order: Endian.little);
     if (S >= CurvePoints.generatorED25519.n) {

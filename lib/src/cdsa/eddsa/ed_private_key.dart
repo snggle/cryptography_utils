@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:equatable/equatable.dart';
@@ -25,7 +24,7 @@ class EDPrivateKey extends Equatable {
   }
 
   BigInt get prunedPrivateKey {
-    List<int> h = sha512.convert(_privateKey).bytes;
+    List<int> h = Sha512().convert(_privateKey).byteList;
     List<int> a = h.sublist(0, baselen);
     List<int> sBytes = _prunePrivateKey(a);
     return BigIntUtils.decode(sBytes, order: Endian.little);
