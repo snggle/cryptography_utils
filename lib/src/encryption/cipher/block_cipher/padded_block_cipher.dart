@@ -20,38 +20,37 @@
 
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/src/encryption/cipher/a_block_cipher.dart';
+import 'package:cryptography_utils/src/encryption/aes/aes.dart';
+import 'package:cryptography_utils/src/encryption/cipher/block_cipher/a_block_cipher.dart';
 import 'package:cryptography_utils/src/encryption/cipher/cipher_mode.dart';
-import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
-import 'package:cryptography_utils/src/encryption/cipher/padded_block_cipher/padded_block_cipher_parameters.dart';
-import 'package:cryptography_utils/src/encryption/cipher/padded_block_cipher/pkcs7_padding.dart';
 
 /// A cipher implementation that applies PKCS7 padding to a block cipher.
 /// This class wraps a [ABlockCipher] and handles both encryption and decryption
 /// of data with padding when the input size is not a multiple of the block size.
-class PaddedBlockCipher {
-  final ABlockCipher blockCipher;
-  final int _blockSize;
+class PaddedBlockCipher extends ABlockCipher {
+  final ABlockCipher _blockCipher;
+  final ICipherPadding _padding;
 
-  CipherMode? _cipherMode;
-
-  PaddedBlockCipher(this.blockCipher) : _blockSize = blockCipher.blockSize;
-
-  void init({required CipherMode cipherMode, required ICipherParam? cipherParameter}) {
-    PaddedBlockCipherParameter<ICipherParam?, ICipherParam?> paddedParameter =
-        cipherParameter as PaddedBlockCipherParameter<ICipherParam?, ICipherParam?>;
-    _cipherMode = cipherMode;
-    blockCipher.init(paddedParameter.cipherParam);
-  }
+  PaddedBlockCipher({
+    required ABlockCipher blockCipher,
+    required ICipherPadding padding,
+  })  : _padding = padding,
+        _blockCipher = blockCipher,
+        super(
+          blockSize: blockCipher.blockSize,
+          cipherMode: blockCipher.cipherMode,
+          cipherParameter: blockCipher.cipherParameter,
+        );
 
   /// Processes a [uint8list] of input data with padding and returns the output.
   /// Applies PKCS7 padding for encryption. For decryption, input must be a
   /// multiple of block size and valid padding must exist.
+  @override
   Uint8List process(Uint8List uint8list) {
     int input = (uint8list.length + _blockSize - 1) ~/ _blockSize;
     int output;
 
-    if (_cipherMode == CipherMode.encryption) {
+    if (cipherMode == CipherMode.encryption) {
       output = (uint8list.length + _blockSize) ~/ _blockSize;
     } else {
       if ((uint8list.length % _blockSize) != 0) {
@@ -63,7 +62,7 @@ class PaddedBlockCipher {
     Uint8List outputUint8List = Uint8List(output * _blockSize);
     for (int i = 0; i < (input - 1); i++) {
       int offset = i * _blockSize;
-      _processBlock(uint8list, offset, outputUint8List, offset);
+      processBlock(uint8list, offset, outputUint8List, offset);
     }
     int lastBlockOffset = (input - 1) * _blockSize;
     int lastBlockSize = _doFinal(uint8list, lastBlockOffset, outputUint8List, lastBlockOffset);
@@ -71,19 +70,24 @@ class PaddedBlockCipher {
     return outputUint8List.sublist(0, lastBlockOffset + lastBlockSize);
   }
 
+  @override
+  int processBlock(Uint8List inputUint8List, int inputOffset, Uint8List outputUint8List, int outputOffset) {
+    return _blockCipher.processBlock(inputUint8List, inputOffset, outputUint8List, outputOffset);
+  }
+
   /// Finishes encryption/decryption and returns the number of bytes written.
   /// For encryption, handles final block padding and possible extra block.
   /// For decryption, strips padding and validates its correctness.
   int _doFinal(Uint8List inputUint8List, int inputOffset, Uint8List outputUint8List, int outputOffset) {
-    if (_cipherMode == CipherMode.encryption) {
+    if (cipherMode == CipherMode.encryption) {
       Uint8List lastInputBlockUint8List = Uint8List(_blockSize)..setAll(0, inputUint8List.sublist(inputOffset));
-      Pkcs7Padding().addPadding(lastInputBlockUint8List, inputUint8List.length - inputOffset);
-      _processBlock(lastInputBlockUint8List, 0, outputUint8List, outputOffset);
+      _padding.addPadding(lastInputBlockUint8List, inputUint8List.length - inputOffset);
+      processBlock(lastInputBlockUint8List, 0, outputUint8List, outputOffset);
 
       return _blockSize;
     } else {
-      _processBlock(inputUint8List, inputOffset, outputUint8List, outputOffset);
-      int paddedCount = Pkcs7Padding().paddingCount(outputUint8List.sublist(outputOffset));
+      processBlock(inputUint8List, inputOffset, outputUint8List, outputOffset);
+      int paddedCount = _padding.calcPaddingCount(outputUint8List.sublist(outputOffset));
       int paddedOffsetInBlock = _blockSize - paddedCount;
       outputUint8List.fillRange(outputOffset + paddedOffsetInBlock, outputUint8List.length, 0);
 
@@ -91,7 +95,5 @@ class PaddedBlockCipher {
     }
   }
 
-  int _processBlock(Uint8List inputUint8List, int inputOffset, Uint8List outputUint8List, int outputOffset) {
-    return blockCipher.processBlock(inputUint8List, inputOffset, outputUint8List, outputOffset);
-  }
+  int get _blockSize => _blockCipher.blockSize;
 }

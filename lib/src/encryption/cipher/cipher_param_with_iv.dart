@@ -22,9 +22,9 @@ import 'dart:typed_data';
 
 import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
 
-class ParamWithIV<T extends ICipherParam?> implements ICipherParam {
+class CipherParamWithIV<T extends ICipherParam> implements ICipherParam {
   final Uint8List ivUint8List;
-  final T? param;
+  final T param;
 
-  ParamWithIV(this.param, this.ivUint8List);
+  CipherParamWithIV(this.param, this.ivUint8List);
 }

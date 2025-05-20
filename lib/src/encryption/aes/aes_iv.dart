@@ -20,10 +20,15 @@
 
 import 'dart:typed_data';
 
-class AesIV {
+import 'package:equatable/equatable.dart';
+
+class AesIV extends Equatable {
   final Uint8List _uint8list;
 
-  AesIV(this._uint8list);
+  const AesIV(this._uint8list);
 
-  Uint8List get keyUint8List => _uint8list;
+  Uint8List get uint8List => _uint8list;
+
+  @override
+  List<Object?> get props => <Uint8List>[_uint8list];
 }

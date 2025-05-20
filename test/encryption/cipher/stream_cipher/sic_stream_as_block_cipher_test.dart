@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cryptography_utils/src/encryption/aes/aes_engine.dart';
 import 'package:cryptography_utils/src/encryption/aes/aes_key.dart';
 import 'package:cryptography_utils/src/encryption/cipher/a_key_parameter.dart';
-import 'package:cryptography_utils/src/encryption/cipher/param_with_iv.dart';
+import 'package:cryptography_utils/src/encryption/cipher/cipher_param_with_iv.dart';
 import 'package:cryptography_utils/src/encryption/cipher/stream_cipher/sic_stream_cipher_as_block_cipher.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
@@ -18,7 +18,7 @@ void main() {
   setUp(() {
     sicStreamCipher = SicStreamAsBlockCipher(AesEngine());
 
-    ParamWithIV<AKeyParameter> parameterWithIV = ParamWithIV<AKeyParameter>(
+    CipherParamWithIV<AKeyParameter> parameterWithIV = CipherParamWithIV<AKeyParameter>(
       actualKeyUint8List,
       actualIvUint8List,
     );
@@ -33,7 +33,7 @@ void main() {
 
       // Act
       Uint8List actualEncryptedUint8List = sicStreamCipher.process(actualInputUint8List);
-      sicStreamCipher.init(ParamWithIV<AKeyParameter>(actualKeyUint8List, actualIvUint8List));
+      sicStreamCipher.init(CipherParamWithIV<AKeyParameter>(actualKeyUint8List, actualIvUint8List));
       Uint8List actualDecryptedUint8List = sicStreamCipher.process(actualEncryptedUint8List);
 
       // Assert
@@ -56,7 +56,7 @@ void main() {
     test('Should [return decrypted data] constructed from encrypted data', () {
       // Arrange
       Uint8List encryptedUint8List = Uint8List.fromList(<int>[122, 203, 13, 218, 184, 211, 234, 123, 151, 158, 76, 109, 26, 235, 172, 141]);
-      ParamWithIV<AKeyParameter> params = ParamWithIV<AKeyParameter>(actualKeyUint8List, actualIvUint8List);
+      CipherParamWithIV<AKeyParameter> params = CipherParamWithIV<AKeyParameter>(actualKeyUint8List, actualIvUint8List);
       // Act
 
       sicStreamCipher.init(params);

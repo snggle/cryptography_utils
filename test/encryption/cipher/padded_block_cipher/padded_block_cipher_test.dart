@@ -7,7 +7,7 @@ import 'package:cryptography_utils/src/encryption/cipher/cipher_mode.dart';
 import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
 import 'package:cryptography_utils/src/encryption/cipher/padded_block_cipher/padded_block_cipher.dart';
 import 'package:cryptography_utils/src/encryption/cipher/padded_block_cipher/padded_block_cipher_parameters.dart';
-import 'package:cryptography_utils/src/encryption/cipher/param_with_iv.dart';
+import 'package:cryptography_utils/src/encryption/cipher/cipher_param_with_iv.dart';
 import 'package:cryptography_utils/src/encryption/cipher/stream_cipher/sic_stream_cipher_as_block_cipher.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
@@ -20,7 +20,7 @@ void main() {
   final PaddedBlockCipher paddedBlockCipherImplementation = PaddedBlockCipher(SicStreamAsBlockCipher(AesEngine()));
 
   final PaddedBlockCipherParameter<ICipherParam, ICipherParam> paddedBlockCipherParameter = PaddedBlockCipherParameter<ICipherParam, ICipherParam>(
-    ParamWithIV<AKeyParameter>(key, iv),
+    CipherParamWithIV<AKeyParameter>(key, iv),
   );
 
   group('PaddedBlockCipherImplementation.process()', () {

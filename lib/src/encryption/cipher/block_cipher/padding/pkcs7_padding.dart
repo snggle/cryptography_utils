@@ -20,16 +20,20 @@
 
 import 'dart:typed_data';
 
+import 'package:cryptography_utils/src/encryption/aes/aes.dart';
 import 'package:cryptography_utils/src/utils/binary_utils.dart';
 
 /// PKCS#7 padding is used to ensure that the input to a block cipher
 /// is a multiple of the block size. This class supports both padding
 /// and unpadding (removal) operations.
-class Pkcs7Padding {
+class Pkcs7Padding implements ICipherPadding {
+  const Pkcs7Padding();
+
   /// Adds PKCS#7 padding to the given [uint8list] starting from [offset].
   /// The value written into each padded byte is the number of padding
   /// bytes added. This makes it possible to identify and remove padding later.
   /// Returns the number of bytes added as padding.
+  @override
   int addPadding(Uint8List uint8list, int offset) {
     int index = offset;
     int code = uint8list.length - index;
@@ -44,7 +48,8 @@ class Pkcs7Padding {
   /// Calculates the number of padding bytes at the end of [uint8list].
   /// Verifies that all padding bytes are valid. Throws [ArgumentError]
   /// if the padding is corrupted or inconsistent with PKCS#7 format.
-  int paddingCount(Uint8List uint8list) {
+  @override
+  int calcPaddingCount(Uint8List uint8list) {
     int count = BinaryUtils.maskTo8Bits(uint8list[uint8list.length - 1]);
 
     if (count > uint8list.length || count == 0) {

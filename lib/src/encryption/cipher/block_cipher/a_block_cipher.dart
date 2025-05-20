@@ -18,10 +18,23 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import 'dart:typed_data';
+
+import 'package:cryptography_utils/src/encryption/cipher/cipher_mode.dart';
 import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
 
-class PaddedBlockCipherParameter<U extends ICipherParam?, P extends ICipherParam?> implements ICipherParam {
-  final U? cipherParam;
+abstract class ABlockCipher {
+  final int blockSize;
+  final CipherMode cipherMode;
+  final ICipherParam cipherParameter;
 
-  PaddedBlockCipherParameter(this.cipherParam);
+  const ABlockCipher({
+    required this.blockSize,
+    required this.cipherMode,
+    required this.cipherParameter,
+  });
+
+  Uint8List process(Uint8List uint8list);
+
+  int processBlock(Uint8List inputUint8List, int inputOffset, Uint8List outputUint8List, int outputOffset);
 }

@@ -20,18 +20,15 @@
 
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/src/encryption/cipher/a_key_parameter.dart';
+import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
 import 'package:cryptography_utils/src/utils/int32_utils.dart';
 
-class AesKey implements AKeyParameter {
-  final Uint8List _keyUint8List;
+class AesKey implements ICipherParam  {
+  final Uint8List bytes;
 
-  AesKey(this._keyUint8List) : super();
+  const AesKey(this.bytes);
 
-  @override
-  Uint8List get keyUint8List => _keyUint8List;
-
-  int get length => keyUint8List.length;
+  int get length => bytes.length;
 
   int get columns => Int32Utils.shiftRight(length, 2);
 }

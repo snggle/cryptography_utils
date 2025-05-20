@@ -22,9 +22,8 @@ import 'dart:typed_data';
 
 import 'package:cryptography_utils/src/encryption/aes/aes_constants.dart';
 import 'package:cryptography_utils/src/encryption/aes/aes_key.dart';
-import 'package:cryptography_utils/src/encryption/cipher/a_block_cipher.dart';
-import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
-import 'package:cryptography_utils/src/encryption/cipher/param_with_iv.dart';
+import 'package:cryptography_utils/src/encryption/cipher/block_cipher/a_block_cipher.dart';
+import 'package:cryptography_utils/src/encryption/cipher/cipher_param_with_iv.dart';
 import 'package:cryptography_utils/src/utils/int32_utils.dart';
 
 /// AES block cipher engine for encryption and decryption.
@@ -37,25 +36,15 @@ class AesEngine extends ABlockCipher {
   int _rounds = 0;
   List<int> _sList = List<int>.empty();
 
-  AesEngine() : super(_blockSize);
-
-  /// Initializes the AES cipher with the given parameters and direction.
-  @override
-  void init(ICipherParam? cipherParam) {
-    final AesKey aesKey;
-
-    if (cipherParam is ParamWithIV<AesKey>) {
-      aesKey = cipherParam.param!;
-    } else if (cipherParam is AesKey) {
-      aesKey = cipherParam;
-    } else {
-      throw ArgumentError('Invalid parameters type for AesEngine');
-    }
-
-    _workingKeyList = _generateWorkingKey(aesKey);
-
+  AesEngine({
+    required super.cipherMode,
+    required CipherParamWithIV<AesKey> super.cipherParameter,
+  }) : super(blockSize: _blockSize) {
+    _workingKeyList = _generateWorkingKey();
     _sList = List<int>.from(AesConstants.sList);
   }
+
+  AesKey get aesKey => (cipherParameter as CipherParamWithIV<AesKey>).param;
 
   /// Encrypts or decrypts a single block of input data.
   /// The operation depends on whether the cipher was initialized for encryption or decryption.
@@ -81,21 +70,20 @@ class AesEngine extends ABlockCipher {
   /// - Generates round keys using the Rijndael key schedule algorithm,
   /// - Organizes the keys into round-specific 4x4 matrices for easier block processing.
   /// The generated key schedule is used for SubBytes, ShiftRows, MixColumns, and AddRoundKey steps.
-  List<List<int>> _generateWorkingKey(AesKey aesKey) {
-    Uint8List aesKeyUint8List = aesKey.keyUint8List;
+  List<List<int>> _generateWorkingKey() {
     _rounds = aesKey.columns + 6;
 
     List<List<int>> wList = List<List<int>>.generate(_rounds + 1, (int i) => List<int>.filled(4, 0, growable: false));
 
     switch (aesKey.columns) {
       case 4:
-        int col0 = Int32Utils.unpack(aesKeyUint8List, 0, Endian.little);
+        int col0 = Int32Utils.unpack(aesKey.bytes, 0, Endian.little);
         wList[0][0] = col0;
-        int col1 = Int32Utils.unpack(aesKeyUint8List, 4, Endian.little);
+        int col1 = Int32Utils.unpack(aesKey.bytes, 4, Endian.little);
         wList[0][1] = col1;
-        int col2 = Int32Utils.unpack(aesKeyUint8List, 8, Endian.little);
+        int col2 = Int32Utils.unpack(aesKey.bytes, 8, Endian.little);
         wList[0][2] = col2;
-        int col3 = Int32Utils.unpack(aesKeyUint8List, 12, Endian.little);
+        int col3 = Int32Utils.unpack(aesKey.bytes, 12, Endian.little);
         wList[0][3] = col3;
 
         for (int i = 1; i <= 10; ++i) {
@@ -111,17 +99,17 @@ class AesEngine extends ABlockCipher {
         }
         break;
       case 6:
-        int col0 = Int32Utils.unpack(aesKeyUint8List, 0, Endian.little);
+        int col0 = Int32Utils.unpack(aesKey.bytes, 0, Endian.little);
         wList[0][0] = col0;
-        int col1 = Int32Utils.unpack(aesKeyUint8List, 4, Endian.little);
+        int col1 = Int32Utils.unpack(aesKey.bytes, 4, Endian.little);
         wList[0][1] = col1;
-        int col2 = Int32Utils.unpack(aesKeyUint8List, 8, Endian.little);
+        int col2 = Int32Utils.unpack(aesKey.bytes, 8, Endian.little);
         wList[0][2] = col2;
-        int col3 = Int32Utils.unpack(aesKeyUint8List, 12, Endian.little);
+        int col3 = Int32Utils.unpack(aesKey.bytes, 12, Endian.little);
         wList[0][3] = col3;
 
-        int col4 = Int32Utils.unpack(aesKeyUint8List, 16, Endian.little);
-        int col5 = Int32Utils.unpack(aesKeyUint8List, 20, Endian.little);
+        int col4 = Int32Utils.unpack(aesKey.bytes, 16, Endian.little);
+        int col5 = Int32Utils.unpack(aesKey.bytes, 20, Endian.little);
 
         int i = 1, rcon = 1, colx;
 
@@ -164,22 +152,22 @@ class AesEngine extends ABlockCipher {
         break;
       case 8:
         {
-          int col0 = Int32Utils.unpack(aesKeyUint8List, 0, Endian.little);
+          int col0 = Int32Utils.unpack(aesKey.bytes, 0, Endian.little);
           wList[0][0] = col0;
-          int col1 = Int32Utils.unpack(aesKeyUint8List, 4, Endian.little);
+          int col1 = Int32Utils.unpack(aesKey.bytes, 4, Endian.little);
           wList[0][1] = col1;
-          int col2 = Int32Utils.unpack(aesKeyUint8List, 8, Endian.little);
+          int col2 = Int32Utils.unpack(aesKey.bytes, 8, Endian.little);
           wList[0][2] = col2;
-          int col3 = Int32Utils.unpack(aesKeyUint8List, 12, Endian.little);
+          int col3 = Int32Utils.unpack(aesKey.bytes, 12, Endian.little);
           wList[0][3] = col3;
 
-          int col4 = Int32Utils.unpack(aesKeyUint8List, 16, Endian.little);
+          int col4 = Int32Utils.unpack(aesKey.bytes, 16, Endian.little);
           wList[1][0] = col4;
-          int col5 = Int32Utils.unpack(aesKeyUint8List, 20, Endian.little);
+          int col5 = Int32Utils.unpack(aesKey.bytes, 20, Endian.little);
           wList[1][1] = col5;
-          int col6 = Int32Utils.unpack(aesKeyUint8List, 24, Endian.little);
+          int col6 = Int32Utils.unpack(aesKey.bytes, 24, Endian.little);
           wList[1][2] = col6;
-          int col7 = Int32Utils.unpack(aesKeyUint8List, 28, Endian.little);
+          int col7 = Int32Utils.unpack(aesKey.bytes, 28, Endian.little);
           wList[1][3] = col7;
 
           int i = 2, rcon = 1, colx;

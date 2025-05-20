@@ -1,7 +1,7 @@
 //Copyright (c) 2018, Leo Cavalcante
 // All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without
+//Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
 // * Redistributions of source code must retain the above copyright notice, this
@@ -31,43 +31,63 @@ import 'package:cryptography_utils/src/encryption/aes/aes_engine.dart';
 import 'package:cryptography_utils/src/encryption/aes/aes_iv.dart';
 import 'package:cryptography_utils/src/encryption/aes/aes_key.dart';
 import 'package:cryptography_utils/src/encryption/aes/encrypted.dart';
-import 'package:cryptography_utils/src/encryption/cipher/a_key_parameter.dart';
+import 'package:cryptography_utils/src/encryption/cipher/block_cipher/ctr_block_cipher.dart';
+import 'package:cryptography_utils/src/encryption/cipher/block_cipher/padded_block_cipher.dart';
+import 'package:cryptography_utils/src/encryption/cipher/block_cipher/padding/pkcs7_padding.dart';
 import 'package:cryptography_utils/src/encryption/cipher/cipher_mode.dart';
-import 'package:cryptography_utils/src/encryption/cipher/i_cipher_param.dart';
-import 'package:cryptography_utils/src/encryption/cipher/padded_block_cipher/padded_block_cipher.dart';
-import 'package:cryptography_utils/src/encryption/cipher/padded_block_cipher/padded_block_cipher_parameters.dart';
-import 'package:cryptography_utils/src/encryption/cipher/param_with_iv.dart';
-import 'package:cryptography_utils/src/encryption/cipher/stream_cipher/sic_stream_cipher_as_block_cipher.dart';
+import 'package:cryptography_utils/src/encryption/cipher/cipher_param_with_iv.dart';
 
-/// AES provides encryption and decryption using the AES algorithm in stream cipher mode (SIC/CTR).
-/// This implementation wraps the AES engine with a counter-based stream cipher and
-/// uses PKCS7 padding to support data of arbitrary length.
+enum AESMode { ecb, cbc, cfb, ofb, ctr }
+
+abstract interface class ICipherPadding {
+  int addPadding(Uint8List uint8list, int offset);
+
+  int calcPaddingCount(Uint8List uint8list);
+}
+
 class AES {
-  /// Encrypts the given [uint8list] using the specified [aesKey] and [aesIV].
-  /// The encryption process uses a padded block cipher with PKCS7 padding
-  /// and AES in SIC mode to ensure compatibility with arbitrary-length inputs.
-  /// Returns an [Encrypted] object containing the encrypted bytes.
-  static Encrypted encryptBytes(Uint8List uint8list, AesKey aesKey, AesIV aesIV) {
-    PaddedBlockCipher paddedCipher = PaddedBlockCipher(SicStreamAsBlockCipher(AesEngine()))
-      ..init(
+  final AESMode mode;
+  final ICipherPadding? padding;
+
+  AES([
+    this.mode = AESMode.ctr,
+    this.padding = const Pkcs7Padding(),
+  ]);
+
+  Encrypted encrypt(Uint8List uint8list, AesKey aesKey, AesIV aesIV) {
+    if (mode == AESMode.ctr && padding != null) {
+      PaddedBlockCipher paddedBlockCipher = PaddedBlockCipher(
+        padding: padding!,
+        blockCipher: CTRBlockCipher(AesEngine(
           cipherMode: CipherMode.encryption,
-          cipherParameter:
-              PaddedBlockCipherParameter<ParamWithIV<AKeyParameter>, ICipherParam?>(ParamWithIV<AKeyParameter>(aesKey, aesIV.keyUint8List)));
-    Uint8List encrypted = paddedCipher.process(uint8list);
-    return Encrypted(encrypted);
+          cipherParameter: CipherParamWithIV<AesKey>(aesKey, aesIV.uint8List),
+        )),
+      );
+
+      Uint8List encrypted = paddedBlockCipher.process(uint8list);
+      return Encrypted(encrypted);
+    } else if (padding == null) {
+      throw UnimplementedError('Unpadded cipher is not implemented yet.');
+    } else {
+      throw UnimplementedError('The $mode is not implemented yet. Only CTR is implemented.');
+    }
   }
 
-  /// Decrypts the given [encrypted] data using the specified [aesKey] and [aesIV].
-  /// The decryption process matches the encryption configuration,
-  /// using PKCS7 padding removal and AES in SIC mode.
-  /// Returns the original plaintext as a [Uint8List].
-  static Uint8List decryptBytes(Encrypted encrypted, AesKey aesKey, AesIV aesIV) {
-    PaddedBlockCipher paddedCipher = PaddedBlockCipher(SicStreamAsBlockCipher(AesEngine()))
-      ..init(
+  Uint8List decrypt(Encrypted encrypted, AesKey aesKey, AesIV aesIV) {
+    if (mode == AESMode.ctr && padding != null) {
+      PaddedBlockCipher paddedBlockCipher = PaddedBlockCipher(
+        padding: padding!,
+        blockCipher: CTRBlockCipher(AesEngine(
           cipherMode: CipherMode.decryption,
-          cipherParameter:
-              PaddedBlockCipherParameter<ParamWithIV<AKeyParameter>, ICipherParam?>(ParamWithIV<AKeyParameter>(aesKey, aesIV.keyUint8List)));
-    Uint8List decryptUint8List = paddedCipher.process(encrypted.uint8List);
-    return decryptUint8List;
+          cipherParameter: CipherParamWithIV<AesKey>(aesKey, aesIV.uint8List),
+        )),
+      );
+
+      return paddedBlockCipher.process(encrypted.uint8List);
+    } else if (padding == null) {
+      throw UnimplementedError('Unpadded cipher is not implemented yet.');
+    } else {
+      throw UnimplementedError('$mode is not implemented yet. Only CTR is implemented.');
+    }
   }
 }

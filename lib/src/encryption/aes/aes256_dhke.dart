@@ -29,7 +29,7 @@ class Aes256DHKE {
     Uint8List initializationVectorUint8List = Uint8List.fromList(securePasswordBytesList.getRange(0, 16).toList());
     AesIV aesIV = AesIV(initializationVectorUint8List);
 
-    Uint8List encryptedUint8List = AES.encryptBytes(decryptedUint8List, aesKey, aesIV).uint8List;
+    Uint8List encryptedUint8List = AES().encrypt(decryptedUint8List, aesKey, aesIV).uint8List;
 
     List<int> checksumBytesList = securePasswordBytesList.getRange(securePasswordBytesList.length - 4, securePasswordBytesList.length).toList();
     List<int> encryptedStringBytesList = randomUint8List + encryptedUint8List + checksumBytesList;
@@ -55,7 +55,8 @@ class Aes256DHKE {
 
     Uint8List initializationVectorUint8List = Uint8List.fromList(securePasswordUint8List.getRange(0, 16).toList());
     AesIV aesIV = AesIV(initializationVectorUint8List);
-    Uint8List decryptedUint8List = AES.decryptBytes(cipherText, aesKey, aesIV);
+
+    Uint8List decryptedUint8List = AES().decrypt(cipherText, aesKey, aesIV);
     String decryptedString = utf8.decode(decryptedUint8List);
     return decryptedString;
   }
