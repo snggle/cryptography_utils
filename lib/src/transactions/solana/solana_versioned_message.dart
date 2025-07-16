@@ -32,29 +32,30 @@ class SolanaV0Message extends ASolanaMessage {
   });
 
   factory SolanaV0Message.fromBytes(Uint8List data) {
-    ByteReader reader = ByteReader(data);
-    int versionByte = reader.readByte();
+    CompactU16Decoder compactU16Decoder = CompactU16Decoder(data);
+
+    int versionByte = compactU16Decoder.decodeValue();
     int version = versionByte & 0x7F;
     if (version != 0) {
       throw UnsupportedError('Only version 0 is supported');
     }
 
-    int numRequiredSignatures = reader.readByte();
-    int numReadonlySignedAccounts = reader.readByte();
-    int numReadonlyUnsignedAccounts = reader.readByte();
+    int numRequiredSignatures = compactU16Decoder.decodeValue();
+    int numReadonlySignedAccounts = compactU16Decoder.decodeValue();
+    int numReadonlyUnsignedAccounts = compactU16Decoder.decodeValue();
 
-    int accCount = reader.decodeCompactU16().value;
-    List<Uint8List> accountKeys = List<Uint8List>.generate(accCount, (_) => reader.readBytes(32));
+    int accCount = compactU16Decoder.decodeValue();
+    List<Uint8List> accountKeys = List<Uint8List>.generate(accCount, (_) => compactU16Decoder.readBytes(32));
 
-    Uint8List recentBlockhash = reader.readBytes(32);
+    Uint8List recentBlockhash = compactU16Decoder.readBytes(32);
 
-    int instrucCount = reader.decodeCompactU16().value;
+    int instrucCount = compactU16Decoder.decodeValue();
     List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instrucCount, (_) {
-      int programIdIndex = reader.readByte();
-      int accountCount = reader.decodeCompactU16().value;
-      List<int> accountIndices = List<int>.generate(accountCount, (_) => reader.readByte());
-      int dataLength = reader.decodeCompactU16().value;
-      Uint8List instructionData = reader.readBytes(dataLength);
+      int programIdIndex = compactU16Decoder.decodeValue();
+      int accountCount = compactU16Decoder.decodeValue();
+      List<int> accountIndices = List<int>.generate(accountCount, (_) => compactU16Decoder.decodeValue());
+      int dataLength = compactU16Decoder.decodeValue();
+      Uint8List instructionData = compactU16Decoder.readBytes(dataLength);
 
       return SolanaInstruction(
         programIdIndex: programIdIndex,
@@ -63,14 +64,13 @@ class SolanaV0Message extends ASolanaMessage {
       );
     });
 
-    int addressLookupCount = reader.decodeCompactU16().value;
+    int addressLookupCount = compactU16Decoder.decodeValue();
     List<AddressLookupTable> addressLookupTables = List<AddressLookupTable>.generate(addressLookupCount, (_) {
-      Uint8List accountKey = reader.readBytes(32);
-      int writableCount = reader.decodeCompactU16().value;
-      List<int> writableIndexes = List<int>.generate(writableCount, (_) => reader.readByte());
-      int readonlyCount = reader.decodeCompactU16().value;
-      List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) => reader.readByte());
-      print('Suchar: Creating AddressTableLookup');
+      Uint8List accountKey = compactU16Decoder.readBytes(32);
+      int writableCount = compactU16Decoder.decodeValue();
+      List<int> writableIndexes = List<int>.generate(writableCount, (_) => compactU16Decoder.decodeValue());
+      int readonlyCount = compactU16Decoder.decodeValue();
+      List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) => compactU16Decoder.decodeValue());
       return AddressLookupTable(
         accountKey: accountKey,
         writableIndexes: writableIndexes,
