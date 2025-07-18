@@ -32,30 +32,69 @@ class SolanaV0Message extends ASolanaMessage {
   });
 
   factory SolanaV0Message.fromBytes(Uint8List data) {
-    CompactU16Decoder compactU16Decoder = CompactU16Decoder(data);
+    int offset = 0;
+    int length;
 
-    int versionByte = compactU16Decoder.decodeValue();
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int versionByte = CompactU16Decoder.decodeValue(data, offset, length);
     int version = versionByte & 0x7F;
+    offset += length;
+
     if (version != 0) {
       throw UnsupportedError('Only version 0 is supported');
     }
 
-    int numRequiredSignatures = compactU16Decoder.decodeValue();
-    int numReadonlySignedAccounts = compactU16Decoder.decodeValue();
-    int numReadonlyUnsignedAccounts = compactU16Decoder.decodeValue();
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int numRequiredSignatures = CompactU16Decoder.decodeValue(data, offset, length);
+    offset += length;
 
-    int accCount = compactU16Decoder.decodeValue();
-    List<Uint8List> accountKeys = List<Uint8List>.generate(accCount, (_) => compactU16Decoder.readBytes(32));
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int numReadonlySignedAccounts = CompactU16Decoder.decodeValue(data, offset, length);
+    offset += length;
 
-    Uint8List recentBlockhash = compactU16Decoder.readBytes(32);
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int numReadonlyUnsignedAccounts = CompactU16Decoder.decodeValue(data, offset, length);
+    offset += length;
 
-    int instrucCount = compactU16Decoder.decodeValue();
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int accCount = CompactU16Decoder.decodeValue(data, offset, length);
+    offset += length;
+
+    List<Uint8List> accountKeys = List<Uint8List>.generate(accCount, (_) {
+      Uint8List key = Uint8List.fromList(data.sublist(offset, offset + 32));
+      offset += 32;
+      return key;
+    });
+
+    Uint8List recentBlockhash = Uint8List.fromList(data.sublist(offset, offset + 32));
+    offset += 32;
+
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int instrucCount = CompactU16Decoder.decodeValue(data, offset, length);
+    offset += length;
+
     List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instrucCount, (_) {
-      int programIdIndex = compactU16Decoder.decodeValue();
-      int accountCount = compactU16Decoder.decodeValue();
-      List<int> accountIndices = List<int>.generate(accountCount, (_) => compactU16Decoder.decodeValue());
-      int dataLength = compactU16Decoder.decodeValue();
-      Uint8List instructionData = compactU16Decoder.readBytes(dataLength);
+      length = CompactU16Decoder.decodeLength(data, offset);
+      int programIdIndex = CompactU16Decoder.decodeValue(data, offset, length);
+      offset += length;
+
+      length = CompactU16Decoder.decodeLength(data, offset);
+      int accountCount = CompactU16Decoder.decodeValue(data, offset, length);
+      offset += length;
+
+      List<int> accountIndices = List<int>.generate(accountCount, (_) {
+        length = CompactU16Decoder.decodeLength(data, offset);
+        int idx = CompactU16Decoder.decodeValue(data, offset, length);
+        offset += length;
+        return idx;
+      });
+
+      length = CompactU16Decoder.decodeLength(data, offset);
+      int dataLength = CompactU16Decoder.decodeValue(data, offset, length);
+      offset += length;
+
+      Uint8List instructionData = Uint8List.fromList(data.sublist(offset, offset + dataLength));
+      offset += dataLength;
 
       return SolanaInstruction(
         programIdIndex: programIdIndex,
@@ -64,13 +103,36 @@ class SolanaV0Message extends ASolanaMessage {
       );
     });
 
-    int addressLookupCount = compactU16Decoder.decodeValue();
+    length = CompactU16Decoder.decodeLength(data, offset);
+    int addressLookupCount = CompactU16Decoder.decodeValue(data, offset, length);
+    offset += length;
+
     List<AddressLookupTable> addressLookupTables = List<AddressLookupTable>.generate(addressLookupCount, (_) {
-      Uint8List accountKey = compactU16Decoder.readBytes(32);
-      int writableCount = compactU16Decoder.decodeValue();
-      List<int> writableIndexes = List<int>.generate(writableCount, (_) => compactU16Decoder.decodeValue());
-      int readonlyCount = compactU16Decoder.decodeValue();
-      List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) => compactU16Decoder.decodeValue());
+      Uint8List accountKey = Uint8List.fromList(data.sublist(offset, offset + 32));
+      offset += 32;
+
+      length = CompactU16Decoder.decodeLength(data, offset);
+      int writableCount = CompactU16Decoder.decodeValue(data, offset, length);
+      offset += length;
+
+      List<int> writableIndexes = List<int>.generate(writableCount, (_) {
+        length = CompactU16Decoder.decodeLength(data, offset);
+        int index = CompactU16Decoder.decodeValue(data, offset, length);
+        offset += length;
+        return index;
+      });
+
+      length = CompactU16Decoder.decodeLength(data, offset);
+      int readonlyCount = CompactU16Decoder.decodeValue(data, offset, length);
+      offset += length;
+
+      List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) {
+        length = CompactU16Decoder.decodeLength(data, offset);
+        int index = CompactU16Decoder.decodeValue(data, offset, length);
+        offset += length;
+        return index;
+      });
+
       return AddressLookupTable(
         accountKey: accountKey,
         writableIndexes: writableIndexes,
@@ -88,6 +150,7 @@ class SolanaV0Message extends ASolanaMessage {
       addressTableLookups: addressLookupTables,
     );
   }
+
 
   @override
   String toString() => const JsonEncoder.withIndent('  ').convert(toJson());
