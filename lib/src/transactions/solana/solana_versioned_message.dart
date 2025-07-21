@@ -86,14 +86,14 @@ class SolanaV0Message extends ASolanaMessage {
       int writableCount = CompactU16Decoder.readValue(byteReader);
 
       List<int> writableIndexes = List<int>.generate(writableCount, (_) {
-        int index = CompactU16Decoder.readValue(byteReader);
+        int index = byteReader.shiftByte();
         return index;
       });
 
       int readonlyCount = CompactU16Decoder.readValue(byteReader);
 
       List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) {
-        int index = CompactU16Decoder.readValue(byteReader);
+        int index = byteReader.shiftByte();
         return index;
       });
 
