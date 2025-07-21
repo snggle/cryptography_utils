@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/transactions/solana/a_solana_message.dart';
 import 'package:cryptography_utils/src/transactions/solana/address_lookup_table.dart';
 
 class SolanaV0Message extends ASolanaMessage {
@@ -32,69 +31,45 @@ class SolanaV0Message extends ASolanaMessage {
   });
 
   factory SolanaV0Message.fromBytes(Uint8List data) {
-    int offset = 0;
-    int length;
+    int publicKeyLength = 32;
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int versionByte = CompactU16Decoder.decodeValue(data, offset, length);
+    ByteReader byteReader = ByteReader(data);
+
+
+    int versionByte = byteReader.shiftByte();
     int version = versionByte & 0x7F;
-    offset += length;
 
     if (version != 0) {
       throw UnsupportedError('Only version 0 is supported');
     }
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int numRequiredSignatures = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
+    int numRequiredSignatures = byteReader.shiftByte();
+    int numReadonlySignedAccounts = byteReader.shiftByte();
+    int numReadonlyUnsignedAccounts = byteReader.shiftByte();
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int numReadonlySignedAccounts = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
+    int accountsCount = CompactU16Decoder.readValue(byteReader);
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int numReadonlyUnsignedAccounts = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
-
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int accCount = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
-
-    List<Uint8List> accountKeys = List<Uint8List>.generate(accCount, (_) {
-      Uint8List key = Uint8List.fromList(data.sublist(offset, offset + 32));
-      offset += 32;
-      return key;
+    List<Uint8List> accountKeys = List<Uint8List>.generate(accountsCount, (_) {
+      Uint8List key = byteReader.shiftBytes(publicKeyLength);
+      return Uint8List.fromList(key);
     });
 
-    Uint8List recentBlockhash = Uint8List.fromList(data.sublist(offset, offset + 32));
-    offset += 32;
+    Uint8List recentBlockhash = byteReader.shiftBytes(publicKeyLength);
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int instrucCount = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
+    int instructionCount = CompactU16Decoder.readValue(byteReader);
 
-    List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instrucCount, (_) {
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int programIdIndex = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
-
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int accountCount = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
+    List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instructionCount, (_) {
+      int programIdIndex = byteReader.shiftByte();
+      int accountCount = CompactU16Decoder.readValue(byteReader);
 
       List<int> accountIndices = List<int>.generate(accountCount, (_) {
-        length = CompactU16Decoder.decodeLength(data, offset);
-        int idx = CompactU16Decoder.decodeValue(data, offset, length);
-        offset += length;
+        int idx = CompactU16Decoder.readValue(byteReader);
         return idx;
       });
 
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int dataLength = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
+      int dataLength = CompactU16Decoder.readValue(byteReader);
 
-      Uint8List instructionData = Uint8List.fromList(data.sublist(offset, offset + dataLength));
-      offset += dataLength;
+      Uint8List instructionData = byteReader.shiftBytes(dataLength);
 
       return SolanaInstruction(
         programIdIndex: programIdIndex,
@@ -103,33 +78,22 @@ class SolanaV0Message extends ASolanaMessage {
       );
     });
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int addressLookupCount = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
+    int addressLookupCount = CompactU16Decoder.readValue(byteReader);
 
     List<AddressLookupTable> addressLookupTables = List<AddressLookupTable>.generate(addressLookupCount, (_) {
-      Uint8List accountKey = Uint8List.fromList(data.sublist(offset, offset + 32));
-      offset += 32;
+      Uint8List accountKey = byteReader.shiftBytes(publicKeyLength);
 
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int writableCount = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
+      int writableCount = CompactU16Decoder.readValue(byteReader);
 
       List<int> writableIndexes = List<int>.generate(writableCount, (_) {
-        length = CompactU16Decoder.decodeLength(data, offset);
-        int index = CompactU16Decoder.decodeValue(data, offset, length);
-        offset += length;
+        int index = CompactU16Decoder.readValue(byteReader);
         return index;
       });
 
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int readonlyCount = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
+      int readonlyCount = CompactU16Decoder.readValue(byteReader);
 
       List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) {
-        length = CompactU16Decoder.decodeLength(data, offset);
-        int index = CompactU16Decoder.decodeValue(data, offset, length);
-        offset += length;
+        int index = CompactU16Decoder.readValue(byteReader);
         return index;
       });
 

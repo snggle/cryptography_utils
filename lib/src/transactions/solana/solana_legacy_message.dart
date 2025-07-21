@@ -27,60 +27,29 @@ class SolanaLegacyMessage extends ASolanaMessage {
   });
 
   factory SolanaLegacyMessage.fromBytes(Uint8List data) {
-    int offset = 0;
-    int length;
+    int publicKeyLength = 32;
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int numRequiredSignatures = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
+    ByteReader reader = ByteReader(data);
+    int numRequiredSignatures = reader.shiftByte();
+    int numReadonlySignedAccounts = reader.shiftByte();
+    int numReadonlyUnsignedAccounts = reader.shiftByte();
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int numReadonlySignedAccounts = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
+    int accountsCount = CompactU16Decoder.readValue(reader);
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int numReadonlyUnsignedAccounts = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
-
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int accCount = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
-
-    List<Uint8List> accountKeys = List<Uint8List>.generate(accCount, (_) {
-      Uint8List key = data.sublist(offset, offset + 32);
-      offset += 32;
+    List<Uint8List> accountKeys = List<Uint8List>.generate(accountsCount, (_) {
+      Uint8List key = reader.shiftBytes(publicKeyLength);
       return Uint8List.fromList(key);
     });
 
-    Uint8List recentBlockhash = Uint8List.fromList(data.sublist(offset, offset + 32));
-    offset += 32;
+    Uint8List recentBlockhash = reader.shiftBytes(publicKeyLength);
+    int instructionCount = CompactU16Decoder.readValue(reader);
 
-    length = CompactU16Decoder.decodeLength(data, offset);
-    int instrucCount = CompactU16Decoder.decodeValue(data, offset, length);
-    offset += length;
-
-    List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instrucCount, (_) {
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int programIdIndex = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
-
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int accountCount = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
-
-      List<int> accountIndices = List<int>.generate(accountCount, (_) {
-        length = CompactU16Decoder.decodeLength(data, offset);
-        int index = CompactU16Decoder.decodeValue(data, offset, length);
-        offset += length;
-        return index;
-      });
-
-      length = CompactU16Decoder.decodeLength(data, offset);
-      int dataLength = CompactU16Decoder.decodeValue(data, offset, length);
-      offset += length;
-
-      Uint8List instructionData = Uint8List.fromList(data.sublist(offset, offset + dataLength));
-      offset += dataLength;
+    List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instructionCount, (_) {
+      int programIdIndex = reader.shiftByte();
+      int accountCount = CompactU16Decoder.readValue(reader);
+      Uint8List accountIndices = reader.shiftBytes(accountCount);
+      int dataLength = CompactU16Decoder.readValue(reader);
+      Uint8List instructionData = reader.shiftBytes(dataLength);
 
       return SolanaInstruction(
         programIdIndex: programIdIndex,
