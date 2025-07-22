@@ -30,26 +30,26 @@ class SolanaLegacyMessage extends ASolanaMessage {
     int publicKeyLength = 32;
 
     ByteReader reader = ByteReader(data);
-    int numRequiredSignatures = reader.rightShift();
-    int numReadonlySignedAccounts = reader.rightShift();
-    int numReadonlyUnsignedAccounts = reader.rightShift();
+    int numRequiredSignatures = reader.shiftRight();
+    int numReadonlySignedAccounts = reader.shiftRight();
+    int numReadonlyUnsignedAccounts = reader.shiftRight();
 
     int accountsCount = CompactU16Decoder.decode(reader);
 
     List<Uint8List> accountKeys = List<Uint8List>.generate(accountsCount, (_) {
-      Uint8List key = reader.rightShiftBy(publicKeyLength);
+      Uint8List key = reader.shiftRightBy(publicKeyLength);
       return Uint8List.fromList(key);
     });
 
-    Uint8List recentBlockhash = reader.rightShiftBy(publicKeyLength);
+    Uint8List recentBlockhash = reader.shiftRightBy(publicKeyLength);
     int instructionCount = CompactU16Decoder.decode(reader);
 
     List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instructionCount, (_) {
-      int programIdIndex = reader.rightShift();
+      int programIdIndex = reader.shiftRight();
       int accountCount = CompactU16Decoder.decode(reader);
-      Uint8List accountIndices = reader.rightShiftBy(accountCount);
+      Uint8List accountIndices = reader.shiftRightBy(accountCount);
       int dataLength = CompactU16Decoder.decode(reader);
-      Uint8List instructionData = reader.rightShiftBy(dataLength);
+      Uint8List instructionData = reader.shiftRightBy(dataLength);
 
       return SolanaInstruction(
         programIdIndex: programIdIndex,

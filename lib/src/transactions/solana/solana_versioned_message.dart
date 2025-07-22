@@ -36,30 +36,30 @@ class SolanaV0Message extends ASolanaMessage {
     ByteReader byteReader = ByteReader(data);
 
 
-    int versionByte = byteReader.rightShift();
+    int versionByte = byteReader.shiftRight();
     int version = versionByte & 0x7F;
 
     if (version != 0) {
       throw UnsupportedError('Only version 0 is supported');
     }
 
-    int numRequiredSignatures = byteReader.rightShift();
-    int numReadonlySignedAccounts = byteReader.rightShift();
-    int numReadonlyUnsignedAccounts = byteReader.rightShift();
+    int numRequiredSignatures = byteReader.shiftRight();
+    int numReadonlySignedAccounts = byteReader.shiftRight();
+    int numReadonlyUnsignedAccounts = byteReader.shiftRight();
 
     int accountsCount = CompactU16Decoder.decode(byteReader);
 
     List<Uint8List> accountKeys = List<Uint8List>.generate(accountsCount, (_) {
-      Uint8List key = byteReader.rightShiftBy(publicKeyLength);
+      Uint8List key = byteReader.shiftRightBy(publicKeyLength);
       return Uint8List.fromList(key);
     });
 
-    Uint8List recentBlockhash = byteReader.rightShiftBy(publicKeyLength);
+    Uint8List recentBlockhash = byteReader.shiftRightBy(publicKeyLength);
 
     int instructionCount = CompactU16Decoder.decode(byteReader);
 
     List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instructionCount, (_) {
-      int programIdIndex = byteReader.rightShift();
+      int programIdIndex = byteReader.shiftRight();
       int accountCount = CompactU16Decoder.decode(byteReader);
 
       List<int> accountIndices = List<int>.generate(accountCount, (_) {
@@ -69,7 +69,7 @@ class SolanaV0Message extends ASolanaMessage {
 
       int dataLength = CompactU16Decoder.decode(byteReader);
 
-      Uint8List instructionData = byteReader.rightShiftBy(dataLength);
+      Uint8List instructionData = byteReader.shiftRightBy(dataLength);
 
       return SolanaInstruction(
         programIdIndex: programIdIndex,
@@ -81,19 +81,19 @@ class SolanaV0Message extends ASolanaMessage {
     int addressLookupCount = CompactU16Decoder.decode(byteReader);
 
     List<AddressLookupTable> addressLookupTables = List<AddressLookupTable>.generate(addressLookupCount, (_) {
-      Uint8List accountKey = byteReader.rightShiftBy(publicKeyLength);
+      Uint8List accountKey = byteReader.shiftRightBy(publicKeyLength);
 
       int writableCount = CompactU16Decoder.decode(byteReader);
 
       List<int> writableIndexes = List<int>.generate(writableCount, (_) {
-        int index = byteReader.rightShift();
+        int index = byteReader.shiftRight();
         return index;
       });
 
       int readonlyCount = CompactU16Decoder.decode(byteReader);
 
       List<int> readonlyIndexes = List<int>.generate(readonlyCount, (_) {
-        int index = byteReader.rightShift();
+        int index = byteReader.shiftRight();
         return index;
       });
 
