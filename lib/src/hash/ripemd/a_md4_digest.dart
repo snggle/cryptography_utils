@@ -20,6 +20,7 @@
 
 import 'dart:typed_data';
 
+import 'package:cryptography_utils/src/utils/int32_utils.dart';
 import 'package:cryptography_utils/src/utils/register64/register64.dart';
 
 /// [AMD4Digest] provides message digestion, including byte processing, block management, and state updates.
@@ -180,7 +181,7 @@ abstract class AMD4Digest {
 
   void _packState(Uint8List outputUint8List, int outputOffset) {
     for (int i = 0; i < _packedStateSize; i++) {
-      _packInput32(_stateList[i], outputUint8List, outputOffset + i * 4, _endian);
+      Int32Utils.pack(_stateList[i], outputUint8List, outputOffset + i * 4, _endian);
     }
   }
 
@@ -192,7 +193,7 @@ abstract class AMD4Digest {
   }
 
   void _processWord(Uint8List inputUint8List, int inputOffset) {
-    _bufferList[_bufferOffset++] = _unpackInput32Bits(inputUint8List, inputOffset, _endian);
+    _bufferList[_bufferOffset++] = Int32Utils.unpack(inputUint8List, inputOffset, _endian);
 
     if (_bufferOffset == 16) {
       _finalizeBlockProcessing();
@@ -208,14 +209,5 @@ abstract class AMD4Digest {
 
   int _mask8Bits(int input) {
     return input & 0xFF;
-  }
-
-  int _unpackInput32Bits(Uint8List inputUint8List, int offset, Endian endian) {
-    ByteData byteData = ByteData.view(inputUint8List.buffer, inputUint8List.offsetInBytes, inputUint8List.length);
-    return byteData.getUint32(offset, endian);
-  }
-
-  void _packInput32(int x, Uint8List outputUint8List, int offset, Endian endian) {
-    ByteData.view(outputUint8List.buffer, outputUint8List.offsetInBytes, outputUint8List.length).setUint32(offset, x, endian);
   }
 }

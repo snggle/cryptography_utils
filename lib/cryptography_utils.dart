@@ -2,6 +2,7 @@ library cryptography_utils;
 
 export 'src/bip/bip.dart';
 export 'src/cdsa/cdsa.dart';
+export 'src/encryption/aes/aes256_randomized.dart';
 export 'src/hash/hmac.dart';
 export 'src/hash/keccak/keccak.dart';
 export 'src/hash/pbkdf2.dart';
