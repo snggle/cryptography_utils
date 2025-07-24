@@ -55,7 +55,6 @@ class SolanaV0Message extends ASolanaMessage {
     });
 
     Uint8List recentBlockhash = byteReader.shiftRightBy(publicKeyLength);
-
     int instructionCount = CompactU16Decoder.decode(byteReader);
 
     List<SolanaInstruction> instructions = List<SolanaInstruction>.generate(instructionCount, (_) {
