@@ -14,8 +14,12 @@ class SolanaSignature extends ASignature {
       throw const FormatException('Invalid signature bytes');
     }
   }
+
   @override
   Uint8List get bytes => Uint8List.fromList(signatureBytes);
+
+  @override
+  List<Object?> get props => <Object?>[signatureBytes];
 
   factory SolanaSignature.fromBytes(List<int> bytes) {
     return SolanaSignature(Uint8List.fromList(bytes));
@@ -24,7 +28,4 @@ class SolanaSignature extends ASignature {
   SolanaSignature copyWith({Uint8List? signatureBytes}) {
     return SolanaSignature(signatureBytes ?? this.signatureBytes);
   }
-
-  @override
-  List<Object?> get props => <Object?>[signatureBytes];
 }

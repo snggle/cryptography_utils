@@ -12,8 +12,7 @@ void main() {
       String expectedTo = 'recipientPubKey';
       String expectedSigner = 'signerPubKey';
       int expectedAmount = 42;
-      int expectedAmountLamports = 123456;
-      String expectedError = 'Some error';
+      int expectedAmountSwappedTo = 123456;
       int expectedDecimals = 6;
       String expectedMint = 'mintPubKey';
       int expectedBaseFee = 1000;
@@ -29,12 +28,11 @@ void main() {
         to: expectedTo,
         signer: expectedSigner,
         amount: expectedAmount,
-        amountLamports: expectedAmountLamports,
-        error: expectedError,
-        decimals: expectedDecimals,
+        amountSwappedTo: expectedAmountSwappedTo,
+        tokenDecimalPrecision: expectedDecimals,
         mint: expectedMint,
-        baseFee: expectedBaseFee,
-        heapFrameBytes: expectedHeapFrameBytes,
+        unitPrice: expectedBaseFee,
+        unitLimit: expectedHeapFrameBytes,
         tokenProgram: expectedTokenProgram,
         associatedProgram: expectedAssociatedProgram,
       );
@@ -46,12 +44,11 @@ void main() {
       expect(actualDecoded.to, expectedTo);
       expect(actualDecoded.signer, expectedSigner);
       expect(actualDecoded.amount, expectedAmount);
-      expect(actualDecoded.amountLamports, expectedAmountLamports);
-      expect(actualDecoded.error, expectedError);
-      expect(actualDecoded.decimals, expectedDecimals);
+      expect(actualDecoded.amountSwappedTo, expectedAmountSwappedTo);
+      expect(actualDecoded.tokenDecimalPrecision, expectedDecimals);
       expect(actualDecoded.mint, expectedMint);
-      expect(actualDecoded.baseFee, expectedBaseFee);
-      expect(actualDecoded.heapFrameBytes, expectedHeapFrameBytes);
+      expect(actualDecoded.unitPrice, expectedBaseFee);
+      expect(actualDecoded.unitLimit, expectedHeapFrameBytes);
       expect(actualDecoded.tokenProgram, expectedTokenProgram);
       expect(actualDecoded.associatedProgram, expectedAssociatedProgram);
     });

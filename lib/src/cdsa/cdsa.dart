@@ -3,4 +3,3 @@ export 'curve_type.dart';
 export 'curves.dart';
 export 'ecdsa/ecdsa.dart';
 export 'eddsa/eddsa.dart';
-export 'eddsa/eddsa.dart';
