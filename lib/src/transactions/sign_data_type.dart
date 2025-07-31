@@ -5,6 +5,6 @@ enum SignDataType {
   /// EIP-2718 typed transaction of unsigned transaction data
   typedTransaction,
 
-  ///
+  /// For signing Solana message
   solanaMessage,
 }

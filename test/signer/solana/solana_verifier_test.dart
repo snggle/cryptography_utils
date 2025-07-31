@@ -6,21 +6,21 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tests of SolanaVerifier.isSignatureValid()', () {
-    EDPrivateKey actualEdPrivateKey = EDPrivateKey.fromBytes(
-      base64Decode('NgMOPT1ktg0VhawjCrTJkXT+27o7jzci+aN8Z80KsaY='),
-    );
-
-    ED25519PrivateKey actualEd25519PrivateKey = ED25519PrivateKey(
-      edPrivateKey: actualEdPrivateKey,
-      metadata: Bip32KeyMetadata.fromCompressedPublicKey(
-        compressedPublicKey: actualEdPrivateKey.edPublicKey.bytes,
-      ),
-    );
-
-    SolanaVerifier actualSolanaVerifier = SolanaVerifier(actualEd25519PrivateKey);
-
     test('Should [return TRUE] for a valid signature', () {
       // Arrange
+      EDPrivateKey actualEdPrivateKey = EDPrivateKey.fromBytes(
+        base64Decode('NgMOPT1ktg0VhawjCrTJkXT+27o7jzci+aN8Z80KsaY='),
+      );
+
+      ED25519PrivateKey actualEd25519PrivateKey = ED25519PrivateKey(
+        edPrivateKey: actualEdPrivateKey,
+        metadata: Bip32KeyMetadata.fromCompressedPublicKey(
+          compressedPublicKey: actualEdPrivateKey.edPublicKey.bytes,
+        ),
+      );
+
+      SolanaVerifier actualSolanaVerifier = SolanaVerifier(actualEd25519PrivateKey);
+
       Uint8List actualMessage = base64Decode(
           'AQACBB0D1AEIXs5Rz43yeayo7W0tSpSEF7kNTRVAVF4UGFj0UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAAPwED+D6bid8Qm8XNAPnvCc2lPDE9RQPiygKW4Pk3jYMDAwAJAwAtMQEAAAAAAwAFAu8BAAACAgABDAIAAAAAypo7AAAAAA==');
 
@@ -29,14 +29,27 @@ void main() {
       SolanaSignature actualSignature = SolanaSignature(actualSignatureBytes);
 
       // Act
-      bool actualValidBool = actualSolanaVerifier.isSignatureValid(actualMessage, actualSignature);
+      bool actualSignatureValidBool = actualSolanaVerifier.isSignatureValid(actualMessage, actualSignature);
 
       // Assert
-      expect(actualValidBool, true);
+      expect(actualSignatureValidBool, true);
     });
 
     test('Should [return FALSE] for an invalid signature', () {
       // Arrange
+      EDPrivateKey actualEdPrivateKey = EDPrivateKey.fromBytes(
+        base64Decode('NgMOPT1ktg0VhawjCrTJkXT+27o7jzci+aN8Z80KsaY='),
+      );
+
+      ED25519PrivateKey actualEd25519PrivateKey = ED25519PrivateKey(
+        edPrivateKey: actualEdPrivateKey,
+        metadata: Bip32KeyMetadata.fromCompressedPublicKey(
+          compressedPublicKey: actualEdPrivateKey.edPublicKey.bytes,
+        ),
+      );
+
+      SolanaVerifier actualSolanaVerifier = SolanaVerifier(actualEd25519PrivateKey);
+
       Uint8List actualMessage = base64Decode(
           'AQACBB0D1AEIXs5Rz43yeayo7W0tSpSEF7kNTRVAVF4UGFj0UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAAPwED+D6bid8Qm8XNAPnvCc2lPDE9RQPiygKW4Pk3jYMDAwAJAwAtMQEAAAAAAwAFAu8BAAACAgABDAIAAAAAypo7AAAAAA==');
 
@@ -45,10 +58,10 @@ void main() {
       SolanaSignature actualSolanaSignature = SolanaSignature(actualSignatureBytes);
 
       // Act
-      bool actualValidBool = actualSolanaVerifier.isSignatureValid(actualMessage, actualSolanaSignature);
+      bool actualSignatureValidBool = actualSolanaVerifier.isSignatureValid(actualMessage, actualSolanaSignature);
 
       // Assert
-      expect(actualValidBool, false);
+      expect(actualSignatureValidBool, false);
     });
   });
 }

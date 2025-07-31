@@ -13,7 +13,7 @@ void main() {
           'gAEACRCsVML2Bg3dHy0Va9dcV1Z/NhGHyVYhJ0jE+0MRGFemVlZ3NFh19IgWu+pj5UeQzMrHbNYffxTTr/qv3cxI4kqkZn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y1yRxM32R3yvnX/HBzojB9fApPOfuRWL27j4EX6B/qtMR3YqLvMXqaJtR7xJ7zz/wsSOSpUxQmyAwTUxIhtPBZFuDzN/gj1H6SStJcojxfyVSBM4CsNHf9s8Fuywijv3R7Szf79GhSuUqLOYVkL1+ideK6TTiYEoL0lh29rNcfXJYfgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpUmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXqMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WZqAC/9MhzaIlsIPwUBz6/HLWqN1/oH+Tb3IK6Tft154tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aYsnkR0YRptLIlfQajrMt0F6AtCnIcxppx3jdg3dGvKxBwgABQLGggMACAAJA1IqNQAAAAAADAYABAAXBwoBAQcCAAQMAgAAAM8ntAgAAAAACgEEAREJJwoNAAQDAgUXGgYJDgkZEg8LEBEDARMTGA0KGRUPCxYUAgETExMNCirBIJszQdacgQICAAAAOgFkAAE6AGQBAs8ntAgAAAAACKmKAQAAAAAyAFAKAwQAAAEJAsFXUcXB+MMMeYa6oBoJLmvxqJ7+KcwGc/y1N+Qd8kpZBHd2eHkEBnp1Uxbx7FnCE40ksuuuv14pM6i4jtdWtEsGPK0+XdwvqvOLA76/uwA=');
 
       // Act
-      SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromBytes(actualSolanaV0MessageBytes);
+      SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromSerializedData(actualSolanaV0MessageBytes);
 
       Map<String, dynamic> actualJson = actualSolanaV0Message.toJson();
       List<dynamic> actualInstructionsList = actualJson['instructions'] as List<dynamic>;
@@ -57,7 +57,7 @@ void main() {
       expect(actualSolanaV0Message.numRequiredSignatures, 1);
       expect(actualSolanaV0Message.numReadonlySignedAccounts, 0);
       expect(actualSolanaV0Message.numReadonlyUnsignedAccounts, 9);
-      expect(actualSolanaV0Message.accountKeys.map(Base58Codec.encode).toList(), expectedAccountKeys);
+      expect(actualSolanaV0Message.accountKeysList.map(Base58Codec.encode).toList(), expectedAccountKeys);
       expect(Base58Codec.encode(actualSolanaV0Message.recentBlockhash), 'ANCfTi42idFEoiqwvagoqehUzArgbq3N6obb3Lgvhmfv');
 
       expect(actualJson['addressTableLookups'], <Map<String, Object>>[
@@ -78,12 +78,13 @@ void main() {
       expect(actualInstruction0['programIdIndex'], 8);
       expect(actualInstruction0['programId'], 'ComputeBudget111111111111111111111111111111');
       expect(actualInstruction0['rawDataHex'], '02 c6 82 03 00');
-      expect(actualInstructionDecoded0['type'], 'computeBudget');
-      expect(actualInstructionDecoded0['heapFrameBytes'], 230086);
+      expect(actualInstructionDecoded0['type'], 'computeBudgetUnitLimit');
+      expect(actualInstructionDecoded0['unitLimit'], 230086);
 
       expect(actualInstruction1['programIdIndex'], 8);
       expect(actualInstruction1['programId'], 'ComputeBudget111111111111111111111111111111');
-      expect(actualInstructionDecoded1['baseFee'], 3484242);
+      expect(actualInstructionDecoded0['type'], 'computeBudgetUnitLimit');
+      expect(actualInstructionDecoded1['unitPrice'], 3484242);
 
       expect(actualInstruction2['programIdIndex'], 12);
       expect(actualInstruction2['programId'], 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
@@ -92,7 +93,7 @@ void main() {
       expect(actualInstructionDecoded2['to'], 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY');
 
       expect(actualInstruction3['programId'], '11111111111111111111111111111111');
-      expect(actualInstructionDecoded3['type'], 'solTransfer');
+      expect(actualInstructionDecoded3['type'], 'systemTransfer');
       expect(actualInstructionDecoded3['amount'], 146024399);
 
       expect(actualInstruction4['programId'], 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
@@ -113,7 +114,7 @@ void main() {
           'gAEACRCsVML2Bg3dHy0Va9dcV1Z/NhGHyVYhJ0jE+0MRGFemVlZ3NFh19IgWu+pj5UeQzMrHbNYffxTTr/qv3cxI4kqkZn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y1yRxM32R3yvnX/HBzojB9fApPOfuRWL27j4EX6B/qtMR3YqLvMXqaJtR7xJ7zz/wsSOSpUxQmyAwTUxIhtPBZFuDzN/gj1H6SStJcojxfyVSBM4CsNHf9s8Fuywijv3R7Szf79GhSuUqLOYVkL1+ideK6TTiYEoL0lh29rNcfXJYfgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpUmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXqMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WZqAC/9MhzaIlsIPwUBz6/HLWqN1/oH+Tb3IK6Tft154tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aYsnkR0YRptLIlfQajrMt0F6AtCnIcxppx3jdg3dGvKxBwgABQLGggMACAAJA1IqNQAAAAAADAYABAAXBwoBAQcCAAQMAgAAAM8ntAgAAAAACgEEAREJJwoNAAQDAgUXGgYJDgkZEg8LEBEDARMTGA0KGRUPCxYUAgETExMNCirBIJszQdacgQICAAAAOgFkAAE6AGQBAs8ntAgAAAAACKmKAQAAAAAyAFAKAwQAAAEJAsFXUcXB+MMMeYa6oBoJLmvxqJ7+KcwGc/y1N+Qd8kpZBHd2eHkEBnp1Uxbx7FnCE40ksuuuv14pM6i4jtdWtEsGPK0+XdwvqvOLA76/uwA=');
 
       // Act
-      String actualSolanaV0MessageString = SolanaV0Message.fromBytes(actualSolanaV0MessageBytes).toString();
+      String actualSolanaV0MessageString = SolanaV0Message.fromSerializedData(actualSolanaV0MessageBytes).toString();
 
       expect(actualSolanaV0MessageString, contains('"numRequiredSignatures": 1'));
       expect(actualSolanaV0MessageString, contains('"recentBlockhash": "ANCfTi42idFEoiqwvagoqehUzArgbq3N6obb3Lgvhmfv"'));
@@ -127,7 +128,7 @@ void main() {
           'gAEACRCsVML2Bg3dHy0Va9dcV1Z/NhGHyVYhJ0jE+0MRGFemVlZ3NFh19IgWu+pj5UeQzMrHbNYffxTTr/qv3cxI4kqkZn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y1yRxM32R3yvnX/HBzojB9fApPOfuRWL27j4EX6B/qtMR3YqLvMXqaJtR7xJ7zz/wsSOSpUxQmyAwTUxIhtPBZFuDzN/gj1H6SStJcojxfyVSBM4CsNHf9s8Fuywijv3R7Szf79GhSuUqLOYVkL1+ideK6TTiYEoL0lh29rNcfXJYfgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpUmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXqMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WZqAC/9MhzaIlsIPwUBz6/HLWqN1/oH+Tb3IK6Tft154tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aYsnkR0YRptLIlfQajrMt0F6AtCnIcxppx3jdg3dGvKxBwgABQLGggMACAAJA1IqNQAAAAAADAYABAAXBwoBAQcCAAQMAgAAAM8ntAgAAAAACgEEAREJJwoNAAQDAgUXGgYJDgkZEg8LEBEDARMTGA0KGRUPCxYUAgETExMNCirBIJszQdacgQICAAAAOgFkAAE6AGQBAs8ntAgAAAAACKmKAQAAAAAyAFAKAwQAAAEJAsFXUcXB+MMMeYa6oBoJLmvxqJ7+KcwGc/y1N+Qd8kpZBHd2eHkEBnp1Uxbx7FnCE40ksuuuv14pM6i4jtdWtEsGPK0+XdwvqvOLA76/uwA=');
 
       // Act
-      SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromBytes(actualSolanaV0MessageBytes);
+      SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromSerializedData(actualSolanaV0MessageBytes);
       Map<String, dynamic> actualJson = actualSolanaV0Message.toJson();
 
       // Assert
@@ -181,12 +182,12 @@ void main() {
       expect(actualInstruction0['programIdIndex'], 8);
       expect(actualInstruction0['programId'], 'ComputeBudget111111111111111111111111111111');
       expect(actualInstruction0['rawDataHex'], '02 c6 82 03 00');
-      expect(actualInstructionDecoded0['type'], 'computeBudget');
-      expect(actualInstructionDecoded0['heapFrameBytes'], 230086);
+      expect(actualInstructionDecoded0['type'], 'computeBudgetUnitLimit');
+      expect(actualInstructionDecoded0['unitLimit'], 230086);
 
       expect(actualInstruction1['programIdIndex'], 8);
       expect(actualInstruction1['programId'], 'ComputeBudget111111111111111111111111111111');
-      expect(actualInstructionDecoded1['baseFee'], 3484242);
+      expect(actualInstructionDecoded1['unitPrice'], 3484242);
 
       expect(actualInstruction2['programIdIndex'], 12);
       expect(actualInstruction2['programId'], 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
@@ -195,7 +196,7 @@ void main() {
       expect(actualInstructionDecoded2['to'], 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY');
 
       expect(actualInstruction3['programId'], '11111111111111111111111111111111');
-      expect(actualInstructionDecoded3['type'], 'solTransfer');
+      expect(actualInstructionDecoded3['type'], 'systemTransfer');
       expect(actualInstructionDecoded3['amount'], 146024399);
 
       expect(actualInstruction4['programId'], 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
@@ -216,7 +217,7 @@ void main() {
           'gAEACRCsVML2Bg3dHy0Va9dcV1Z/NhGHyVYhJ0jE+0MRGFemVlZ3NFh19IgWu+pj5UeQzMrHbNYffxTTr/qv3cxI4kqkZn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y1yRxM32R3yvnX/HBzojB9fApPOfuRWL27j4EX6B/qtMR3YqLvMXqaJtR7xJ7zz/wsSOSpUxQmyAwTUxIhtPBZFuDzN/gj1H6SStJcojxfyVSBM4CsNHf9s8Fuywijv3R7Szf79GhSuUqLOYVkL1+ideK6TTiYEoL0lh29rNcfXJYfgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpUmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXqMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WZqAC/9MhzaIlsIPwUBz6/HLWqN1/oH+Tb3IK6Tft154tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aYsnkR0YRptLIlfQajrMt0F6AtCnIcxppx3jdg3dGvKxBwgABQLGggMACAAJA1IqNQAAAAAADAYABAAXBwoBAQcCAAQMAgAAAM8ntAgAAAAACgEEAREJJwoNAAQDAgUXGgYJDgkZEg8LEBEDARMTGA0KGRUPCxYUAgETExMNCirBIJszQdacgQICAAAAOgFkAAE6AGQBAs8ntAgAAAAACKmKAQAAAAAyAFAKAwQAAAEJAsFXUcXB+MMMeYa6oBoJLmvxqJ7+KcwGc/y1N+Qd8kpZBHd2eHkEBnp1Uxbx7FnCE40ksuuuv14pM6i4jtdWtEsGPK0+XdwvqvOLA76/uwA=');
 
       // Act
-      SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromBytes(actualSolanaV0MessageBytes);
+      SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromSerializedData(actualSolanaV0MessageBytes);
       String actualString = actualSolanaV0Message.toString();
 
       // Assert
@@ -247,8 +248,8 @@ void main() {
       expect(actualString, contains('"accountIndices": []'));
       expect(actualString, contains('"rawDataHex": "02 c6 82 03 00"'));
       expect(actualString, contains('"decoded":'));
-      expect(actualString, contains('"type": "computeBudget"'));
-      expect(actualString, contains('"heapFrameBytes": 230086'));
+      expect(actualString, contains('"type": "computeBudgetUnitLimit"'));
+      expect(actualString, contains('"unitLimit": 230086'));
       expect(actualString, contains('"programId": "11111111111111111111111111111111"'));
       expect(actualString, contains('"type": "swap"'));
       expect(actualString, contains('"from": "Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7"'));
