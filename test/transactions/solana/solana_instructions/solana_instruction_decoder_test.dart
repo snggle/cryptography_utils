@@ -92,7 +92,7 @@ void main() {
       expect(solanaInstruction.accountIndices, <int>[1, 6, 7, 8, 9, 0]);
       expect(solanaInstruction.programIdIndex, 4);
       expect(solanaInstructionDecoded.programId, 'Stake11111111111111111111111111111111111111');
-      expect(solanaInstructionDecoded.type, SolanaInstructionType.stake);
+      expect(solanaInstructionDecoded.type, SolanaInstructionType.stakeInitialize);
       expect(solanaInstructionDecoded.to, 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR');
     });
 
@@ -129,7 +129,7 @@ void main() {
       expect(solanaInstruction.accountIndices, <int>[1, 4, 0]);
       expect(solanaInstruction.programIdIndex, 3);
       expect(solanaInstructionDecoded.programId, 'Stake11111111111111111111111111111111111111');
-      expect(solanaInstructionDecoded.type, SolanaInstructionType.stake);
+      expect(solanaInstructionDecoded.type, SolanaInstructionType.stakeDeactivate);
       expect(solanaInstructionDecoded.from, 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k');
       expect(solanaInstructionDecoded.to, '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19');
     });
@@ -148,7 +148,7 @@ void main() {
       expect(solanaInstruction.accountIndices, <int>[1, 0, 4, 5, 0]);
       expect(solanaInstruction.programIdIndex, 3);
       expect(solanaInstructionDecoded.programId, 'Stake11111111111111111111111111111111111111');
-      expect(solanaInstructionDecoded.type, SolanaInstructionType.stake);
+      expect(solanaInstructionDecoded.type, SolanaInstructionType.stakeWithdraw);
       expect(solanaInstructionDecoded.from, 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k');
       expect(solanaInstructionDecoded.to, '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19');
       expect(solanaInstructionDecoded.amount, 1002282880);

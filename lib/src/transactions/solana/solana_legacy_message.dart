@@ -4,26 +4,14 @@ import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 class SolanaLegacyMessage extends ASolanaMessage {
-  @override
-  final int numRequiredSignatures;
-  @override
-  final int numReadonlySignedAccounts;
-  @override
-  final int numReadonlyUnsignedAccounts;
-  @override
-  final List<Uint8List> accountKeys;
-  @override
-  final Uint8List recentBlockhash;
-  @override
-  final List<SolanaInstruction> instructions;
 
   SolanaLegacyMessage({
-    required this.numRequiredSignatures,
-    required this.numReadonlySignedAccounts,
-    required this.numReadonlyUnsignedAccounts,
-    required this.accountKeys,
-    required this.recentBlockhash,
-    required this.instructions,
+    required super.numRequiredSignatures,
+    required super.numReadonlySignedAccounts,
+    required super.numReadonlyUnsignedAccounts,
+    required super.accountKeysList,
+    required super.recentBlockhash,
+    required super.solanaInstructionList,
   });
 
   factory SolanaLegacyMessage.fromBytes(Uint8List data) {
@@ -62,9 +50,9 @@ class SolanaLegacyMessage extends ASolanaMessage {
       numRequiredSignatures: numRequiredSignatures,
       numReadonlySignedAccounts: numReadonlySignedAccounts,
       numReadonlyUnsignedAccounts: numReadonlyUnsignedAccounts,
-      accountKeys: accountKeys,
+      accountKeysList: accountKeys,
       recentBlockhash: recentBlockhash,
-      instructions: instructions,
+      solanaInstructionList: instructions,
     );
   }
 
@@ -74,14 +62,14 @@ class SolanaLegacyMessage extends ASolanaMessage {
       'numRequiredSignatures': numRequiredSignatures,
       'numReadonlySignedAccounts': numReadonlySignedAccounts,
       'numReadonlyUnsignedAccounts': numReadonlyUnsignedAccounts,
-      'accountKeys': accountKeys.map(Base58Codec.encode).toList(),
+      'accountKeys': accountKeysList.map(Base58Codec.encode).toList(),
       'recentBlockhash': Base58Codec.encode(recentBlockhash),
-      'instructions': instructions.map((SolanaInstruction solanaInstruction) {
-        SolanaInstructionDecoded solanaInstructionDecoded = solanaInstruction.decode(accountKeys);
+      'instructions': solanaInstructionList.map((SolanaInstruction solanaInstruction) {
+        SolanaInstructionDecoded solanaInstructionDecoded = solanaInstruction.decode(accountKeysList);
 
         return <String, Object>{
           'programIdIndex': solanaInstruction.programIdIndex,
-          'programId': Base58Codec.encode(accountKeys[solanaInstruction.programIdIndex]),
+          'programId': Base58Codec.encode(accountKeysList[solanaInstruction.programIdIndex]),
           'accountIndices': solanaInstruction.accountIndices,
           'rawDataHex': solanaInstruction.data.map((int b) => b.toRadixString(16).padLeft(2, '0')).join(' '),
           'decoded': <String, Object?>{

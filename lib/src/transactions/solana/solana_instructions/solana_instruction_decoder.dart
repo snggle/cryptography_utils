@@ -153,7 +153,7 @@ extension SolanaInstructionDecoder on SolanaInstruction {
   SolanaInstructionDecoded _decodeStakeInitialize(List<Uint8List> accountKeys, String programId) {
     String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
     return SolanaInstructionDecoded(
-      type: SolanaInstructionType.stake,
+      type: SolanaInstructionType.stakeInitialize,
       programId: programId,
       to: stakeAccount,
     );
@@ -176,7 +176,7 @@ extension SolanaInstructionDecoder on SolanaInstruction {
     String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
     String? authority = _accessAccountKeySafe(accountKeys, 4);
     return SolanaInstructionDecoded(
-      type: SolanaInstructionType.stake,
+      type: SolanaInstructionType.stakeWithdraw,
       programId: programId,
       from: stakeAccount,
       to: authority,
@@ -188,7 +188,7 @@ extension SolanaInstructionDecoder on SolanaInstruction {
     String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
     String? authority = _accessAccountKeySafe(accountKeys, 2);
     return SolanaInstructionDecoded(
-      type: SolanaInstructionType.stake,
+      type: SolanaInstructionType.stakeDeactivate,
       programId: programId,
       from: stakeAccount,
       to: authority,

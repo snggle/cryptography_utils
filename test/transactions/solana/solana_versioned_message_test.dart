@@ -57,7 +57,7 @@ void main() {
       expect(actualSolanaV0Message.numRequiredSignatures, 1);
       expect(actualSolanaV0Message.numReadonlySignedAccounts, 0);
       expect(actualSolanaV0Message.numReadonlyUnsignedAccounts, 9);
-      expect(actualSolanaV0Message.accountKeys.map(Base58Codec.encode).toList(), expectedAccountKeys);
+      expect(actualSolanaV0Message.accountKeysList.map(Base58Codec.encode).toList(), expectedAccountKeys);
       expect(Base58Codec.encode(actualSolanaV0Message.recentBlockhash), 'ANCfTi42idFEoiqwvagoqehUzArgbq3N6obb3Lgvhmfv');
 
       expect(actualJson['addressTableLookups'], <Map<String, Object>>[

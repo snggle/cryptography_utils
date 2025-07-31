@@ -26,19 +26,19 @@ void main() {
       expect(actualSolanaLegacyMessage.numReadonlySignedAccounts, 0);
       expect(actualSolanaLegacyMessage.numReadonlyUnsignedAccounts, 2);
 
-      List<String> actualAccountKeys = actualSolanaLegacyMessage.accountKeys.map(Base58Codec.encode).toList();
+      List<String> actualAccountKeys = actualSolanaLegacyMessage.accountKeysList.map(Base58Codec.encode).toList();
       expect(actualAccountKeys, expectedAccountKeys);
 
       expect(Base58Codec.encode(actualSolanaLegacyMessage.recentBlockhash), 'DqdWewkZSAEPeC8sY4SFApoiMbYy6ScMP7JSVhyViNEV');
 
-      expect(actualSolanaLegacyMessage.instructions.length, 3);
+      expect(actualSolanaLegacyMessage.solanaInstructionList.length, 3);
 
       SolanaInstructionDecoded actualSolanaInstruction0Decoded =
-          actualSolanaLegacyMessage.instructions[0].decode(actualSolanaLegacyMessage.accountKeys);
+          actualSolanaLegacyMessage.solanaInstructionList[0].decode(actualSolanaLegacyMessage.accountKeysList);
       SolanaInstructionDecoded actualSolanaInstruction1Decoded =
-          actualSolanaLegacyMessage.instructions[1].decode(actualSolanaLegacyMessage.accountKeys);
+          actualSolanaLegacyMessage.solanaInstructionList[1].decode(actualSolanaLegacyMessage.accountKeysList);
       SolanaInstructionDecoded actualSolanaInstruction2Decoded =
-          actualSolanaLegacyMessage.instructions[2].decode(actualSolanaLegacyMessage.accountKeys);
+          actualSolanaLegacyMessage.solanaInstructionList[2].decode(actualSolanaLegacyMessage.accountKeysList);
 
       expect(actualSolanaInstruction0Decoded.type, SolanaInstructionType.computeBudget);
       expect(actualSolanaInstruction0Decoded.programId, 'ComputeBudget111111111111111111111111111111');

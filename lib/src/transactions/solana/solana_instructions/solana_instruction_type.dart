@@ -4,8 +4,10 @@ enum SolanaInstructionType {
   computeBudget,
   systemCreateAccount,
   systemAssign,
+  stakeInitialize,
   stakeDelegate,
-  stake,
+  stakeDeactivate,
+  stakeWithdraw,
   swap,
   unknown,
 }

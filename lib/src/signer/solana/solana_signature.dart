@@ -14,6 +14,7 @@ class SolanaSignature extends ASignature {
       throw const FormatException('Invalid signature bytes');
     }
   }
+
   @override
   Uint8List get bytes => Uint8List.fromList(signatureBytes);
 

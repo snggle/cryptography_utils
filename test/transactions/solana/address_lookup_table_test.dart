@@ -14,14 +14,14 @@ void main() {
       // Act
       AddressLookupTable actualAddressLookupTable = AddressLookupTable(
         accountKey: expectedAccountKey,
-        writableIndexes: expectedWritableIndexes,
-        readonlyIndexes: expectedReadonlyIndexes,
+        writableIndexesList: expectedWritableIndexes,
+        readonlyIndexesList: expectedReadonlyIndexes,
       );
 
       // Assert
       expect(actualAddressLookupTable.accountKey, expectedAccountKey);
-      expect(actualAddressLookupTable.writableIndexes, expectedWritableIndexes);
-      expect(actualAddressLookupTable.readonlyIndexes, expectedReadonlyIndexes);
+      expect(actualAddressLookupTable.writableIndexesList, expectedWritableIndexes);
+      expect(actualAddressLookupTable.readonlyIndexesList, expectedReadonlyIndexes);
     });
   });
 }

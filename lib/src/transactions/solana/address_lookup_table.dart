@@ -2,12 +2,12 @@ import 'dart:typed_data';
 
 class AddressLookupTable {
   final Uint8List accountKey;
-  final List<int> writableIndexes;
-  final List<int> readonlyIndexes;
+  final List<int> writableIndexesList;
+  final List<int> readonlyIndexesList;
 
   AddressLookupTable({
     required this.accountKey,
-    required this.writableIndexes,
-    required this.readonlyIndexes,
+    required this.writableIndexesList,
+    required this.readonlyIndexesList,
   });
 }
