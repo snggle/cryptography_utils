@@ -6,13 +6,13 @@ import 'package:cryptography_utils/src/cdsa/eddsa/ed25519/signer/ed_signature.da
 
 /// A signer for Solana Ed25519 signatures.
 class SolanaSigner {
-  final ED25519PrivateKey _privateKey;
+  final ED25519PrivateKey _ed25519PrivateKey;
 
-  SolanaSigner(this._privateKey);
+  SolanaSigner(this._ed25519PrivateKey);
 
   SolanaSignature sign(Uint8List message) {
     ED25519Signer signer = ED25519Signer(
-      privateKey: _privateKey,
+      privateKey: _ed25519PrivateKey,
       hashFunction: Sha512(),
     );
 
@@ -20,7 +20,7 @@ class SolanaSigner {
     Uint8List combinedSignature = Uint8List.fromList(<int>[...edSignature.r, ...edSignature.s]);
     SolanaSignature solanaSignature = SolanaSignature(combinedSignature);
 
-    SolanaVerifier solanaVerifier = SolanaVerifier(_privateKey);
+    SolanaVerifier solanaVerifier = SolanaVerifier(_ed25519PrivateKey);
 
     bool signatureValidBool = solanaVerifier.isSignatureValid(message, solanaSignature);
     if (signatureValidBool) {

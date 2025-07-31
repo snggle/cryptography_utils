@@ -4,11 +4,12 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 extension SolanaInstructionDecoder on SolanaInstruction {
   SolanaInstructionDecoded decode(List<Uint8List> accountKeys) {
-    if (accountKeys.isEmpty || programIdIndex >= accountKeys.length) {
+    bool isInvalidInstructionBool = accountKeys.isEmpty || programIdIndex >= accountKeys.length;
+
+    if (isInvalidInstructionBool) {
       return const SolanaInstructionDecoded(
-        type: SolanaInstructionType.unknown,
+        type: SolanaInstructionType.invalidInstruction,
         programId: '',
-        error: 'Invalid programIdIndex or empty accountKeys',
       );
     }
 
@@ -30,132 +31,53 @@ extension SolanaInstructionDecoder on SolanaInstruction {
     }
   }
 
-  SolanaInstructionDecoded _decodeSystemProgram(List<Uint8List> accountKeys, String programId) {
-    ByteData byteData = data.buffer.asByteData();
-    int tag = data[0];
-
-    switch (tag) {
-      case 0:
-        return _decodeSystemCreateAccount(accountKeys, programId, byteData);
-      case 2:
-        return _decodeSystemTransfer(accountKeys, programId, byteData);
-      case 3:
-        return _decodeSystemAssign(accountKeys, programId);
-      default:
-        return _unknownInstruction(programId);
+  String? _accessAccountKeySafe(List<Uint8List> accountKeys, int index) {
+    if (accountIndices.length > index && accountIndices[index] < accountKeys.length) {
+      return Base58Codec.encode(accountKeys[accountIndices[index]]);
     }
-  }
-
-  SolanaInstructionDecoded _decodeSystemTransfer(List<Uint8List> accountKeys, String programId, ByteData byteData) {
-    int lamports = byteData.getUint64(4, Endian.little);
-    String? from = _accessAccountKeySafe(accountKeys, 0);
-    String? to = _accessAccountKeySafe(accountKeys, 1);
-    return SolanaInstructionDecoded(
-      type: SolanaInstructionType.solTransfer,
-      programId: programId,
-      from: from,
-      to: to,
-      amount: lamports,
-    );
-  }
-
-  SolanaInstructionDecoded _decodeSystemCreateAccount(List<Uint8List> accountKeys, String programId, ByteData byteData) {
-    int lamports = byteData.getUint64(4, Endian.little);
-    Uint8List programIdTarget = data.sublist(20, 52);
-    String? from = _accessAccountKeySafe(accountKeys, 0);
-    String? newAccount = _accessAccountKeySafe(accountKeys, 1);
-    String targetProgramId = Base58Codec.encode(programIdTarget);
-    return SolanaInstructionDecoded(
-      type: SolanaInstructionType.systemCreateAccount,
-      programId: programId,
-      from: from,
-      to: newAccount,
-      signer: from,
-      mint: targetProgramId,
-      amount: lamports,
-    );
-  }
-
-  SolanaInstructionDecoded _decodeSystemAssign(List<Uint8List> accountKeys, String programId) {
-    String? account = _accessAccountKeySafe(accountKeys, 0);
-    Uint8List newOwnerBytes = data.sublist(4, 36);
-    String newOwner = Base58Codec.encode(newOwnerBytes);
-    return SolanaInstructionDecoded(
-      type: SolanaInstructionType.systemAssign,
-      programId: programId,
-      to: newOwner,
-      signer: account,
-    );
-  }
-
-  SolanaInstructionDecoded _decodeTokenProgram(List<Uint8List> accountKeys, String programId) {
-    if (data[0] == 12) {
-      return _decodeTokenApproveChecked(accountKeys, programId);
-    }
-    return _unknownInstruction(programId);
-  }
-
-  SolanaInstructionDecoded _decodeTokenApproveChecked(List<Uint8List> accountKeys, String programId) {
-    ByteData byteData = data.buffer.asByteData();
-    int amount = byteData.getUint64(1, Endian.little);
-    int decimals = byteData.getUint8(9);
-    String? source = _accessAccountKeySafe(accountKeys, 0);
-    String? mint = _accessAccountKeySafe(accountKeys, 1);
-    String? delegate = _accessAccountKeySafe(accountKeys, 2);
-    String? signer = _accessAccountKeySafe(accountKeys, 3);
-    return SolanaInstructionDecoded(
-      type: SolanaInstructionType.tokenTransfer,
-      programId: programId,
-      from: source,
-      to: delegate,
-      signer: signer,
-      mint: mint,
-      amount: amount,
-      decimals: decimals,
-    );
+    return null;
   }
 
   SolanaInstructionDecoded _decodeComputeBudgetProgram(List<Uint8List> accountKeys, String programId) {
-    ByteData byteData = data.buffer.asByteData();
-    if (data.length >= 9) {
-      int microLamports = byteData.getUint64(1, Endian.little);
-      return SolanaInstructionDecoded(
-        type: SolanaInstructionType.computeBudget,
-        programId: programId,
-        baseFee: microLamports,
-      );
-    } else if (data.length >= 5) {
-      int bytes = byteData.getUint32(1, Endian.little);
-      return SolanaInstructionDecoded(
-        type: SolanaInstructionType.computeBudget,
-        programId: programId,
-        heapFrameBytes: bytes,
-      );
-    }
-    return _unknownInstruction(programId);
-  }
-
-  SolanaInstructionDecoded _decodeStakeProgram(List<Uint8List> accountKeys, String programId) {
-    switch (data[0]) {
-      case 0:
-        return _decodeStakeInitialize(accountKeys, programId);
+    int tag = data[0];
+    switch (tag) {
       case 2:
-        return _decodeStakeDelegate(accountKeys, programId);
-      case 4:
-        return _decodeStakeWithdraw(accountKeys, programId);
-      case 5:
-        return _decodeStakeDeactivate(accountKeys, programId);
+        return _decodeComputeUnitLimit(accountKeys, programId);
+      case 3:
+        return _decodeComputeUnitPrice(accountKeys, programId);
       default:
         return _unknownInstruction(programId);
     }
   }
 
-  SolanaInstructionDecoded _decodeStakeInitialize(List<Uint8List> accountKeys, String programId) {
-    String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
+  SolanaInstructionDecoded _decodeComputeUnitLimit(List<Uint8List> accountKeys, String programId) {
+    ByteData byteData = data.buffer.asByteData();
+    int unitLimit = byteData.getUint32(1, Endian.little);
     return SolanaInstructionDecoded(
-      type: SolanaInstructionType.stake,
+      type: SolanaInstructionType.computeBudgetUnitLimit,
       programId: programId,
-      to: stakeAccount,
+      unitLimit: unitLimit,
+    );
+  }
+
+  SolanaInstructionDecoded _decodeComputeUnitPrice(List<Uint8List> accountKeys, String programId) {
+    ByteData byteData = data.buffer.asByteData();
+    int microLamports = byteData.getUint64(1, Endian.little);
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.computeBudgetUnitPrice,
+      programId: programId,
+      unitPrice: microLamports,
+    );
+  }
+
+  SolanaInstructionDecoded _decodeStakeDeactivate(List<Uint8List> accountKeys, String programId) {
+    String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
+    String? authority = _accessAccountKeySafe(accountKeys, 2);
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.stakeDeactivate,
+      programId: programId,
+      from: stakeAccount,
+      to: authority,
     );
   }
 
@@ -170,28 +92,42 @@ extension SolanaInstructionDecoder on SolanaInstruction {
     );
   }
 
+  SolanaInstructionDecoded _decodeStakeInitialize(List<Uint8List> accountKeys, String programId) {
+    String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.stakeInitialize,
+      programId: programId,
+      to: stakeAccount,
+    );
+  }
+
+  SolanaInstructionDecoded _decodeStakeProgram(List<Uint8List> accountKeys, String programId) {
+    int tag = data[0];
+    switch (tag) {
+      case 0:
+        return _decodeStakeInitialize(accountKeys, programId);
+      case 2:
+        return _decodeStakeDelegate(accountKeys, programId);
+      case 4:
+        return _decodeStakeWithdraw(accountKeys, programId);
+      case 5:
+        return _decodeStakeDeactivate(accountKeys, programId);
+      default:
+        return _unknownInstruction(programId);
+    }
+  }
+
   SolanaInstructionDecoded _decodeStakeWithdraw(List<Uint8List> accountKeys, String programId) {
     ByteData byteData = data.buffer.asByteData();
     int lamports = byteData.getUint64(4, Endian.little);
     String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
     String? authority = _accessAccountKeySafe(accountKeys, 4);
     return SolanaInstructionDecoded(
-      type: SolanaInstructionType.stake,
+      type: SolanaInstructionType.stakeWithdraw,
       programId: programId,
       from: stakeAccount,
       to: authority,
       amount: lamports,
-    );
-  }
-
-  SolanaInstructionDecoded _decodeStakeDeactivate(List<Uint8List> accountKeys, String programId) {
-    String? stakeAccount = _accessAccountKeySafe(accountKeys, 0);
-    String? authority = _accessAccountKeySafe(accountKeys, 2);
-    return SolanaInstructionDecoded(
-      type: SolanaInstructionType.stake,
-      programId: programId,
-      from: stakeAccount,
-      to: authority,
     );
   }
 
@@ -213,14 +149,75 @@ extension SolanaInstructionDecoder on SolanaInstruction {
     );
   }
 
-  SolanaInstructionDecoded _unknownInstruction(String programId) {
-    return SolanaInstructionDecoded(type: SolanaInstructionType.unknown, programId: programId);
+  SolanaInstructionDecoded _decodeSystemAssign(List<Uint8List> accountKeys, String programId) {
+    String? account = _accessAccountKeySafe(accountKeys, 0);
+    Uint8List newOwnerBytes = data.sublist(4, 36);
+    String newOwner = Base58Codec.encode(newOwnerBytes);
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.systemAssign,
+      programId: programId,
+      to: newOwner,
+      signer: account,
+    );
   }
 
-  String? _accessAccountKeySafe(List<Uint8List> accountKeys, int index) {
-    if (accountIndices.length > index && accountIndices[index] < accountKeys.length) {
-      return Base58Codec.encode(accountKeys[accountIndices[index]]);
+  SolanaInstructionDecoded _decodeSystemProgram(List<Uint8List> accountKeys, String programId) {
+    int tag = data[0];
+    switch (tag) {
+      case 2:
+        return _decodeSystemTransfer(accountKeys, programId);
+      case 3:
+        return _decodeSystemAssign(accountKeys, programId);
+      default:
+        return _unknownInstruction(programId);
     }
-    return null;
+  }
+
+  SolanaInstructionDecoded _decodeSystemTransfer(List<Uint8List> accountKeys, String programId) {
+    ByteData byteData = data.buffer.asByteData();
+    int amount = byteData.getUint64(4, Endian.little);
+    String? from = _accessAccountKeySafe(accountKeys, 0);
+    String? to = _accessAccountKeySafe(accountKeys, 1);
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.systemTransfer,
+      programId: programId,
+      from: from,
+      to: to,
+      amount: amount,
+    );
+  }
+
+  SolanaInstructionDecoded _decodeTokenApproveChecked(List<Uint8List> accountKeys, String programId) {
+    ByteData byteData = data.buffer.asByteData();
+    int amount = byteData.getUint64(1, Endian.little);
+    int decimals = byteData.getUint8(9);
+    String? from = _accessAccountKeySafe(accountKeys, 0);
+    String? mint = _accessAccountKeySafe(accountKeys, 1);
+    String? to = _accessAccountKeySafe(accountKeys, 2);
+    String? signer = _accessAccountKeySafe(accountKeys, 3);
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.tokenTransfer,
+      programId: programId,
+      from: from,
+      to: to,
+      signer: signer,
+      mint: mint,
+      amount: amount,
+      tokenDecimalPrecision: decimals,
+    );
+  }
+
+  SolanaInstructionDecoded _decodeTokenProgram(List<Uint8List> accountKeys, String programId) {
+    int tag = data[0];
+    switch (tag) {
+      case 12:
+        return _decodeTokenApproveChecked(accountKeys, programId);
+      default:
+        return _unknownInstruction(programId);
+    }
+  }
+
+  SolanaInstructionDecoded _unknownInstruction(String programId) {
+    return SolanaInstructionDecoded(type: SolanaInstructionType.unknown, programId: programId);
   }
 }

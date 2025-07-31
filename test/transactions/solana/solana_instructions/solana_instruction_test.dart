@@ -9,29 +9,28 @@ void main() {
   group('Tests of SolanaInstruction', ()
   {
     test('Should [construct SolanaInstruction] and .toJson() encodes fields correctly', () {
-      // Arrange
-      int expectedProgramIdIndex = 1;
-      List<int> expectedAccountIndices = <int>[4, 2, 7];
-      Uint8List expectedData = Uint8List.fromList(<int>[10, 20, 30, 40]);
-      String expectedDataBase58 = Base58Codec.encode(expectedData);
-
       // Act
       SolanaInstruction actualInstruction = SolanaInstruction(
-        programIdIndex: expectedProgramIdIndex,
-        accountIndices: expectedAccountIndices,
-        data: expectedData,
+        programIdIndex: 1,
+        accountIndices: <int>[4, 2, 7],
+        data: Uint8List.fromList(<int>[10, 20, 30, 40]),
       );
 
       Map<String, dynamic> actualJson = actualInstruction.toJson();
 
       // Assert
+      int expectedProgramIdIndex = 1;
+      List<int> expectedAccountIndices = <int>[4, 2, 7];
+      Uint8List expectedData = Uint8List.fromList(<int>[10, 20, 30, 40]);
+      String expectedJsonData = Base58Codec.encode(expectedData);
+
       expect(actualInstruction.programIdIndex, expectedProgramIdIndex);
       expect(actualInstruction.accountIndices, expectedAccountIndices);
       expect(actualInstruction.data, expectedData);
 
       expect(actualJson['programIdIndex'], expectedProgramIdIndex);
       expect(actualJson['accountIndices'], expectedAccountIndices);
-      expect(actualJson['data'], expectedDataBase58);
+      expect(actualJson['data'], expectedJsonData);
     });
   });
 }

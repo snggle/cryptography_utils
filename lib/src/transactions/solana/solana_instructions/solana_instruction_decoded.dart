@@ -8,12 +8,11 @@ class SolanaInstructionDecoded {
   final String? to;
   final String? signer;
   final int? amount;
-  final int? amountLamports;
-  final String? error;
-  final int? decimals;
+  final int? amountSwappedTo;
+  final int? tokenDecimalPrecision;
   final String? mint;
-  final int? baseFee;
-  final int? heapFrameBytes;
+  final int? unitPrice;
+  final int? unitLimit;
   final String? tokenProgram;
   final String? associatedProgram;
 
@@ -24,12 +23,11 @@ class SolanaInstructionDecoded {
     this.to,
     this.signer,
     this.amount,
-    this.amountLamports,
-    this.error,
-    this.decimals,
+    this.amountSwappedTo,
+    this.tokenDecimalPrecision,
     this.mint,
-    this.baseFee,
-    this.heapFrameBytes,
+    this.unitPrice,
+    this.unitLimit,
     this.tokenProgram,
     this.associatedProgram,
   });
