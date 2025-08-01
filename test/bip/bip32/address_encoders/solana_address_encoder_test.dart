@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/bip/bip32/address_encoders/solana_address_encoder.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -25,6 +24,21 @@ void main() {
     ),
     edPublicKey: EDPublicKey(actualPointA),
   );
+
+  group('Tests of SolanaAddressEncoder.serializeType()', () {
+    test('Should [return "solana()"] for SolanaAddressEncoder', () {
+      // Arrange
+      SolanaAddressEncoder actualSolanaAddressEncoder = SolanaAddressEncoder();
+
+      // Act
+      String actualSerializedType = actualSolanaAddressEncoder.serializeType();
+
+      // Assert
+      String expectedSerializedType = 'solana()';
+
+      expect(actualSerializedType, expectedSerializedType);
+    });
+  });
 
   group('Tests of SolanaAddressEncoder.encodePublicKey()', () {
     test('Should [return Base58 address] for given public key', () {
