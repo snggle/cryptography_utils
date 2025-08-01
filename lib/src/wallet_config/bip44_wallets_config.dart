@@ -1,5 +1,4 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/bip/bip32/address_encoders/solana_address_encoder.dart';
 
 /// [Bip44WalletsConfig] class provides configurations for creating wallets adhering to BIP-44 standards.
 /// Configurations include:

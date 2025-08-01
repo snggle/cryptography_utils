@@ -5,6 +5,7 @@ export 'address_encoders/bitcoin/bitcoin_p2sh_address_encoder.dart';
 export 'address_encoders/bitcoin/bitcoin_p2wpkh_address_encoder.dart';
 export 'address_encoders/cosmos_address_encoder.dart';
 export 'address_encoders/ethereum_address_encoder.dart';
+export 'address_encoders/solana_address_encoder.dart';
 export 'bip32_key_metadata.dart';
 export 'bip32_network_version.dart';
 export 'derivation_path/legacy_derivation_path/legacy_derivation_path.dart';

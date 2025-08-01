@@ -1,11 +1,36 @@
 import 'dart:convert';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/bip/bip32/derivators/derivator_type.dart';
 import 'package:test/test.dart';
 
 void main() {
   ED25519Derivator actualED25519Derivator = ED25519Derivator();
   Mnemonic actualMnemonic = Mnemonic.fromMnemonicPhrase('shift shed release funny grab acquire fish cannon comic proof quantum cabbage');
+
+  group('Tests of ED25519Derivator.derivatorType getter', () {
+    test('Should [return DerivatorType.ed25519] for ED25519Derivator', () {
+      // Act
+      DerivatorType actualDerivatorType = actualED25519Derivator.derivatorType;
+
+      // Assert
+      DerivatorType expectedDerivatorType = DerivatorType.ed25519;
+
+      expect(actualDerivatorType, expectedDerivatorType);
+    });
+  });
+
+  group('Tests of ED25519Derivator.toType()', () {
+    test('Should [return "ed25519"] for ED25519Derivator', () {
+      // Act
+      String actualType = actualED25519Derivator.serializeType();
+
+      // Assert
+      String expectedType = 'ed25519';
+
+      expect(actualType, expectedType);
+    });
+  });
 
   group('Tests of ED25519Derivator.derivePath()', () {
     test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/)", () async {

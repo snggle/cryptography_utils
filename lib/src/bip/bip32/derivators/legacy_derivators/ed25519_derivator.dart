@@ -31,7 +31,6 @@
 
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/bip/bip32/derivators/derivator_type.dart';
 
@@ -42,7 +41,7 @@ class ED25519Derivator extends ALegacyDerivator<ED25519PrivateKey> {
   @override
   DerivatorType get derivatorType => DerivatorType.ed25519;
 
-  /// Derives a [ED25519PrivateKey] from a mnemonic pharse and full derivation path
+  /// Derives a [ED25519PrivateKey] from a mnemonic phrase and full derivation path
   @override
   Future<ED25519PrivateKey> derivePath(Mnemonic mnemonic, LegacyDerivationPath legacyDerivationPath) async {
     ED25519PrivateKey masterPrivateKey = await deriveMasterKey(mnemonic);
@@ -59,7 +58,7 @@ class ED25519Derivator extends ALegacyDerivator<ED25519PrivateKey> {
   Future<ED25519PrivateKey> deriveMasterKey(Mnemonic mnemonic) async {
     LegacyMnemonicSeedGenerator seedGenerator = LegacyMnemonicSeedGenerator(seedLength: 64);
     Uint8List seed = await seedGenerator.generateSeed(mnemonic);
-    Uint8List hmacHash = HMAC(hash: sha512, key: Bip32HMACKeys.hmacKeyED25519Bytes).process(seed);
+    Uint8List hmacHash = HMAC(hash: Sha512(), key: Bip32HMACKeys.hmacKeyED25519Bytes).process(seed);
 
     Uint8List privateKey = hmacHash.sublist(0, 32);
     Uint8List chainCode = hmacHash.sublist(32);
@@ -96,8 +95,7 @@ class ED25519Derivator extends ALegacyDerivator<ED25519PrivateKey> {
 
     Uint8List data = Uint8List.fromList(<int>[..._hardenedPrivateKeyPrefix, ...parentEd25519PrivateKey.bytes, ...legacyDerivationPathElement.toBytes()]);
 
-    Uint8List hmacHash = HMAC(hash: sha512, key: parentBip32KeyMetadata.chainCode!).process(data);
-
+    Uint8List hmacHash = HMAC(hash: Sha512(), key: parentBip32KeyMetadata.chainCode!).process(data);
     Uint8List scalarBytes = hmacHash.sublist(0, 32);
     Uint8List chainCodeBytes = hmacHash.sublist(32);
 
