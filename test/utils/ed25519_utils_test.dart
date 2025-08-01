@@ -2,8 +2,8 @@ import 'package:cryptography_utils/src/utils/ed25519_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tests of ED25519Utils.calcModularSquareRootPrime()', () {
-    test('Should [find square root] where if [p % 4 = 3]', () {
+  group('Tests of ED25519Utils.findModularSquareRoot()', () {
+    test('Should [find square root] where [p % 4 = 3]', () {
       // Act
       BigInt actualModularSquareRoot = ED25519Utils.findModularSquareRoot(
         a: BigInt.parse('4'),
@@ -68,7 +68,7 @@ void main() {
       expect(actualModularSquareRoot, expectedModularSquareRoot);
     });
 
-    test('Should [find square root] where parameters are larger numbers', () {
+    test('Should [find square root] where parameters are large numbers', () {
       // Act
       BigInt actualModularSquareRoot = ED25519Utils.findModularSquareRoot(
         a: BigInt.parse('123456789'),
@@ -81,7 +81,7 @@ void main() {
       expect(actualModularSquareRoot, expectedModularSquareRoot);
     });
 
-    test('Should [find square root] where parameters are larger numbers', () {
+    test('Should [find square root] where parameters are large numbers', () {
       // Act
       BigInt actualModularSquareRoot = ED25519Utils.findModularSquareRoot(
         a: BigInt.parse('17732832541123001036019990679150092111822642384727112811704228629262802952098'),

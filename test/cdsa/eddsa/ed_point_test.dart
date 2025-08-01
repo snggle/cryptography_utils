@@ -5,7 +5,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tests of EDPoint.fromBytes constructor', () {
+  group('Tests of EDPoint.fromBytes() constructor', () {
     test('Should [return EDPoint] from given bytes', () {
       // Arrange
       Uint8List actualBytes = base64Decode('abIMh62tm/MyZmOQVNz7uNdqfIgBr/ye5o6n8QymBjA=');
@@ -26,9 +26,31 @@ void main() {
 
       expect(actualEDPoint, expectedEDPoint);
     });
+
+    test('Should [throw Exception] if [private key bytes length != 32] (length < 32)', () {
+      // Arrange
+      Uint8List actualBytes = Uint8List(31);
+
+      // Assert
+      expect(
+        () => EDPoint.fromBytes(CurvePoints.generatorED25519, actualBytes),
+        throwsA(isA<FormatException>()),
+      );
+    });
+
+    test('Should [throw Exception] if [private key bytes length != 32] (length > 32)', () {
+      // Arrange
+      Uint8List actualBytes = Uint8List(33);
+
+      // Assert
+      expect(
+        () => EDPoint.fromBytes(CurvePoints.generatorED25519, actualBytes),
+        throwsA(isA<FormatException>()),
+      );
+    });
   });
 
-  group('Tests of EDPoint.infinityFrom constructor', () {
+  group('Tests of EDPoint.infinityFrom() constructor', () {
     test('Should [return infinity EDPoint] basing on other EDPoint params (curve and order)', () {
       // Arrange
       EDPoint actualEDPoint = EDPoint(

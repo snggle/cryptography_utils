@@ -61,5 +61,35 @@ void main() {
       // Assert
       expect(actualSignatureValidBool, false);
     });
+
+    test('Should [throw Exception] if [signature INCORRECT] [signature S > G.n]', () {
+      // Arrange
+      Uint8List actualMessage = utf8.encode('Hello, World!');
+      EDSignature actualSignature = EDSignature(
+        r: base64Decode('abIMh62tm/MyZmOQVNz7uNdqfIgBr/ye5o6n8QymBjA='),
+        s: base64Decode('7237005577332262213973186563042994240857116359379907606001950938285454250989'), // S >= G.n
+      );
+
+      // Act & Assert
+      expect(
+        () => actualED25519Verifier.isSignatureValid(actualMessage, actualSignature),
+        throwsException,
+      );
+    });
+
+    test('Should [throw Exception] if [signature INCORRECT] [signature S == G.n]', () {
+      // Arrange
+      Uint8List actualMessage = utf8.encode('Hello, World!');
+      EDSignature actualSignature = EDSignature(
+        r: base64Decode('abIMh62tm/MyZmOQVNz7uNdqfIgBr/ye5o6n8QymBjA='),
+        s: base64Decode('EAAAAAAAAAAAAAAAAAAAABTe+d6i95zWWBJjGlz10+0='),
+      );
+
+      // Act & Assert
+      expect(
+        () => actualED25519Verifier.isSignatureValid(actualMessage, actualSignature),
+        throwsException,
+      );
+    });
   });
 }

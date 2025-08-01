@@ -39,7 +39,7 @@ void main() {
     });
   });
 
-  group('Tests of ED25519PublicKey.baselen getter', () {
+  group('Tests of ED25519PublicKey.length getter', () {
     test('Should [return integer] representing base length of ED25519PublicKey', () {
       // Arrange
       ED25519PublicKey actualED25519PublicKey = ED25519PublicKey(
@@ -64,12 +64,12 @@ void main() {
       );
 
       // Act
-      int actualBaselen = actualED25519PublicKey.length;
+      int actualPublicKeyLength = actualED25519PublicKey.length;
 
       // Assert
-      int expectedBaselen = 32;
+      int expectedPublicKeyLength = 32;
 
-      expect(actualBaselen, expectedBaselen);
+      expect(actualPublicKeyLength, expectedPublicKeyLength);
     });
   });
 }

@@ -31,7 +31,7 @@ void main() {
   });
 
   group('Tests of ED25519PrivateKey.metadata getter', () {
-    test('Should [return chain code bytes] from ED25519PrivateKey', () {
+    test('Should [return Bip32KeyMetadata] from ED25519PrivateKey', () {
       // Arrange
       ED25519PrivateKey actualED25519PrivateKey = ED25519PrivateKey(
         metadata: Bip32KeyMetadata(
