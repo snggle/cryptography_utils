@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-/// `EDCurve` represents an Edwards curve used in elliptic curve cryptography (ECC).
+/// [EDCurve] represents an Edwards curve used in elliptic curve cryptography (ECC).
 /// Edwards curves offer several advantages over other curve types, including faster arithmetic operations
 /// and strong security properties, making them suitable for a wide range of cryptographic applications.
 
-/// In ECC, an `EDCurve` is characterized by its equation, typically of the form x^2 + y^2 = 1 + dx^2y^2 in a finite field.
+/// In ECC, an [EDCurve] is characterized by its equation, typically of the form x^2 + y^2 = 1 + dx^2y^2 in a finite field.
 /// This equation defines the mathematical structure of the Edwards curve, where 'd' is a non-square element in the field,
 /// and the curve parameters are chosen to optimize security and performance.
 

@@ -7,7 +7,7 @@ class ED25519PrivateKey extends ABip32PrivateKey {
   /// Returns the length of the private key.
   static const int _length = 32;
 
-  /// EdDSA Private key used for cryptographic operations, following the Ed25519 curve specification.
+  /// EdDSA Private key used for cryptographic operations, following the ED25519 curve specification.
   final EDPrivateKey edPrivateKey;
 
   const ED25519PrivateKey({
@@ -17,9 +17,7 @@ class ED25519PrivateKey extends ABip32PrivateKey {
 
   /// Returns the private key as a byte array.
   @override
-  Uint8List get bytes {
-    return Uint8List.fromList(edPrivateKey.bytes);
-  }
+  Uint8List get bytes => edPrivateKey.bytes;
 
   /// Returns the length of the private key.
   @override

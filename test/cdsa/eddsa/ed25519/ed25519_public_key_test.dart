@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
+
 void main() {
   group('Tests of ED25519PublicKey.bytes getter', () {
     test('Should [return bytes] representing ED25519PublicKey', () {

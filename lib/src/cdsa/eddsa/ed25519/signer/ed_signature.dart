@@ -36,9 +36,7 @@ class EDSignature extends ASignature {
 
   /// Returns the signature as a byte array.
   @override
-  Uint8List get bytes {
-    return Uint8List.fromList(r + s);
-  }
+  Uint8List get bytes => Uint8List.fromList(r + s);
 
   /// Returns the length of the signature.
   @override

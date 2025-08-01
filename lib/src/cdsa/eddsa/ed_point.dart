@@ -35,10 +35,10 @@ import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 import 'package:cryptography_utils/src/utils/ed25519_utils.dart';
 import 'package:equatable/equatable.dart';
 
-/// `EDPoint` represents a point on an Edwards curve in the context of elliptic curve cryptography (ECC).
+/// [EDPoint] represents a point on an Edwards curve in the context of elliptic curve cryptography (ECC).
 /// Points on an Edwards curve play a crucial role in cryptographic operations such as key generation, encryption, and digital signatures.
 ///
-/// An `EDPoint` is typically defined by its coordinates (x, y) on the Edwards curve, adhering to the curve's equation.
+/// An [EDPoint] is typically defined by its coordinates (x, y) on the Edwards curve, adhering to the curve's equation.
 /// For efficiency in computations and to support environments with constrained resources, extended coordinates may be used,
 /// represented as (X, Y, Z) or more complex forms like (X, Y, Z, T), where T is an auxiliary variable for certain optimizations.
 class EDPoint extends Equatable {
@@ -50,19 +50,19 @@ class EDPoint extends Equatable {
   final BigInt n;
 
   /// The x-coordinate of the point on the Edwards curve.
-  /// Used for both affine and extended EDPoint representation.
+  /// Used for both affine and extended [EDPoint] representation.
   final BigInt x;
 
   /// The y-coordinate of the point on the Edwards curve.
-  /// Used for both affine and extended EDPoint representation.
+  /// Used for both affine and extended [EDPoint] representation.
   final BigInt y;
 
   /// The z-coordinate of the point on the Edwards curve.
-  /// Used only for extended EDPoint representation. In case of affine EDPoint, the value is always zero.
+  /// Used only for extended [EDPoint] representation. In case of affine [EDPoint], the value is always zero.
   final BigInt z;
 
   /// The t auxiliary variable
-  /// Used only for extended EDPoint representation. In case of affine EDPoint, the value is always zero.
+  /// Used only for extended [EDPoint] representation. In case of affine [EDPoint], the value is always zero.
   final BigInt t;
 
   EDPoint({
@@ -79,19 +79,19 @@ class EDPoint extends Equatable {
 
   /// Constructs an instance of EDPoint from a byte array.
   factory EDPoint.fromBytes(EDPoint generator, Uint8List bytes) {
-    Uint8List tmpBytes = Uint8List.fromList(bytes);
+    Uint8List editableBytes = Uint8List.fromList(bytes);
     EDCurve curve = generator.curve;
     BigInt p = curve.p;
     int expLen = (p.bitLength + 8) ~/ 8;
 
-    if (tmpBytes.length != expLen) {
+    if (editableBytes.length != expLen) {
       throw const FormatException("AffinePoint length doesn't match the curve.");
     }
 
-    int x0 = (tmpBytes[expLen - 1] & 0x80) >> 7;
-    tmpBytes[expLen - 1] &= 0x80 - 1;
+    int x0 = (editableBytes[expLen - 1] & 0x80) >> 7;
+    editableBytes[expLen - 1] &= 0x80 - 1;
 
-    BigInt y = BigIntUtils.decode(tmpBytes, order: Endian.little);
+    BigInt y = BigIntUtils.decode(editableBytes, order: Endian.little);
 
     BigInt x2 = (y * y - BigInt.from(1)) * (curve.d * y * y - curve.a).modInverse(p) % p;
     BigInt x = ED25519Utils.findModularSquareRoot(a: x2, p: p);
@@ -102,7 +102,7 @@ class EDPoint extends Equatable {
     return EDPoint(curve: curve, n: generator.n, x: x, y: y, z: BigInt.one, t: x * y);
   }
 
-  /// Constructs an instance of EDPoint representing the point at infinity.
+  /// Constructs an instance of [EDPoint] representing the point at infinity.
   factory EDPoint.infinityFrom(EDPoint edPoint) {
     return EDPoint(curve: edPoint.curve, n: edPoint.n);
   }

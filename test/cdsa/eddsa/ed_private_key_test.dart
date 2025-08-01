@@ -44,33 +44,18 @@ void main() {
     });
   });
 
-  group('Tests of EDPrivateKey.prunedPrivateKey getter', () {
-    test('Should [return EDPublicKey] from EDPrivateKey', () {
+  group('Tests of EDPrivateKey.a getter', () {
+    test('Should [return a (pruned private key)] from EDPrivateKey', () {
       // Arrange
       EDPrivateKey actualEDPrivateKey = EDPrivateKey.fromBytes(base64Decode('iGjr84MoC1+WAY4cnAFqETc5KjMEtZ7CfAYvxkd877M='));
 
       // Act
-      BigInt actualPrunedSecretKey = actualEDPrivateKey.prunedPrivateKey;
+      BigInt actualA = actualEDPrivateKey.a;
 
       // Assert
-      BigInt expectedPrunedSecretKey = BigInt.parse('52296706698976945379478339393009008515096998632529786687805880390877129570304');
+      BigInt expectedA = BigInt.parse('52296706698976945379478339393009008515096998632529786687805880390877129570304');
 
-      expect(actualPrunedSecretKey, expectedPrunedSecretKey);
-    });
-  });
-
-  group('Tests of EDPrivateKey.baselen getter', () {
-    test('Should [return integer] representing base length of EDPrivateKey', () {
-      // Arrange
-      EDPrivateKey actualEDPrivateKey = EDPrivateKey.fromBytes(base64Decode('iGjr84MoC1+WAY4cnAFqETc5KjMEtZ7CfAYvxkd877M='));
-
-      // Act
-      int actualBaselen = actualEDPrivateKey.baselen;
-
-      // Assert
-      int expectedBaselen = 32;
-
-      expect(actualBaselen, expectedBaselen);
+      expect(actualA, expectedA);
     });
   });
 }

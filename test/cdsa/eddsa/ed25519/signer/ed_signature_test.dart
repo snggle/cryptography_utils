@@ -91,7 +91,8 @@ void main() {
       String actualSignature = actualEDSignature.hex;
 
       // Assert
-      String expectedSignature = '0x69b20c87adad9bf33266639054dcfbb8d76a7c8801affc9ee68ea7f10ca606303f33fea8c95914a22ec7176850a46db87376d86b4ac15b927521c36668e2a304';
+      String expectedSignature =
+          '0x69b20c87adad9bf33266639054dcfbb8d76a7c8801affc9ee68ea7f10ca606303f33fea8c95914a22ec7176850a46db87376d86b4ac15b927521c36668e2a304';
 
       expect(actualSignature, expectedSignature);
     });

@@ -35,35 +35,34 @@ import 'package:cryptography_utils/src/cdsa/eddsa/ed25519/signer/ed_signature.da
 import 'package:cryptography_utils/src/hash/sha/hash/a_hash.dart';
 import 'package:cryptography_utils/src/utils/big_int_utils.dart';
 
-/// This class implements the functionality necessary to generate digital signatures using the EdDSA algorithm.
-class ED25519Signer {
+/// This class implements the functionality necessary to verify digital signatures using the EdDSA algorithm.
+class ED25519Verifier {
   /// The hash function used for generating the message digest.
   final AHash hashFunction;
 
-  /// The EdDSA private key used for signing the message.
-  final ED25519PrivateKey privateKey;
+  /// The EdDSA public key used for signing the message.
+  final ED25519PublicKey publicKey;
 
-  ED25519Signer({
+  ED25519Verifier({
     required this.hashFunction,
-    required this.privateKey,
+    required this.publicKey,
   });
 
-  /// Generates a deterministic signature for a given message using [ED25519PrivateKey].
-  EDSignature sign(Uint8List message) {
-    Uint8List publicKey = privateKey.publicKey.bytes;
-    Uint8List h = hashFunction.convert(privateKey.bytes).byteList;
-    Uint8List prefix = h.sublist(privateKey.length);
+  /// Verifies an ED25519 signature against given message.
+  bool isSignatureValid(Uint8List message, EDSignature edSignature) {
+    EDPoint R = EDPoint.fromBytes(CurvePoints.generatorED25519, edSignature.r);
+    BigInt S = BigIntUtils.decode(edSignature.s, order: Endian.little);
+    if (S >= CurvePoints.generatorED25519.n) {
+      throw Exception('Invalid signature');
+    }
 
-    BigInt r = BigIntUtils.decode(hashFunction.convert(<int>[...prefix, ...message]).byteList, order: Endian.little);
-    Uint8List R = (CurvePoints.generatorED25519 * r).toBytes();
-
-    BigInt k = BigIntUtils.decode(hashFunction.convert(<int>[...R, ...publicKey, ...message]).byteList, order: Endian.little);
-    k %= CurvePoints.generatorED25519.n;
-
-    BigInt s = (r + k * privateKey.edPrivateKey.a) % CurvePoints.generatorED25519.n;
-    return EDSignature(
-      r: R,
-      s: BigIntUtils.changeToBytes(s, length: privateKey.length, order: Endian.little),
-    );
+    Uint8List digest = hashFunction.convert(<int>[...R.toBytes(), ...publicKey.bytes, ...message]).byteList;
+    BigInt k = BigIntUtils.decode(digest, order: Endian.little);
+    EDPoint gs = (CurvePoints.generatorED25519 * S).scaleToAffineCoordinates();
+    EDPoint rka = (publicKey.edPublicKey.A * k + R).scaleToAffineCoordinates();
+    if (gs != rka) {
+      return false;
+    }
+    return true;
   }
 }

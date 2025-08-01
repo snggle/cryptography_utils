@@ -30,6 +30,8 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 class ED25519Utils {
+  /// Calculate the modular square root of [a] modulo prime [p] using algorithms
+  /// from the Handbook of Applied Cryptography (3.34 to 3.39).
   static BigInt findModularSquareRoot({required BigInt a, required BigInt p}) {
     BigInt jacobiSymbol = _calcJacobiSymbol(a, p);
 
@@ -63,7 +65,7 @@ class ED25519Utils {
     throw Exception("No suitable 'b' found.");
   }
 
-  /// Calculates the Jacobi symbol (a/n) for given integers 'a' and 'n'.
+  /// Calculates the Jacobi symbol (a/n) for given integers [a] and [n].
   static BigInt _calcJacobiSymbol(BigInt a, BigInt n) {
     BigInt tmpa = a;
     if (!(n >= BigInt.from(3))) {
@@ -106,6 +108,8 @@ class ED25519Utils {
     return s * _calcJacobiSymbol(n % a1, a1);
   }
 
+  /// Computes the modular exponentiation of a polynomial represented by [base]
+  /// to the power of [exponent], using the specified [polymod] and modulus [p].
   static List<BigInt> _calcModularPolynomialExponentiation(List<BigInt> base, BigInt exponent, List<BigInt> polymod, BigInt p) {
     if (exponent == BigInt.zero) {
       return <BigInt>[BigInt.one];
@@ -126,11 +130,10 @@ class ED25519Utils {
     return s;
   }
 
-  /// Multiply two polynomials represented by lists 'm1' and 'm2', reducing modulo 'polymod' and prime 'p'.
+  /// Multiply two polynomials represented by lists [m1] and [m2], reducing modulo [polymod] and prime [p].
   static List<BigInt> _multiplyModularPolynomial(List<BigInt> m1, List<BigInt> m2, List<BigInt> polymod, BigInt p) {
     List<BigInt> prod = List<BigInt>.filled(m1.length + m2.length - 1, BigInt.zero);
 
-    // Add together all the cross-terms:
     for (int i = 0; i < m1.length; i++) {
       for (int j = 0; j < m2.length; j++) {
         prod[i + j] = (prod[i + j] + m1[i] * m2[j]) % p;
@@ -140,9 +143,8 @@ class ED25519Utils {
     return _reduceModularPolynomial(prod, polymod, p);
   }
 
-  /// Reduce a polynomial 'poly' modulo 'polymod' using prime 'p'.
+  /// Reduce a polynomial [poly] modulo [polymod] using prime [p].
   static List<BigInt> _reduceModularPolynomial(List<BigInt> poly, List<BigInt> polymod, BigInt p) {
-    // Repeatedly reduce the polynomial while its degree is greater than or equal to 'polymod':
     List<BigInt> tmpPoly = List<BigInt>.from(poly);
     while (tmpPoly.length >= polymod.length) {
       if (tmpPoly.last != BigInt.zero) {
