@@ -8,7 +8,7 @@ class SolanaInstructionDecoded {
   final String? to;
   final String? signer;
   final int? amount;
-  final int? amountLamports;
+  final int? amountSwappedTo;
   final String? error;
   final int? decimals;
   final String? mint;
@@ -24,7 +24,7 @@ class SolanaInstructionDecoded {
     this.to,
     this.signer,
     this.amount,
-    this.amountLamports,
+    this.amountSwappedTo,
     this.error,
     this.decimals,
     this.mint,

@@ -25,6 +25,8 @@ extension SolanaInstructionDecoder on SolanaInstruction {
         return _decodeStakeProgram(accountKeys, programId);
       case 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL':
         return _decodeSwapProgram(accountKeys, programId);
+      case 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4':
+        return _decodeJupiterSwap(accountKeys, programId);
       default:
         return _unknownInstruction(programId);
     }
@@ -60,6 +62,7 @@ extension SolanaInstructionDecoder on SolanaInstruction {
   }
 
   SolanaInstructionDecoded _decodeSystemCreateAccount(List<Uint8List> accountKeys, String programId, ByteData byteData) {
+    print('Suchar: SystemCreateAccount');
     int lamports = byteData.getUint64(4, Endian.little);
     Uint8List programIdTarget = data.sublist(20, 52);
     String? from = _accessAccountKeySafe(accountKeys, 0);
@@ -212,6 +215,51 @@ extension SolanaInstructionDecoder on SolanaInstruction {
       tokenProgram: tokenProgram,
     );
   }
+
+  SolanaInstructionDecoded _decodeJupiterSwap(List<Uint8List> accountKeys, String programId) {
+    if (data.length < 17) {
+      return _unknownInstruction(programId);
+    }
+    ByteData byteData = ByteData.sublistView(data);
+    int tag = data[0];
+
+    int amountSwappedFrom = byteData.getUint64(16, Endian.little);
+    int amountSwappedTo = byteData.getUint64(24, Endian.little);
+
+    print('Suchar: Jup Data');
+    print('Instruction raw data (${data.length} bytes):');
+    for (int i = 0; i < data.length; i++) {
+      print('  Byte $i: 0x${data[i].toRadixString(16).padLeft(2, '0')} (${data[i]})');
+
+      Uint8List singleByteList = Uint8List.fromList(<int>[data[i]]);
+      print(Base58Codec.encode(singleByteList));
+    }
+
+    print('All possible u64 fields:');
+    for (int i = 0; i <= data.length - 8; i++) {
+      int value = byteData.getUint64(i, Endian.little);
+      print('  u64 at offset $i: $value');
+
+      ByteData bd = ByteData(8)
+        ..setUint64(0, value, Endian.little);
+      Uint8List valueBytes = bd.buffer.asUint8List();
+
+      print(Base58Codec.encode(valueBytes));
+    }
+
+    String? source = _accessAccountKeySafe(accountKeys, 0);
+    String? destination = _accessAccountKeySafe(accountKeys, 1);
+
+    return SolanaInstructionDecoded(
+      type: SolanaInstructionType.swapJupiter,
+      programId: programId,
+      from: source,
+      to: destination,
+      amount: amountSwappedFrom,
+      amountSwappedTo: amountSwappedTo,
+    );
+  }
+
 
   SolanaInstructionDecoded _unknownInstruction(String programId) {
     return SolanaInstructionDecoded(type: SolanaInstructionType.unknown, programId: programId);

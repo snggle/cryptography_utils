@@ -9,5 +9,6 @@ enum SolanaInstructionType {
   stakeDeactivate,
   stakeWithdraw,
   swap,
+  swapJupiter,
   unknown,
 }

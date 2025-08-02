@@ -12,7 +12,7 @@ void main() {
       String expectedTo = 'recipientPubKey';
       String expectedSigner = 'signerPubKey';
       int expectedAmount = 42;
-      int expectedAmountLamports = 123456;
+      int amountSwappedTo = 123456;
       String expectedError = 'Some error';
       int expectedDecimals = 6;
       String expectedMint = 'mintPubKey';
@@ -29,7 +29,7 @@ void main() {
         to: expectedTo,
         signer: expectedSigner,
         amount: expectedAmount,
-        amountLamports: expectedAmountLamports,
+        amountSwappedTo: amountSwappedTo,
         error: expectedError,
         decimals: expectedDecimals,
         mint: expectedMint,
@@ -46,7 +46,7 @@ void main() {
       expect(actualDecoded.to, expectedTo);
       expect(actualDecoded.signer, expectedSigner);
       expect(actualDecoded.amount, expectedAmount);
-      expect(actualDecoded.amountLamports, expectedAmountLamports);
+      expect(actualDecoded.amountSwappedTo, amountSwappedTo);
       expect(actualDecoded.error, expectedError);
       expect(actualDecoded.decimals, expectedDecimals);
       expect(actualDecoded.mint, expectedMint);

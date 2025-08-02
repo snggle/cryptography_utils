@@ -127,7 +127,7 @@ class SolanaV0Message extends ASolanaMessage {
             if (solanaInstructionDecoded.to != null) 'to': solanaInstructionDecoded.to,
             if (solanaInstructionDecoded.signer != null) 'signer': solanaInstructionDecoded.signer,
             if (solanaInstructionDecoded.amount != null) 'amount': solanaInstructionDecoded.amount,
-            if (solanaInstructionDecoded.amountLamports != null) 'amountLamports': solanaInstructionDecoded.amountLamports,
+            if (solanaInstructionDecoded.amountSwappedTo != null) 'amountSwappedTo': solanaInstructionDecoded.amountSwappedTo,
             if (solanaInstructionDecoded.decimals != null) 'decimals': solanaInstructionDecoded.decimals,
             if (solanaInstructionDecoded.mint != null) 'mint': solanaInstructionDecoded.mint,
             if (solanaInstructionDecoded.baseFee != null) 'baseFee': solanaInstructionDecoded.baseFee,
