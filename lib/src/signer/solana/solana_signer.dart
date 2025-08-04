@@ -11,22 +11,9 @@ class SolanaSigner {
   SolanaSigner(this._ed25519PrivateKey);
 
   SolanaSignature sign(Uint8List message) {
-    ED25519Signer signer = ED25519Signer(
-      privateKey: _ed25519PrivateKey,
-      hashFunction: Sha512(),
-    );
+    ED25519Signer signer = ED25519Signer(privateKey: _ed25519PrivateKey, hashFunction: Sha512());
 
     EDSignature edSignature = signer.sign(message);
-    Uint8List combinedSignature = Uint8List.fromList(<int>[...edSignature.r, ...edSignature.s]);
-    SolanaSignature solanaSignature = SolanaSignature(combinedSignature);
-
-    SolanaVerifier solanaVerifier = SolanaVerifier(_ed25519PrivateKey);
-
-    bool signatureValidBool = solanaVerifier.isSignatureValid(message, solanaSignature);
-    if (signatureValidBool) {
-      return solanaSignature;
-    }
-
-    throw StateError('Signature verification failed after signing.');
+    return SolanaSignature(r: edSignature.r, s: edSignature.s);
   }
 }

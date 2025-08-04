@@ -13,7 +13,7 @@ void main() {
       );
 
       // Act
-      AEthereumTransaction actualEthereumTransaction = AEthereumTransaction.fromSerializedData(SignDataType.typedTransaction, actualSerializedData);
+      AEthereumTransaction actualEthereumTransaction = AEthereumTransaction.fromSerializedData(EthereumSignDataType.typedTransaction, actualSerializedData);
 
       // Assert
       EthereumEIP1559Transaction expectedEthereumTransaction = EthereumEIP1559Transaction(
@@ -39,7 +39,7 @@ void main() {
       );
 
       // Act
-      AEthereumTransaction actualEthereumTransaction = AEthereumTransaction.fromSerializedData(SignDataType.rawBytes, actualSerializedData);
+      AEthereumTransaction actualEthereumTransaction = AEthereumTransaction.fromSerializedData(EthereumSignDataType.rawBytes, actualSerializedData);
 
       // Assert
       EthereumRawBytesTransaction expectedEthereumTransaction = EthereumRawBytesTransaction.fromSerializedData(
