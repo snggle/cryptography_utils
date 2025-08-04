@@ -66,23 +66,4 @@ class ED25519Signer {
       s: BigIntUtils.changeToBytes(s, length: privateKey.length, order: Endian.little),
     );
   }
-
-  /// Verifies an ED25519 signature against given message.
-  bool verifySignature(Uint8List message, EDSignature edSignature) {
-    ED25519PublicKey publicKey = privateKey.publicKey;
-    EDPoint R = EDPoint.fromBytes(CurvePoints.generatorED25519, edSignature.r);
-    BigInt S = BigIntUtils.decode(edSignature.s, order: Endian.little);
-    if (S >= CurvePoints.generatorED25519.n) {
-      throw Exception('Invalid signature');
-    }
-
-    List<int> digest = hashFunction.convert(<int>[...R.toBytes(), ...publicKey.bytes, ...message]).byteList;
-    BigInt k = BigIntUtils.decode(digest, order: Endian.little);
-    EDPoint gs = (CurvePoints.generatorED25519 * S).scaleToAffineCoordinates();
-    EDPoint rka = (publicKey.edPublicKey.A * k + R).scaleToAffineCoordinates();
-    if (gs != rka) {
-      return false;
-    }
-    return true;
-  }
 }
