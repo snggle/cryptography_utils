@@ -9,8 +9,8 @@ abstract class AEthereumTransaction extends Equatable {
   const AEthereumTransaction();
 
   /// Creates a new instance of [AEthereumTransaction] from the serialized data.
-  static AEthereumTransaction fromSerializedData(SignDataType signDataType, Uint8List data) {
-    if (signDataType == SignDataType.rawBytes) {
+  static AEthereumTransaction fromSerializedData(EthereumSignDataType signDataType, Uint8List data) {
+    if (signDataType == EthereumSignDataType.rawBytes) {
       return EthereumRawBytesTransaction.fromSerializedData(data);
     }
 

@@ -4,8 +4,8 @@ import 'package:cryptography_utils/src/transactions/solana/address_lookup_table.
 import 'package:test/test.dart';
 
 void main() {
-  group('Tests of AddressLookupTable', () {
-    test('Should [construct AddressLookupTable] with correct fields', () {
+  group('Tests of AddressLookupTable constructor', () {
+    test('Should [return AddressLookupTable]', () {
       // Act
       AddressLookupTable actualAddressLookupTable = AddressLookupTable(
         accountKey: Uint8List.fromList(List<int>.generate(32, (int i) => i)),

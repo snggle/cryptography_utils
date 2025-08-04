@@ -10,7 +10,7 @@ void main() {
       List<int> expectedSolanaSignatureBytes = List<int>.generate(64, (int i) => i);
 
       // Act
-      SolanaSignature actualSolanaSignature = SolanaSignature(Uint8List.fromList(expectedSolanaSignatureBytes));
+      SolanaSignature actualSolanaSignature = SolanaSignature.fromBytes(expectedSolanaSignatureBytes);
 
       // Assert
       Uint8List actualSolanaSignatureBytes = actualSolanaSignature.bytes;
@@ -23,7 +23,7 @@ void main() {
       List<int> expectedSolanaSignatureBytes = List<int>.generate(63, (int i) => i);
 
       // Assert
-      expect(() => SolanaSignature(Uint8List.fromList(expectedSolanaSignatureBytes)), throwsFormatException);
+      expect(() => SolanaSignature.fromBytes(expectedSolanaSignatureBytes), throwsFormatException);
     });
 
     test('Should [throw FormatException] when given >64 bytes', () {
@@ -31,7 +31,7 @@ void main() {
       List<int> expectedSolanaSignatureBytes = List<int>.generate(65, (int i) => i);
 
       // Assert
-      expect(() => SolanaSignature(Uint8List.fromList(expectedSolanaSignatureBytes)), throwsFormatException);
+      expect(() => SolanaSignature.fromBytes(expectedSolanaSignatureBytes), throwsFormatException);
     });
   });
 
@@ -62,7 +62,7 @@ void main() {
     test('Should [return bytes]', () {
       // Arrange
       List<int> expectedSolanaSignatureBytes = List<int>.generate(64, (int i) => i);
-      SolanaSignature actualSolanaSignature = SolanaSignature(Uint8List.fromList(expectedSolanaSignatureBytes));
+      SolanaSignature actualSolanaSignature = SolanaSignature.fromBytes(expectedSolanaSignatureBytes);
 
       // Act
       Uint8List actualSolanaSignatureBytes = actualSolanaSignature.bytes;
