@@ -24,8 +24,8 @@ void main() {
       SolanaSignature actualSolanaSignature = actualSolanaSigner.sign(actualMessage);
 
       // Assert
-      SolanaSignature expectedSolanaSignature = SolanaSignature(
-          Uint8List.fromList(base64Decode('IjBdnh1Hp+g41m5oY/q6am1JLQGGip9zShFTG1QlHbsPGsDNEb4jJ3j30TWVH2F6VS3FZPbe2emJyiaNh7YuDA==')));
+      Uint8List expectedSolanaSignatureBytes = Uint8List.fromList(base64Decode('IjBdnh1Hp+g41m5oY/q6am1JLQGGip9zShFTG1QlHbsPGsDNEb4jJ3j30TWVH2F6VS3FZPbe2emJyiaNh7YuDA=='));
+      SolanaSignature expectedSolanaSignature = SolanaSignature(r: expectedSolanaSignatureBytes.sublist(0, 32), s: expectedSolanaSignatureBytes.sublist(32, 64));
 
       expect(actualSolanaSignature, expectedSolanaSignature);
     });
