@@ -13,5 +13,16 @@ void main() {
       // Assert
       expect(actualDerivator, isA<Secp256k1Derivator>());
     });
+
+    test('Should [return ED25519Derivator] when type is "ed25519"', () {
+      // Arrange
+      String actualType = 'ed25519';
+
+      // Act
+      ADerivator actualDerivator = ADerivator.fromSerializedType(actualType);
+
+      // Assert
+      expect(actualDerivator, isA<ED25519Derivator>());
+    });
   });
 }
