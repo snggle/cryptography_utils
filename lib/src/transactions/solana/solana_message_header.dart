@@ -1,8 +1,19 @@
 import 'package:codec_utils/codec_utils.dart';
+import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:equatable/equatable.dart';
 
-class SolanaMessageHeader {
+/// The message header specifies the permissions for the account in the transaction.
+/// It works in combination with the strictly ordered account addresses to determine which accounts are signers and which are writable.
+///
+/// https://solana.com/docs/core/transactions#message-header
+class SolanaMessageHeader extends Equatable {
+  /// The number of signatures required for all instructions on the transaction.
   final int numRequiredSignatures;
+
+  /// The number of signed accounts that are read-only.
   final int numReadonlySignedAccounts;
+
+  ///The number of unsigned accounts that are read-only.
   final int numReadonlyUnsignedAccounts;
 
   const SolanaMessageHeader({
@@ -11,6 +22,7 @@ class SolanaMessageHeader {
     required this.numReadonlyUnsignedAccounts,
   });
 
+  /// Extracts a [SolanaMessageHeader] from a [ByteReader] of a Solana transaction for a [SolanaLegacyMessage] or a [SolanaV0Message].
   factory SolanaMessageHeader.fromBytes(ByteReader reader) {
     return SolanaMessageHeader(
       numRequiredSignatures: reader.shiftRight(),
@@ -18,4 +30,7 @@ class SolanaMessageHeader {
       numReadonlyUnsignedAccounts: reader.shiftRight(),
     );
   }
+
+  @override
+  List<Object?> get props => <Object?>[numRequiredSignatures, numReadonlySignedAccounts, numReadonlyUnsignedAccounts];
 }

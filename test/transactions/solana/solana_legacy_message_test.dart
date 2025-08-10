@@ -15,46 +15,47 @@ void main() {
       SolanaLegacyMessage actualSolanaLegacyMessage = SolanaLegacyMessage.fromSerializedData(actualSolanaLegacyMessageBytes);
 
       // Assert
-      List<String> expectedAccountKeys = <String>[
-        '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
-        '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
-        '11111111111111111111111111111111',
-        'ComputeBudget111111111111111111111111111111'
+      SolanaMessageHeader expectedSolanaMessageHeader =
+          const SolanaMessageHeader(numRequiredSignatures: 1, numReadonlySignedAccounts: 0, numReadonlyUnsignedAccounts: 2);
+      List<SolanaPubKey> expectedAccountKeys = <SolanaPubKey>[
+        SolanaPubKey.fromBase58('2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19'),
+        SolanaPubKey.fromBase58('6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z'),
+        SolanaPubKey.fromBase58('11111111111111111111111111111111'),
+        SolanaPubKey.fromBase58('ComputeBudget111111111111111111111111111111')
       ];
+      Uint8List expecyedRecentBlockhash = Base58Codec.decode('DqdWewkZSAEPeC8sY4SFApoiMbYy6ScMP7JSVhyViNEV');
+      List<SolanaCompiledInstruction> expectedCompiledInstructions = <SolanaCompiledInstruction>[
+        SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List(0), data: Uint8List.fromList(<int>[3, 0, 45, 49, 1, 0, 0, 0, 0])),
+        SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List(0), data: Uint8List.fromList(<int>[2, 239, 1, 0, 0])),
+        SolanaCompiledInstruction(
+            programIdIndex: 2,
+            accounts: Uint8List.fromList(<int>[0, 1]),
+            data: Uint8List.fromList(<int>[2, 0, 0, 0, 0, 202, 154, 59, 0, 0, 0, 0])),
+      ];
+      SolanaLegacyMessage expectedSolanaLegacyMessage = SolanaLegacyMessage(
+          header: expectedSolanaMessageHeader,
+          accountKeysList: expectedAccountKeys,
+          recentBlockhash: expecyedRecentBlockhash,
+          compiledInstructions: expectedCompiledInstructions);
 
-      expect(actualSolanaLegacyMessage.header.numRequiredSignatures, 1);
-      expect(actualSolanaLegacyMessage.header.numReadonlySignedAccounts, 0);
-      expect(actualSolanaLegacyMessage.header.numReadonlyUnsignedAccounts, 2);
+      ASolanaInstructionDecoded actualSolanaComputeBudgetUnitLimitInstruction = actualSolanaLegacyMessage.decodedInstructions[0];
+      ASolanaInstructionDecoded actualSolanaComputeBudgetUnitPriceInstruction = actualSolanaLegacyMessage.decodedInstructions[1];
+      ASolanaInstructionDecoded actualSolanaSystemTransferInstruction = actualSolanaLegacyMessage.decodedInstructions[2];
 
-      List<String> actualAccountKeys = actualSolanaLegacyMessage.accountKeysList.map(Base58Codec.encode).toList();
-      expect(actualAccountKeys, expectedAccountKeys);
+      SolanaComputeBudgetUnitPriceInstruction expectedSolanaComputeBudgetUnitPriceInstruction =
+          const SolanaComputeBudgetUnitPriceInstruction(programId: 'ComputeBudget111111111111111111111111111111', unitPrice: 20000000);
+      SolanaComputeBudgetUnitLimitInstruction expectedSolanaComputeBudgetUnitLimitInstruction =
+          const SolanaComputeBudgetUnitLimitInstruction(programId: 'ComputeBudget111111111111111111111111111111', unitLimit: 495);
+      SolanaSystemTransferInstruction expectedSolanaSystemTransferInstruction = const SolanaSystemTransferInstruction(
+          programId: '11111111111111111111111111111111',
+          recipient: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+          sender: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+          amount: 1000000000);
 
-      expect(Base58Codec.encode(actualSolanaLegacyMessage.recentBlockhash), 'DqdWewkZSAEPeC8sY4SFApoiMbYy6ScMP7JSVhyViNEV');
-
-      expect(actualSolanaLegacyMessage.solanaInstructionList.length, 3);
-
-      ASolanaInstructionDecoded actualSolanaInstruction0Decoded =
-          ASolanaInstructionDecoded.decode(actualSolanaLegacyMessage.solanaInstructionList[0], actualSolanaLegacyMessage.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction1Decoded =
-          ASolanaInstructionDecoded.decode(actualSolanaLegacyMessage.solanaInstructionList[1], actualSolanaLegacyMessage.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction2Decoded =
-          ASolanaInstructionDecoded.decode(actualSolanaLegacyMessage.solanaInstructionList[2], actualSolanaLegacyMessage.accountKeysList);
-
-      expect(actualSolanaInstruction0Decoded, isA<ComputeBudgetUnitPriceInstruction>());
-      expect(actualSolanaInstruction0Decoded.programId, 'ComputeBudget111111111111111111111111111111');
-      expect(actualSolanaInstruction0Decoded.unitPrice, 20000000);
-      expect(actualSolanaInstruction0Decoded.unitLimit, isNull);
-
-      expect(actualSolanaInstruction1Decoded, isA<ComputeBudgetUnitLimitInstruction>());
-      expect(actualSolanaInstruction1Decoded.programId, 'ComputeBudget111111111111111111111111111111');
-      expect(actualSolanaInstruction1Decoded.unitPrice, isNull);
-      expect(actualSolanaInstruction1Decoded.unitLimit, 495);
-
-      expect(actualSolanaInstruction2Decoded, isA<SystemTransferInstruction>());
-      expect(actualSolanaInstruction2Decoded.programId, '11111111111111111111111111111111');
-      expect(actualSolanaInstruction2Decoded.sender, '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19');
-      expect(actualSolanaInstruction2Decoded.recipient, '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z');
-      expect(actualSolanaInstruction2Decoded.amount, 1000000000);
+      expect(actualSolanaLegacyMessage, expectedSolanaLegacyMessage);
+      expect(actualSolanaComputeBudgetUnitLimitInstruction, expectedSolanaComputeBudgetUnitPriceInstruction);
+      expect(actualSolanaComputeBudgetUnitPriceInstruction, expectedSolanaComputeBudgetUnitLimitInstruction);
+      expect(actualSolanaSystemTransferInstruction, expectedSolanaSystemTransferInstruction);
     });
   });
 }
