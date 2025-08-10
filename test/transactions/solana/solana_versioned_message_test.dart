@@ -3,11 +3,11 @@ import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/transactions/solana/solana_address_lookup_table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tests of SolanaV0Message.fromSerializedData()', ()
-  {
+  group('Tests of SolanaV0Message.fromSerializedData()', () {
     test('Should [return SolanaV0Message] from serialized data', () {
       // Arrange
       Uint8List actualSolanaV0MessageBytes = base64Decode(
@@ -17,73 +17,83 @@ void main() {
       SolanaV0Message actualSolanaV0Message = SolanaV0Message.fromSerializedData(actualSolanaV0MessageBytes);
 
       // Assert
-      List<String> expectedAccountKeys = <String>[
-        'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
-        '6pXVFSACE5BND2C3ibGRWMG1fNtV7hfynWrfNKtCXhN3',
-        '7u7cD7NxcZEuzRCBaYo8uVpotRdqZwez47vvuwzCov43',
-        '8ctcHN52LY21FEipCjr1MVWtoZa1irJQTPyAaTj72h7S',
-        'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY',
-        'EnkAmi1xfv2rFnuU26uKn1jnAaKrg2CET3L6oF6r4Nh1',
-        'G5A1npyNuMZ69GNjLTidScK42z3UZNJsmDprHfnrhCcM',
-        '11111111111111111111111111111111',
-        'ComputeBudget111111111111111111111111111111',
-        'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
-        'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
-        '6YawcNeZ74tRyCv4UfGydYMr7eho7vbUR6ScVffxKAb3',
-        'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
-        'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
-        'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
-        'GZsNmWKbqhMYtdSkkvMdEyQF9k5mLmP7tTKYWZjcHVPE'
+      SolanaMessageHeader expectedSolanaMessageHeader =
+          const SolanaMessageHeader(numRequiredSignatures: 1, numReadonlySignedAccounts: 0, numReadonlyUnsignedAccounts: 9);
+      List<SolanaPubKey> expectedAccountKeys = <SolanaPubKey>[
+        SolanaPubKey.fromBase58('Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7'),
+        SolanaPubKey.fromBase58('6pXVFSACE5BND2C3ibGRWMG1fNtV7hfynWrfNKtCXhN3'),
+        SolanaPubKey.fromBase58('7u7cD7NxcZEuzRCBaYo8uVpotRdqZwez47vvuwzCov43'),
+        SolanaPubKey.fromBase58('8ctcHN52LY21FEipCjr1MVWtoZa1irJQTPyAaTj72h7S'),
+        SolanaPubKey.fromBase58('AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY'),
+        SolanaPubKey.fromBase58('EnkAmi1xfv2rFnuU26uKn1jnAaKrg2CET3L6oF6r4Nh1'),
+        SolanaPubKey.fromBase58('G5A1npyNuMZ69GNjLTidScK42z3UZNJsmDprHfnrhCcM'),
+        SolanaPubKey.fromBase58('11111111111111111111111111111111'),
+        SolanaPubKey.fromBase58('ComputeBudget111111111111111111111111111111'),
+        SolanaPubKey.fromBase58('JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4'),
+        SolanaPubKey.fromBase58('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+        SolanaPubKey.fromBase58('6YawcNeZ74tRyCv4UfGydYMr7eho7vbUR6ScVffxKAb3'),
+        SolanaPubKey.fromBase58('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'),
+        SolanaPubKey.fromBase58('BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV'),
+        SolanaPubKey.fromBase58('D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf'),
+        SolanaPubKey.fromBase58('GZsNmWKbqhMYtdSkkvMdEyQF9k5mLmP7tTKYWZjcHVPE')
       ];
+      List<SolanaCompiledInstruction> expectedCompiledInstructions = <SolanaCompiledInstruction>[
+        SolanaCompiledInstruction(programIdIndex: 8, accounts: Uint8List(0), data: Uint8List.fromList(<int>[2, 198, 130, 3, 0])),
+        SolanaCompiledInstruction(programIdIndex: 8, accounts: Uint8List(0), data: Uint8List.fromList(<int>[3, 82, 42, 53, 0, 0, 0, 0, 0])),
+        SolanaCompiledInstruction(programIdIndex: 12, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
+        SolanaCompiledInstruction(programIdIndex: 7, accounts: Uint8List.fromList(<int>[0, 4]), data: Uint8List.fromList(<int>[2, 0, 0, 0, 207, 39, 180, 8, 0, 0, 0, 0])),
+        SolanaCompiledInstruction(programIdIndex: 10, accounts: Uint8List.fromList(<int>[4]), data: Uint8List.fromList(<int>[17])),
+        SolanaCompiledInstruction(programIdIndex: 9, accounts: Uint8List.fromList(<int>[10, 13, 0, 4, 3, 2, 5, 23, 26, 6, 9, 14, 9, 25, 18, 15, 11, 16, 17, 3, 1, 19, 19, 24, 13, 10, 25, 21, 15, 11, 22, 20, 2, 1, 19, 19, 19, 13, 10]), data: Uint8List.fromList(<int>[193, 32, 155, 51, 65, 214, 156, 129, 2, 2, 0, 0, 0, 58, 1, 100, 0, 1, 58, 0, 100, 1, 2, 207, 39, 180, 8, 0, 0, 0, 0, 8, 169, 138, 1, 0, 0, 0, 0, 50, 0, 80])),
+        SolanaCompiledInstruction(programIdIndex: 10, accounts: Uint8List.fromList(<int>[4, 0, 0]), data: Uint8List.fromList(<int>[9])),
+      ];
+      Uint8List expecyedRecentBlockhash = Base58Codec.decode('ANCfTi42idFEoiqwvagoqehUzArgbq3N6obb3Lgvhmfv');
+      List<SolanaAddressLookupTable> expectedAddressLookupTableList = <SolanaAddressLookupTable>[SolanaAddressLookupTable(accountKey: SolanaPubKey.fromBytes(Uint8List.fromList(<int>[193, 87, 81, 197, 193, 248, 195, 12, 121, 134, 186, 160, 26, 9, 46, 107, 241, 168, 158, 254, 41, 204, 6, 115, 252, 181, 55, 228, 29, 242, 74, 89])), writableIndexesList: const <int>[119, 118, 120, 121], readonlyIndexesList: const <int>[6, 122, 117, 83]), SolanaAddressLookupTable(accountKey: SolanaPubKey.fromBytes(Uint8List.fromList(<int>[22, 241, 236, 89, 194, 19, 141, 36, 178, 235, 174, 191, 94, 41, 51, 168, 184, 142, 215, 86, 180, 75, 6, 60, 173, 62, 93, 220, 47, 170, 243, 139])), readonlyIndexesList: const <int>[], writableIndexesList: const <int>[190, 191, 187])];
+      SolanaV0Message expectedSolanaV0Message = SolanaV0Message(
+          header: expectedSolanaMessageHeader,
+          accountKeysList: expectedAccountKeys,
+          recentBlockhash: expecyedRecentBlockhash,
+          compiledInstructions: expectedCompiledInstructions,
+          addressLookupTableList: expectedAddressLookupTableList);
 
-      expect(actualSolanaV0Message.header.numRequiredSignatures, 1);
-      expect(actualSolanaV0Message.header.numReadonlySignedAccounts, 0);
-      expect(actualSolanaV0Message.header.numReadonlyUnsignedAccounts, 9);
-      expect(actualSolanaV0Message.accountKeysList.map(Base58Codec.encode).toList(), expectedAccountKeys);
-      expect(Base58Codec.encode(actualSolanaV0Message.recentBlockhash), 'ANCfTi42idFEoiqwvagoqehUzArgbq3N6obb3Lgvhmfv');
-      expect(actualSolanaV0Message.solanaInstructionList.length, 7);
+      ASolanaInstructionDecoded actualSolanaComputeBudgetUnitLimitInstruction = actualSolanaV0Message.decodedInstructions[0];
+      ASolanaInstructionDecoded actualSolanaComputeBudgetUnitPriceInstruction = actualSolanaV0Message.decodedInstructions[1];
+      ASolanaInstructionDecoded actualSolanaSwapInstruction = actualSolanaV0Message.decodedInstructions[2];
+      ASolanaInstructionDecoded actualSolanaSystemTransferInstruction = actualSolanaV0Message.decodedInstructions[3];
+      ASolanaInstructionDecoded actualSolanaUnknownInstruction1 = actualSolanaV0Message.decodedInstructions[4];
+      ASolanaInstructionDecoded actualSolanaUnknownInstruction2 = actualSolanaV0Message.decodedInstructions[5];
+      ASolanaInstructionDecoded actualSolanaUnknownInstruction3 = actualSolanaV0Message.decodedInstructions[6];
 
-      ASolanaInstructionDecoded actualSolanaInstruction0Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[0], actualSolanaV0Message.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction1Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[1], actualSolanaV0Message.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction2Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[2], actualSolanaV0Message.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction3Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[3], actualSolanaV0Message.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction4Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[4], actualSolanaV0Message.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction5Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[5], actualSolanaV0Message.accountKeysList);
-      ASolanaInstructionDecoded actualSolanaInstruction6Decoded =
-      ASolanaInstructionDecoded.decode(actualSolanaV0Message.solanaInstructionList[6], actualSolanaV0Message.accountKeysList);
+      SolanaComputeBudgetUnitLimitInstruction expectedSolanaComputeBudgetUnitLimitInstruction =
+          const SolanaComputeBudgetUnitLimitInstruction(programId: 'ComputeBudget111111111111111111111111111111', unitLimit: 230086);
+      SolanaComputeBudgetUnitPriceInstruction expectedSolanaComputeBudgetUnitPriceInstruction =
+          const SolanaComputeBudgetUnitPriceInstruction(programId: 'ComputeBudget111111111111111111111111111111', unitPrice: 3484242);
+      SolanaSwapInstruction expectedSolanaSwapInstruction = const SolanaSwapInstruction(
+          programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+          associatedProgram: '11111111111111111111111111111111',
+          signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+          tokenProgram: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+          recipient: 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY',
+          sender: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7');
+      SolanaSystemTransferInstruction expectedSolanaSystemTransferInstruction = const SolanaSystemTransferInstruction(
+          programId: '11111111111111111111111111111111',
+          amount: 146024399,
+          recipient: 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY',
+          sender: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7');
+      SolanaUnknownInstruction expectedSolanaUnknownInstruction1 =
+          const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+      SolanaUnknownInstruction expectedSolanaUnknownInstruction2 =
+          const SolanaUnknownInstruction(programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4');
+      SolanaUnknownInstruction expectedSolanaUnknownInstruction3 =
+          const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
 
-      expect(actualSolanaInstruction0Decoded, isA<ComputeBudgetUnitLimitInstruction>());
-      expect(actualSolanaInstruction0Decoded.programId, 'ComputeBudget111111111111111111111111111111');
-      expect(actualSolanaInstruction0Decoded.unitLimit, 230086);
-
-      expect(actualSolanaInstruction1Decoded, isA<ComputeBudgetUnitPriceInstruction>());
-      expect(actualSolanaInstruction1Decoded.programId, 'ComputeBudget111111111111111111111111111111');
-      expect(actualSolanaInstruction1Decoded.unitPrice, 3484242);
-
-      expect(actualSolanaInstruction2Decoded, isA<SwapInstruction>());
-      expect(actualSolanaInstruction2Decoded.programId, 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
-      expect(actualSolanaInstruction2Decoded.sender, 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7');
-      expect(actualSolanaInstruction2Decoded.recipient, 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY');
-
-      expect(actualSolanaInstruction3Decoded, isA<SystemTransferInstruction>());
-      expect(actualSolanaInstruction3Decoded.programId, '11111111111111111111111111111111');
-      expect(actualSolanaInstruction3Decoded.sender, 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7');
-      expect(actualSolanaInstruction3Decoded.recipient, 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY');
-
-      expect(actualSolanaInstruction4Decoded, isA<UnknownInstruction>());
-      expect(actualSolanaInstruction4Decoded.programId, 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
-
-      expect(actualSolanaInstruction5Decoded, isA<UnknownInstruction>());
-      expect(actualSolanaInstruction5Decoded.programId, 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4');
-
-      expect(actualSolanaInstruction6Decoded, isA<UnknownInstruction>());
-      expect(actualSolanaInstruction6Decoded.programId, 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+      expect(actualSolanaV0Message, expectedSolanaV0Message);
+      expect(actualSolanaComputeBudgetUnitLimitInstruction, expectedSolanaComputeBudgetUnitLimitInstruction);
+      expect(actualSolanaComputeBudgetUnitPriceInstruction, expectedSolanaComputeBudgetUnitPriceInstruction);
+      expect(actualSolanaSwapInstruction, expectedSolanaSwapInstruction);
+      expect(actualSolanaSystemTransferInstruction, expectedSolanaSystemTransferInstruction);
+      expect(actualSolanaUnknownInstruction1, expectedSolanaUnknownInstruction1);
+      expect(actualSolanaUnknownInstruction2, expectedSolanaUnknownInstruction2);
+      expect(actualSolanaUnknownInstruction3, expectedSolanaUnknownInstruction3);
     });
   });
 }
