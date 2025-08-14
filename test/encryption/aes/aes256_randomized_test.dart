@@ -18,9 +18,8 @@ void main() {
     // and we cannot match the hardcoded expected result. That's why we check whether it is possible to encode and decode text
     test('Should correctly encrypt given string via AES256 algorithm and check with decrypt method', () async {
       // Act
-      String actualEncryptedString = AES256Randomized.encrypt(actualPassword, actualStringToEncrypt);
+      String actualEncryptedString = AES256Randomized.encrypt(actualPassword, actualStringToEncrypt)['cipherText'] as String;
       String actualDecryptedString = AES256Randomized.decrypt(actualPassword, actualEncryptedString);
-
 
       // Assert
       expect(actualDecryptedString, expectedDecryptedString);

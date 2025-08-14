@@ -22,7 +22,7 @@ class AES256Randomized {
   /// from which the initialization vector (IV), and checksum are extracted.
   /// The plaintext is then encrypted using AES-256 in CTR mode and returned as a Base64-encoded string,
   /// with the salt prepended and the checksum appended.
-  static String encrypt(String password, String decryptedString) {
+  static Map<String, String> encrypt(String password, String decryptedString) {
     Uint8List decryptedUint8List = utf8.encode(decryptedString);
     Uint8List randomUint8List = SecureRandom.getBytes(length: 16, max: 255);
 
@@ -40,7 +40,11 @@ class AES256Randomized {
     List<int> encryptedStringUint8List = randomUint8List + encryptedUint8List + checksumUint8List;
     String encryptedString = base64Encode(encryptedStringUint8List);
 
-    return encryptedString;
+    Map<String, String> encryptedMap = <String, String>{
+      'cipher': 'AES256Randomized',
+      'cipherText': encryptedString,
+    };
+    return encryptedMap;
   }
 
   /// Decrypts the provided encrypted string using the specified password.
