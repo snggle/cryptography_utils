@@ -1,3 +1,4 @@
+export 'associated_token_instructions//solana_create_idempotent_instruction.dart';
 export 'compute_budget_instructions/solana_compute_budget_unit_limit_instruction.dart';
 export 'compute_budget_instructions/solana_compute_budget_unit_price_instruction.dart';
 export 'invalid_instruction/solana_invalid_instruction.dart';
@@ -5,8 +6,6 @@ export 'stake_instructions/solana_stake_deactivate_instruction.dart';
 export 'stake_instructions/solana_stake_delegate_instruction.dart';
 export 'stake_instructions/solana_stake_initialize_instruction.dart';
 export 'stake_instructions/solana_stake_withdraw_instruction.dart';
-export 'swap_instructions/solana_swap_instruction.dart';
-export 'system_instructions/solana_system_assign_instruction.dart';
 export 'system_instructions/solana_system_transfer_instruction.dart';
-export 'token_instructions/solana_token_transfer_instruction.dart';
+export 'token_instructions/solana_transfer_checked_instruction.dart';
 export 'unknown_instruction/solana_unknown_instruction.dart';

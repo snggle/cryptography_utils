@@ -13,7 +13,7 @@ class SolanaMessageHeader extends Equatable {
   /// The number of signed accounts that are read-only.
   final int numReadonlySignedAccounts;
 
-  ///The number of unsigned accounts that are read-only.
+  /// The number of unsigned accounts that are read-only.
   final int numReadonlyUnsignedAccounts;
 
   const SolanaMessageHeader({
@@ -22,7 +22,7 @@ class SolanaMessageHeader extends Equatable {
     required this.numReadonlyUnsignedAccounts,
   });
 
-  /// Extracts a [SolanaMessageHeader] from a [ByteReader] of a Solana transaction for a [SolanaLegacyMessage] or a [SolanaV0Message].
+  /// Extracts a [SolanaMessageHeader] from a [ByteReader] of a [SolanaLegacyMessage] or a [SolanaV0Message].
   factory SolanaMessageHeader.fromBytes(ByteReader reader) {
     return SolanaMessageHeader(
       numRequiredSignatures: reader.shiftRight(),
