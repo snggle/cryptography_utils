@@ -16,7 +16,7 @@ class SolanaStakeDeactivateInstruction extends ASolanaInstructionDecoded {
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeDeactivateInstruction] from the serialized data.
-  static SolanaStakeDeactivateInstruction fromSerializedData(
+  factory SolanaStakeDeactivateInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     String sender = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
     String recipient = accountKeys[solanaCompiledInstruction.accounts[2]].toBase58();

@@ -23,7 +23,7 @@ class SolanaSwapInstruction extends ASolanaInstructionDecoded {
         super(programId: programId);
 
   /// Creates a new instance of [SolanaSwapInstruction] from the serialized data.
-  static SolanaSwapInstruction fromSerializedData(
+  factory SolanaSwapInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     String sender = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
     String recipient = accountKeys[solanaCompiledInstruction.accounts[1]].toBase58();

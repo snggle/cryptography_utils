@@ -30,7 +30,7 @@ class SolanaTokenTransferInstruction extends ASolanaInstructionDecoded {
         super(programId: programId);
 
   /// Creates a new instance of [SolanaTokenTransferInstruction] from the serialized data.
-  static SolanaTokenTransferInstruction fromSerializedData(
+  factory SolanaTokenTransferInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
     int amount = byteData.getUint64(1, Endian.little);
@@ -51,34 +51,22 @@ class SolanaTokenTransferInstruction extends ASolanaInstructionDecoded {
   }
 
   @override
-  int? get amount {
-    return _amount;
-  }
+  int? get amount => _amount;
 
   @override
-  String? get mint {
-    return _mint;
-  }
+  String? get mint => _mint;
 
   @override
-  String? get recipient {
-    return _delegate;
-  }
+  String? get recipient => _delegate;
 
   @override
-  String? get sender {
-    return _source;
-  }
+  String? get sender => _source;
 
   @override
-  String? get signer {
-    return _owner;
-  }
+  String? get signer => _owner;
 
   @override
-  int? get tokenDecimalPrecision {
-    return _decimals;
-  }
+  int? get tokenDecimalPrecision => _decimals;
 
   @override
   List<Object?> get props => <Object?>[programId, amount, tokenDecimalPrecision, recipient, sender, signer, mint];

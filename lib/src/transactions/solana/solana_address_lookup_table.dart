@@ -19,11 +19,11 @@ class SolanaAddressLookupTable extends Equatable {
     required this.readonlyIndexesList,
   });
 
-  static SolanaAddressLookupTable fromSerializedData(ByteReader byteReader) {
+  factory SolanaAddressLookupTable.fromSerializedData(ByteReader byteReader) {
     int publicKeyLength = 32;
 
-    Uint8List key = byteReader.shiftRightBy(publicKeyLength);
-    SolanaPubKey pubKey = SolanaPubKey.fromBytes(key);
+    Uint8List keyBytes = byteReader.shiftRightBy(publicKeyLength);
+    SolanaPubKey pubKey = SolanaPubKey.fromBytes(keyBytes);
 
     int writableCount = CompactU16Decoder.decode(byteReader);
     List<int> writableIndexes = List<int>.generate(writableCount, (_) {

@@ -22,7 +22,6 @@ class SolanaSignature extends ASignature {
     return SolanaSignature(r: r, s: s);
   }
 
-
   @override
   Uint8List get bytes => Uint8List.fromList(r + s);
 

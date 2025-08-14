@@ -7,7 +7,7 @@ class SolanaUnknownInstruction extends ASolanaInstructionDecoded {
   }) : super(programId: programId);
 
   /// Creates a new instance of [SolanaUnknownInstruction] from the serialized data with the unknown [programId].
-  static SolanaUnknownInstruction fromSerializedData(String programId) {
+  factory SolanaUnknownInstruction.fromSerializedData(String programId) {
     return SolanaUnknownInstruction(programId: programId);
   }
 

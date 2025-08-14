@@ -10,8 +10,8 @@ class SolanaVerifier {
   SolanaVerifier(this._ed25519PublicKey);
 
   bool isSignatureValid(Uint8List message, SolanaSignature solanaSignature) {
-    Uint8List r = solanaSignature.bytes.sublist(0, 32);
-    Uint8List s = solanaSignature.bytes.sublist(32, 64);
+    Uint8List r = solanaSignature.r;
+    Uint8List s = solanaSignature.s;
     EDSignature edSignature = EDSignature(r: r, s: s);
 
     ED25519Verifier verifier = ED25519Verifier(

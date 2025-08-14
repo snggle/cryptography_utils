@@ -26,7 +26,7 @@ class SolanaCompiledInstruction extends Equatable {
   });
 
   /// Extracts a [SolanaCompiledInstruction] from a [ByteReader] of a Solana transaction for a [SolanaLegacyMessage] or a [SolanaV0Message].
-  static SolanaCompiledInstruction fromSerializedData(ByteReader byteReader) {
+  factory SolanaCompiledInstruction.fromSerializedData(ByteReader byteReader) {
     int programId = byteReader.shiftRight();
     int accountCount = CompactU16Decoder.decode(byteReader);
     Uint8List accounts = byteReader.shiftRightBy(accountCount);

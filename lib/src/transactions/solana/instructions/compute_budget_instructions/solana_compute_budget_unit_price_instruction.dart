@@ -15,7 +15,7 @@ class SolanaComputeBudgetUnitPriceInstruction extends ASolanaInstructionDecoded 
         super(programId: programId);
 
   /// Creates a new instance of [SolanaComputeBudgetUnitPriceInstruction] from the serialized data.
-  static SolanaComputeBudgetUnitPriceInstruction fromSerializedData(SolanaCompiledInstruction solanaCompiledInstruction, String programId) {
+  factory SolanaComputeBudgetUnitPriceInstruction.fromSerializedData(SolanaCompiledInstruction solanaCompiledInstruction, String programId) {
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
     int unitPrice = byteData.getUint64(1, Endian.little);
     return SolanaComputeBudgetUnitPriceInstruction(

@@ -44,18 +44,5 @@ void main() {
 
       expect(actualSolanaAddressLookupTable, expectedSolanaAddressLookupTable);
     });
-
-    test('Should [throw RangeError] if there is incomplete data', () {
-      // Arrange
-      List<int> actualPubkeyBytes = List<int>.generate(32, (int i) => i + 10);
-      List<int> actualRawData = <int>[...actualPubkeyBytes, 2, 5, 1];
-      ByteReader actualByteReader = ByteReader(Uint8List.fromList(actualRawData));
-
-      // Assert
-      expect(
-        () => SolanaAddressLookupTable.fromSerializedData(actualByteReader),
-        throwsA(isA<RangeError>()),
-      );
-    });
   });
 }

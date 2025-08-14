@@ -1,20 +1,18 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:codec_utils/codec_utils.dart';
 import 'package:cryptography_utils/src/transactions/export.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('SolanaPubKey.fromBytes()', () {
     test('Should [return SolanaPubKey] from bytes', () {
-      // Arrange
-      Uint8List actualBytes = Uint8List.fromList(List<int>.generate(32, (int i) => i));
-
       // Act
-      SolanaPubKey actualSolanaPubKey = SolanaPubKey.fromBytes(actualBytes);
+      SolanaPubKey actualSolanaPubKey = SolanaPubKey.fromBytes(base64Decode('FvHsWcITjSSy666/XikzqLiO11a0SwY8rT5d3C+q84s='));
 
       // Assert
-      SolanaPubKey expectedSolanaPubKey = SolanaPubKey(actualBytes);
+      SolanaPubKey expectedSolanaPubKey = SolanaPubKey(base64Decode('FvHsWcITjSSy666/XikzqLiO11a0SwY8rT5d3C+q84s='));
+
       expect(actualSolanaPubKey, expectedSolanaPubKey);
     });
 
@@ -29,15 +27,12 @@ void main() {
 
   group('SolanaPubKey.fromBase58()', () {
     test('Should [return SolanaPubKey] from base58 string', () {
-      // Arrange
-      Uint8List actualBytes = Uint8List(32);
-      String actualBase58String = Base58Codec.encode(actualBytes);
-
       // Act
-      SolanaPubKey actualSolanaPubKey = SolanaPubKey.fromBase58(actualBase58String);
+      SolanaPubKey actualSolanaPubKey = SolanaPubKey.fromBase58('2YZvo6LkePK8V2G2ZaS8UxBYX2Ph6udCu5iuaYAqVM38');
 
       // Assert
-      SolanaPubKey expectedSolanaPubKey = SolanaPubKey(actualBytes);
+      SolanaPubKey expectedSolanaPubKey = SolanaPubKey(base64Decode('FvHsWcITjSSy666/XikzqLiO11a0SwY8rT5d3C+q84s='));
+
       expect(actualSolanaPubKey, expectedSolanaPubKey);
     });
   });

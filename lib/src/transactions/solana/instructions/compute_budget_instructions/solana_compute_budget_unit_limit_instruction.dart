@@ -14,7 +14,7 @@ class SolanaComputeBudgetUnitLimitInstruction extends ASolanaInstructionDecoded 
         super(programId: programId);
 
   /// Creates a new instance of [SolanaComputeBudgetUnitLimitInstruction] from the serialized data.
-  static SolanaComputeBudgetUnitLimitInstruction fromSerializedData(
+  factory SolanaComputeBudgetUnitLimitInstruction.fromSerializedData(
     SolanaCompiledInstruction solanaCompiledInstruction,
     String programId,
   ) {

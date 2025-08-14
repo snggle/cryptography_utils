@@ -21,7 +21,7 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeWithdrawInstruction] from the serialized data.
-  static SolanaStakeWithdrawInstruction fromSerializedData(
+  factory SolanaStakeWithdrawInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
     int amount = byteData.getUint64(4, Endian.little);

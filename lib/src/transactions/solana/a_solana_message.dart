@@ -32,7 +32,7 @@ abstract class ASolanaMessage extends Equatable {
 
   /// Creates a new instance of [ASolanaMessage] from the serialized data,
   /// returning [SolanaLegacyMessage] or [SolanaV0Message] depending on the detected version.
-  static ASolanaMessage fromSerializedData(Uint8List data) {
+  factory ASolanaMessage.fromSerializedData(Uint8List data) {
     int firstByte = data[0];
     bool versionedBool = (firstByte & 0x80) != 0;
     if (!versionedBool) {

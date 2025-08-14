@@ -19,7 +19,7 @@ class SolanaSystemAssignInstruction extends ASolanaInstructionDecoded {
         super(programId: programId);
 
   /// Creates a new instance of [SolanaSystemAssignInstruction] from the serialized data.
-  static SolanaSystemAssignInstruction fromSerializedData(
+  factory SolanaSystemAssignInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     String signer = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
     Uint8List recipientBytes = solanaCompiledInstruction.data.sublist(4, 36);

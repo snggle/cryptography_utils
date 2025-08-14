@@ -21,7 +21,7 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
         super(programId: programId);
 
   /// Creates a new instance of [SolanaSystemTransferInstruction] from the serialized data.
-  static SolanaSystemTransferInstruction fromSerializedData(
+  factory SolanaSystemTransferInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
     int amount = byteData.getUint64(4, Endian.little);

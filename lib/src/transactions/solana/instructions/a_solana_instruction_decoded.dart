@@ -13,7 +13,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
 
   /// Decodes a [SolanaCompiledInstruction] into the appropriate [ASolanaInstructionDecoded] subclass based on the program ID and data.
   /// and returns an appropriate instruction type
-  static ASolanaInstructionDecoded decode(SolanaCompiledInstruction solanaInstruction, List<SolanaPubKey> accountKeys) {
+  factory ASolanaInstructionDecoded.decode(SolanaCompiledInstruction solanaInstruction, List<SolanaPubKey> accountKeys) {
     if (accountKeys.isEmpty || solanaInstruction.programIdIndex >= accountKeys.length) {
       return const SolanaInvalidInstruction();
     }
