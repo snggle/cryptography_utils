@@ -1,34 +1,29 @@
 import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// Set a specific compute unit limit that the transaction is allowed to consume.
-///
-/// https://docs.rs/solana-sdk/latest/solana_sdk/compute_budget/enum.ComputeBudgetInstruction.html#variant.SetComputeUnitLimit
+/// An instruction which defines a specific compute unit limit that the transaction is allowed to consume.
 class SolanaComputeBudgetUnitLimitInstruction extends ASolanaInstructionDecoded {
-  final int _unitLimit;
+  final int _units;
 
   const SolanaComputeBudgetUnitLimitInstruction({
     required String programId,
-    required int unitLimit,
-  })  : _unitLimit = unitLimit,
+    required int units,
+  })  : _units = units,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaComputeBudgetUnitLimitInstruction] from the serialized data.
-  static SolanaComputeBudgetUnitLimitInstruction fromSerializedData(
-    SolanaCompiledInstruction solanaCompiledInstruction,
-    String programId,
-  ) {
+  factory SolanaComputeBudgetUnitLimitInstruction.fromSerializedData(SolanaCompiledInstruction solanaCompiledInstruction, String programId) {
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
-    int unitLimit = byteData.getUint32(1, Endian.little);
+    int units = byteData.getUint32(1, Endian.little);
     return SolanaComputeBudgetUnitLimitInstruction(
       programId: programId,
-      unitLimit: unitLimit,
+      units: units,
     );
   }
 
   @override
-  int? get unitLimit => _unitLimit;
+  int? get units => _units;
 
   @override
-  List<Object?> get props => <Object?>[programId, unitLimit];
+  List<Object?> get props => <Object?>[programId, units];
 }

@@ -22,8 +22,6 @@ class SolanaV0Message extends ASolanaMessage {
 
   /// Creates a new instance of [SolanaV0Message] from the serialized data.
   factory SolanaV0Message.fromSerializedData(Uint8List data) {
-    int publicKeyLength = 32;
-
     ByteReader byteReader = ByteReader(data);
 
     int versionByte = byteReader.shiftRight();
@@ -36,11 +34,11 @@ class SolanaV0Message extends ASolanaMessage {
 
     int accountsCount = CompactU16Decoder.decode(byteReader);
     List<SolanaPubKey> accountKeys = List<SolanaPubKey>.generate(accountsCount, (_) {
-      Uint8List key = byteReader.shiftRightBy(publicKeyLength);
+      Uint8List key = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
       return SolanaPubKey(Uint8List.fromList(key));
     });
 
-    Uint8List recentBlockhash = byteReader.shiftRightBy(publicKeyLength);
+    Uint8List recentBlockhash = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
 
     int instructionCount = CompactU16Decoder.decode(byteReader);
     List<SolanaCompiledInstruction> instructions = List<SolanaCompiledInstruction>.generate(instructionCount, (_) {

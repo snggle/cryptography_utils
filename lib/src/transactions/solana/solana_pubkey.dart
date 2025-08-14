@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 /// An account's public key.
 ///
-/// https://solana.com/docs/core/transactions#instructions
+/// https://solana.com/docs/core/transactions#accountmeta
 class SolanaPubKey extends Equatable {
   static const int publicKeyLength = 32;
 

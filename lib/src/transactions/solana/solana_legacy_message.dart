@@ -15,19 +15,17 @@ class SolanaLegacyMessage extends ASolanaMessage {
 
   /// Creates a new instance of [SolanaLegacyMessage] from the serialized data.
   factory SolanaLegacyMessage.fromSerializedData(Uint8List data) {
-    int publicKeyLength = 32;
-
     ByteReader reader = ByteReader(data);
 
     SolanaMessageHeader header = SolanaMessageHeader.fromBytes(reader);
 
     int accountsCount = CompactU16Decoder.decode(reader);
     List<SolanaPubKey> accountKeysList = List<SolanaPubKey>.generate(accountsCount, (_) {
-      Uint8List key = reader.shiftRightBy(publicKeyLength);
+      Uint8List key = reader.shiftRightBy(SolanaPubKey.publicKeyLength);
       return SolanaPubKey.fromBytes(Uint8List.fromList(key));
     });
 
-    Uint8List recentBlockhash = reader.shiftRightBy(publicKeyLength);
+    Uint8List recentBlockhash = reader.shiftRightBy(SolanaPubKey.publicKeyLength);
 
     int instructionCount = CompactU16Decoder.decode(reader);
     List<SolanaCompiledInstruction> instructions = List<SolanaCompiledInstruction>.generate(instructionCount, (_) {
