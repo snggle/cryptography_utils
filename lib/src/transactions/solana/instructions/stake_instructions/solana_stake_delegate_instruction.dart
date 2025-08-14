@@ -1,38 +1,36 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// Delegate a stake to a particular vote account
-///
-/// https://docs.rs/solana-sdk/latest/solana_sdk/stake/instruction/enum.StakeInstruction.html#variant.DelegateStake
+/// An instruction which delegates a stake to a particular vote account.
 class SolanaStakeDelegateInstruction extends ASolanaInstructionDecoded {
-  final String _recipient;
-  final String _sender;
+  final String _stakeAccount;
+  final String _stakeAuthority;
 
   const SolanaStakeDelegateInstruction({
     required String programId,
-    required String recipient,
-    required String sender,
-  })  : _recipient = recipient,
-        _sender = sender,
+    required String stakeAccount,
+    required String stakeAuthority,
+  })  : _stakeAccount = stakeAccount,
+        _stakeAuthority = stakeAuthority,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeDelegateInstruction] from the serialized data.
-  static SolanaStakeDelegateInstruction fromSerializedData(
+  factory SolanaStakeDelegateInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
-    String recipient = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
-    String sender = accountKeys[solanaCompiledInstruction.accounts[5]].toBase58();
+    String stakeAccount = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
+    String stakeAuthority = accountKeys[solanaCompiledInstruction.accounts[5]].toBase58();
     return SolanaStakeDelegateInstruction(
       programId: programId,
-      recipient: recipient,
-      sender: sender,
+      stakeAccount: stakeAccount,
+      stakeAuthority: stakeAuthority,
     );
   }
 
   @override
-  String? get recipient => _recipient;
+  String? get stakeAccount => _stakeAccount;
 
   @override
-  String? get sender => _sender;
+  String? get stakeAuthority => _stakeAuthority;
 
   @override
-  List<Object?> get props => <Object?>[programId, recipient, sender];
+  List<Object?> get props => <Object?>[programId, stakeAccount, stakeAuthority];
 }

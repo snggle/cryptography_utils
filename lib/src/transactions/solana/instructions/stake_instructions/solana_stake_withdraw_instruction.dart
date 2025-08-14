@@ -2,48 +2,46 @@ import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// Withdraw unstaked lamports from the stake account
-///
-/// https://docs.rs/solana-sdk/latest/solana_sdk/stake/instruction/enum.StakeInstruction.html#variant.Withdraw
+/// An instruction which withdraws unstaked lamports from the [stakeAccount].
 class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
-  final int _amount;
-  final String _recipient;
-  final String _sender;
+  final int _lamports;
+  final String _stakeAccount;
+  final String _withdrawAuthority;
 
   const SolanaStakeWithdrawInstruction({
     required String programId,
-    required int amount,
-    required String recipient,
-    required String sender,
-  })  : _amount = amount,
-        _recipient = recipient,
-        _sender = sender,
+    required int lamports,
+    required String withdrawAuthority,
+    required String stakeAccount,
+  })  : _lamports = lamports,
+        _withdrawAuthority = withdrawAuthority,
+        _stakeAccount = stakeAccount,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeWithdrawInstruction] from the serialized data.
-  static SolanaStakeWithdrawInstruction fromSerializedData(
+  factory SolanaStakeWithdrawInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
-    int amount = byteData.getUint64(4, Endian.little);
-    String sender = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
-    String recipient = accountKeys[solanaCompiledInstruction.accounts[4]].toBase58();
+    int lamports = byteData.getUint64(4, Endian.little);
+    String stakeAccount = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
+    String withdrawAuthority = accountKeys[solanaCompiledInstruction.accounts[4]].toBase58();
     return SolanaStakeWithdrawInstruction(
       programId: programId,
-      amount: amount,
-      recipient: recipient,
-      sender: sender,
+      lamports: lamports,
+      withdrawAuthority: withdrawAuthority,
+      stakeAccount: stakeAccount,
     );
   }
 
   @override
-  int? get amount => _amount;
+  int? get lamports => _lamports;
 
   @override
-  String? get recipient => _recipient;
+  String? get withdrawAuthority => _withdrawAuthority;
 
   @override
-  String? get sender => _sender;
+  String? get stakeAccount => _stakeAccount;
 
   @override
-  List<Object?> get props => <Object?>[programId, amount, recipient, sender];
+  List<Object?> get props => <Object?>[programId, lamports, withdrawAuthority, stakeAccount];
 }

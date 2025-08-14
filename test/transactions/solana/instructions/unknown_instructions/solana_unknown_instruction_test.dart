@@ -4,14 +4,13 @@ import 'package:test/test.dart';
 void main() {
   group('Tests of SolanaUnknownInstruction', () {
     test('Should [return SolanaUnknownInstruction] from serialized data', () {
-      // Arrange
-      String actualProgramId = 'SomeProgram1111111111111111111111111111111';
-
       // Act
-      SolanaUnknownInstruction actualSolanaUnknownInstruction = SolanaUnknownInstruction.fromSerializedData(actualProgramId);
+      SolanaUnknownInstruction actualSolanaUnknownInstruction =
+          SolanaUnknownInstruction.fromSerializedData('SomeProgram1111111111111111111111111111111');
 
       // Assert
-      SolanaUnknownInstruction expectedSolanaUnknownInstruction = SolanaUnknownInstruction(programId: actualProgramId);
+      SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+          const SolanaUnknownInstruction(programId: 'SomeProgram1111111111111111111111111111111');
 
       expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
     });

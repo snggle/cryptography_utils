@@ -1,31 +1,28 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
-/// Initialize a stake with lockup and authorization information
-///
-/// https://docs.rs/solana-sdk/latest/solana_sdk/stake/instruction/enum.StakeInstruction.html#variant.Initialize
+/// An instruction which initializes a [stakeAccount].
 class SolanaStakeInitializeInstruction extends ASolanaInstructionDecoded {
-  final String _recipient;
+  final String _stakeAccount;
 
   const SolanaStakeInitializeInstruction({
     required String programId,
-    required String recipient,
-  })  : _recipient = recipient,
+    required String stakeAccount,
+  })  : _stakeAccount = stakeAccount,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeInitializeInstruction] from the serialized data.
-  static SolanaStakeInitializeInstruction fromSerializedData(
+  factory SolanaStakeInitializeInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
-    String recipient = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
-    String programId = accountKeys[solanaCompiledInstruction.programIdIndex].toBase58();
+    String stakeAccount = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
     return SolanaStakeInitializeInstruction(
       programId: programId,
-      recipient: recipient,
+      stakeAccount: stakeAccount,
     );
   }
 
   @override
-  String? get recipient => _recipient;
+  String? get stakeAccount => _stakeAccount;
 
   @override
-  List<Object?> get props => <Object?>[programId, recipient];
+  List<Object?> get props => <Object?>[programId, stakeAccount];
 }

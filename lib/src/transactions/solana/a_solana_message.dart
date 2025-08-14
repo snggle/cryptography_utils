@@ -12,8 +12,9 @@ abstract class ASolanaMessage extends Equatable {
 
   /// Every transaction requires a recent blockhash that serves two purposes:
   ///
-  /// Acts as a timestamp for when the transaction was created
-  /// Prevents duplicate transactions
+  /// 1. Acts as a timestamp for when the transaction was created
+  /// 2. Prevents duplicate transactions
+  ///
   /// A blockhash expires after 150 blocks (about 1 minute assuming 400ms block times),
   /// after which the transaction is considered expired and cannot be processed.
   /// https://solana.com/docs/core/transactions#recent-blockhash
@@ -30,9 +31,9 @@ abstract class ASolanaMessage extends Equatable {
     required this.compiledInstructions,
   });
 
-  /// Creates a new instance of [ASolanaMessage] from the serialized data,
-  /// returning [SolanaLegacyMessage] or [SolanaV0Message] depending on the detected version.
-  static ASolanaMessage fromSerializedData(Uint8List data) {
+  /// Creates a new instance of [ASolanaMessage] from serialized data,
+  /// returning [SolanaLegacyMessage] or [SolanaV0Message] depending on the detected message version.
+  factory ASolanaMessage.fromSerializedData(Uint8List data) {
     int firstByte = data[0];
     bool versionedBool = (firstByte & 0x80) != 0;
     if (!versionedBool) {
