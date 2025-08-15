@@ -6,9 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tests of ASolanaInstruction.decode()', () {
-    test(
-        'Should [return SolanaComputeBudgetUnitPriceInstruction] - testing _decodeComputeBudgetProgram() -> SolanaComputeBudgetUnitPriceInstruction.fromSerializedData()',
-        () {
+    test('Should [return SolanaComputeBudgetUnitPriceInstruction] from a compiled SolanaComputeBudgetUnitPriceInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaComputeBudgetUnitPriceInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List(0), data: Uint8List.fromList(<int>[3, 0, 45, 49, 1, 0, 0, 0, 0])),
@@ -28,9 +26,7 @@ void main() {
       expect(actualSolanaComputeBudgetUnitPriceInstruction, expectedSolanaComputeBudgetUnitPriceInstruction);
     });
 
-    test(
-        'Should [return SolanaComputeBudgetUnitLimitInstruction] - testing _decodeComputeBudgetProgram() -> SolanaComputeBudgetUnitLimitInstruction.fromSerializedData()',
-        () {
+    test('Should [return SolanaComputeBudgetUnitLimitInstruction] from a compiled SolanaComputeBudgetUnitLimitInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaComputeBudgetUnitLimitInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List(0), data: Uint8List.fromList(<int>[2, 239, 1, 0, 0])), <SolanaPubKey>[
@@ -49,7 +45,7 @@ void main() {
       expect(actualSolanaComputeBudgetUnitLimitInstruction, expectedSolanaComputeBudgetUnitLimitInstruction);
     });
 
-    test('Should [return SolanaUnknownInstruction] - testing _decodeComputeBudgetProgram() with unknown instruction tag', () {
+    test('Should [return SolanaUnknownInstruction] from a compiled compute budget instruction with an unknown tag', () {
       // Act
       ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List(0), data: Uint8List.fromList(<int>[1, 0, 45, 49, 1, 0, 0, 0, 0])),
@@ -67,8 +63,7 @@ void main() {
       expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
     });
 
-    test('Should [return SolanaSystemTransferInstruction] - testing _decodeSystemProgram() -> SolanaSystemTransferInstruction.fromSerializedData()',
-        () {
+    test('Should [return SolanaSystemTransferInstruction] from a compiled SolanaSystemTransferInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaSystemTransferInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -91,7 +86,7 @@ void main() {
       expect(actualSolanaSystemTransferInstruction, expectedSolanaSystemTransferInstruction);
     });
 
-    test('Should [return SolanaSystemAssignInstruction] - testing _decodeSystemProgram() -> SolanaSystemAssignInstruction.fromSerializedData()', () {
+    test('Should [return SolanaSystemAssignInstruction] from a compiled SolanaSystemAssignInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaSystemAssignInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -123,7 +118,7 @@ void main() {
       expect(actualSolanaSystemAssignInstruction, expectedSolanaSystemAssignInstruction);
     });
 
-    test('Should [return SolanaUnknownInstruction] - testing _decodeSystemProgram() with unknown instruction tag', () {
+    test('Should [return SolanaUnknownInstruction] from a compiled system program instruction with an unknown tag', () {
       // Act
       ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -151,8 +146,7 @@ void main() {
       expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
     });
 
-    test('Should [return SolanaStakeInitializeInstruction] - testing _decodeStakeProgram() -> SolanaStakeInitializeInstruction.fromSerializedData()',
-        () {
+    test('Should [return SolanaStakeInitializeInstruction] from a compiled SolanaStakeInitializeInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaStakeInitializeInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -183,8 +177,7 @@ void main() {
       expect(actualSolanaStakeInitializeInstruction, expectedSolanaStakeInitializeInstruction);
     });
 
-    test('Should [return SolanaStakeDelegateInstruction] - testing _decodeStakeProgram() ->  SolanaStakeDelegateInstruction.fromSerializedData()',
-        () {
+    test('Should [return SolanaStakeDelegateInstruction] from a compiled SolanaStakeDelegateInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaStakeDelegateInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -212,8 +205,7 @@ void main() {
       expect(actualSolanaStakeDelegateInstruction, expectedSolanaStakeDelegateInstruction);
     });
 
-    test('Should [return SolanaStakeDeactivateInstruction] - testing _decodeStakeProgram() -> SolanaStakeDeactivateInstruction.fromSerializedData()',
-        () {
+    test('Should [return SolanaStakeDeactivateInstruction] from a compiled SolanaStakeDeactivateInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaStakeDeactivateInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List.fromList(<int>[1, 4, 0]), data: Uint8List.fromList(<int>[5, 0, 0, 0])),
@@ -235,7 +227,7 @@ void main() {
       expect(actualSolanaStakeDeactivateInstruction, expectedSolanaStakeDeactivateInstruction);
     });
 
-    test('Should [return SolanaStakeWithdrawInstruction] - testing _decodeStakeProgram() -> SolanaStakeWithdrawInstruction.fromSerializedData()', () {
+    test('Should [return SolanaStakeWithdrawInstruction] from a compiled SolanaStakeWithdrawInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaStakeWithdrawInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -261,7 +253,7 @@ void main() {
       expect(actualSolanaStakeWithdrawInstruction, expectedSolanaStakeWithdrawInstruction);
     });
 
-    test('Should [return SolanaUnknownInstruction] - testing _decodeStakeProgram() with unknown instruction tag', () {
+    test('Should [return SolanaUnknownInstruction] from a compiled stake instruction with an unknown tag', () {
       // Act
       ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 3, accounts: Uint8List.fromList(<int>[1, 4, 0]), data: Uint8List.fromList(<int>[1, 0, 0, 0])),
@@ -280,7 +272,7 @@ void main() {
       expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
     });
 
-    test('Should [return SolanaTokenTransferInstruction] - testing _decodeTokenProgram() -> SolanaTokenTransferInstruction.fromSerializedData()', () {
+    test('Should [return SolanaTokenTransferInstruction] from a compiled SolanaTokenTransferInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaTokenTransferInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -308,7 +300,7 @@ void main() {
       expect(actualSolanaTokenTransferInstruction, expectedSolanaTokenTransferInstruction);
     });
 
-    test('Should [return SolanaUnknownInstruction] - testing _decodeTokenProgram() with unknown instruction tag', () {
+    test('Should [return SolanaUnknownInstruction] from a compiled token transfer instruction with an unknown tag', () {
       // Act
       ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(
@@ -329,7 +321,7 @@ void main() {
       expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
     });
 
-    test('Should [return SolanaSwapInstruction] - testing SolanaSwapInstruction.fromSerializedData()', () {
+    test('Should [return SolanaSwapInstruction] from a compiled SolanaSwapInstruction', () {
       // Act
       ASolanaInstructionDecoded actualSolanaSwapInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 12, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
@@ -365,7 +357,7 @@ void main() {
       expect(actualSolanaSwapInstruction, expectedSolanaSwapInstruction);
     });
 
-    test('Should [return SolanaUnknownInstruction] - testing ASolanaInstructionDecoded.decode() with unknown programId', () {
+    test('Should [return SolanaUnknownInstruction] from a compiled instruction with an unknown programId', () {
       // Act
       ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 11, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
@@ -395,7 +387,7 @@ void main() {
       expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
     });
 
-    test('Should [return SolanaInvalidInstruction] - testing ASolanaInstructionDecoded.decode() with empty accountKeys', () {
+    test('Should [return SolanaInvalidInstruction] from a compiled instruction with no account keys', () {
       // Act
       ASolanaInstructionDecoded actualSolanaInvalidInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 11, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
@@ -407,7 +399,7 @@ void main() {
       expect(actualSolanaInvalidInstruction, expectedSolanaInvalidInstruction);
     });
 
-    test('Should [return SolanaInvalidInstruction] - testing ASolanaInstructionDecoded.decode() with programIdIndex out of bounds', () {
+    test('Should [return SolanaInvalidInstruction] from a compiled instruction with programId out of bounds', () {
       // Act
       ASolanaInstructionDecoded actualSolanaInvalidInstruction = ASolanaInstructionDecoded.decode(
           SolanaCompiledInstruction(programIdIndex: 25, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),

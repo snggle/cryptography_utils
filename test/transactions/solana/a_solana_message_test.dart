@@ -9,8 +9,8 @@ void main() {
   group('Tests of ASolanaMessage.fromSerializedData()', () {
     test('Should [return SolanaLegacyMessage] when given legacy message', () {
       // Act
-      ASolanaMessage actualSolanaMessage = ASolanaMessage.fromSerializedData(Uint8List.fromList(base64Decode(
-          'AQACBB0D1AEIXs5Rz43yeayo7W0tSpSEF7kNTRVAVF4UGFj0UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAAvsFnx3LCWACVgkEemZnhkUpLl9hJ7zvQyrFIrH+YayoDAwAJAwAtMQEAAAAAAwAFAu8BAAACAgABDAIAAAAAypo7AAAAAA==')));
+      ASolanaMessage actualSolanaMessage = ASolanaMessage.fromSerializedData(base64Decode(
+          'AQACBB0D1AEIXs5Rz43yeayo7W0tSpSEF7kNTRVAVF4UGFj0UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAAvsFnx3LCWACVgkEemZnhkUpLl9hJ7zvQyrFIrH+YayoDAwAJAwAtMQEAAAAAAwAFAu8BAAACAgABDAIAAAAAypo7AAAAAA=='));
 
       // Assert
       SolanaLegacyMessage expectedSolanaLegacyMessage = SolanaLegacyMessage(

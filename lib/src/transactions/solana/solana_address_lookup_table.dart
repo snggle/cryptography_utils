@@ -20,9 +20,7 @@ class SolanaAddressLookupTable extends Equatable {
   });
 
   factory SolanaAddressLookupTable.fromSerializedData(ByteReader byteReader) {
-    int publicKeyLength = 32;
-
-    Uint8List keyBytes = byteReader.shiftRightBy(publicKeyLength);
+    Uint8List keyBytes = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
     SolanaPubKey pubKey = SolanaPubKey.fromBytes(keyBytes);
 
     int writableCount = CompactU16Decoder.decode(byteReader);
