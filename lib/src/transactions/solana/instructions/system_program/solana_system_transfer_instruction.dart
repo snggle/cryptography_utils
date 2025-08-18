@@ -21,10 +21,12 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
   /// Creates a new instance of [SolanaSystemTransferInstruction] from the serialized data.
   factory SolanaSystemTransferInstruction.fromSerializedData(
       SolanaCompiledInstruction solanaCompiledInstruction, List<SolanaPubKey> accountKeys, String programId) {
-    ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
-    int lamports = byteData.getUint64(4, Endian.little);
     String source = accountKeys[solanaCompiledInstruction.accounts[0]].toBase58();
     String destination = accountKeys[solanaCompiledInstruction.accounts[1]].toBase58();
+
+    ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
+    int lamports = byteData.getUint64(4, Endian.little);
+
     return SolanaSystemTransferInstruction(
       lamports: lamports,
       programId: programId,
@@ -43,5 +45,5 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
   String? get source => _source;
 
   @override
-  List<Object?> get props => <Object?>[programId, lamports, source, destination];
+  List<Object?> get props => <Object?>[programId, _lamports, _source, _destination];
 }
