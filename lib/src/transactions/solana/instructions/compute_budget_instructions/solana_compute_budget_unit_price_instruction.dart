@@ -26,5 +26,5 @@ class SolanaComputeBudgetUnitPriceInstruction extends ASolanaInstructionDecoded 
   int? get microLamports => _microLamports;
 
   @override
-  List<Object?> get props => <Object?>[microLamports, programId];
+  List<Object?> get props => <Object?>[programId, _microLamports];
 }

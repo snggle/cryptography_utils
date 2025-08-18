@@ -25,5 +25,5 @@ class SolanaComputeBudgetUnitLimitInstruction extends ASolanaInstructionDecoded 
   int? get units => _units;
 
   @override
-  List<Object?> get props => <Object?>[programId, units];
+  List<Object?> get props => <Object?>[programId, _units];
 }

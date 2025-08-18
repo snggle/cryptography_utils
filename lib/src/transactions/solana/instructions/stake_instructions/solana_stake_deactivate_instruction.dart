@@ -32,5 +32,5 @@ class SolanaStakeDeactivateInstruction extends ASolanaInstructionDecoded {
   String? get stakeAccount => _stakeAccount;
 
   @override
-  List<Object?> get props => <Object?>[programId, stakeAuthority, stakeAccount];
+  List<Object?> get props => <Object?>[programId, _stakeAuthority, _stakeAccount];
 }

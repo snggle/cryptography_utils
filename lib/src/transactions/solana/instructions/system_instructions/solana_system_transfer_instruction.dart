@@ -43,5 +43,5 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
   String? get source => _source;
 
   @override
-  List<Object?> get props => <Object?>[programId, lamports, source, destination];
+  List<Object?> get props => <Object?>[programId, _lamports, _source, _destination];
 }

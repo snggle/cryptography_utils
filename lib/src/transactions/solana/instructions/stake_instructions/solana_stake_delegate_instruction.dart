@@ -32,5 +32,5 @@ class SolanaStakeDelegateInstruction extends ASolanaInstructionDecoded {
   String? get stakeAuthority => _stakeAuthority;
 
   @override
-  List<Object?> get props => <Object?>[programId, stakeAccount, stakeAuthority];
+  List<Object?> get props => <Object?>[programId, _stakeAccount, _stakeAuthority];
 }

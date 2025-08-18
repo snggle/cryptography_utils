@@ -56,12 +56,5 @@ class SolanaCreateIdempotentInstruction extends ASolanaInstructionDecoded {
   String? get tokenProgram => _tokenProgram;
 
   @override
-  List<Object?> get props => <Object?>[
-        systemProgram,
-        programId,
-        account,
-        source,
-        wallet,
-        tokenProgram,
-      ];
+  List<Object?> get props => <Object?>[programId, _systemProgram, _account, _source, _wallet, _tokenProgram];
 }

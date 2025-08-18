@@ -11,11 +11,11 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
   const SolanaStakeWithdrawInstruction({
     required String programId,
     required int lamports,
-    required String withdrawAuthority,
     required String stakeAccount,
+    required String withdrawAuthority,
   })  : _lamports = lamports,
-        _withdrawAuthority = withdrawAuthority,
         _stakeAccount = stakeAccount,
+        _withdrawAuthority = withdrawAuthority,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeWithdrawInstruction] from the serialized data.
@@ -43,5 +43,5 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
   String? get stakeAccount => _stakeAccount;
 
   @override
-  List<Object?> get props => <Object?>[programId, lamports, withdrawAuthority, stakeAccount];
+  List<Object?> get props => <Object?>[programId, _lamports, _withdrawAuthority, _stakeAccount];
 }

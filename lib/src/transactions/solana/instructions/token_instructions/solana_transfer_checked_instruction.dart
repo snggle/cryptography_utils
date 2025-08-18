@@ -67,5 +67,5 @@ class SolanaTransferCheckedInstruction extends ASolanaInstructionDecoded {
   int? get decimals => _decimals;
 
   @override
-  List<Object?> get props => <Object?>[programId, amount, decimals, destination, source, authority, mint];
+  List<Object?> get props => <Object?>[programId, _amount, _decimals, _destination, _source, _authority, _mint];
 }
