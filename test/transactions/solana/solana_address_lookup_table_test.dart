@@ -7,7 +7,7 @@ import 'package:cryptography_utils/src/transactions/solana/solana_pubkey.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('SolanaAddressLookupTable.fromSerializedData()', () {
+  group('Tests of SolanaAddressLookupTable.fromSerializedData()', () {
     test('Should [return SolanaAddressLookupTable] from serialized data', () {
       // Act
       SolanaAddressLookupTable actualSolanaAddressLookupTable = SolanaAddressLookupTable.fromSerializedData(

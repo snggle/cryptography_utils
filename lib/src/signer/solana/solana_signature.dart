@@ -16,13 +16,13 @@ class SolanaSignature extends ASignature {
   const SolanaSignature({required this.r, required this.s});
 
   /// Constructs an instance of [SolanaSignature] from a byte array.
-  factory SolanaSignature.fromBytes(List<int> bytes) {
+  factory SolanaSignature.fromBytes(Uint8List bytes) {
     if (bytes.length != solSignatureLength) {
       throw const FormatException('Invalid signature bytes');
     }
 
-    Uint8List r = Uint8List.fromList(bytes.sublist(0, 32));
-    Uint8List s = Uint8List.fromList(bytes.sublist(32, 64));
+    Uint8List r = bytes.sublist(0, 32);
+    Uint8List s = bytes.sublist(32, 64);
     return SolanaSignature(r: r, s: s);
   }
 
