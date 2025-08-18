@@ -2,7 +2,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tests of SolanaUnknownInstruction', () {
+  group('Tests of SolanaUnknownInstruction.fromSerializedData()', () {
     test('Should [return SolanaUnknownInstruction] from serialized data', () {
       // Act
       SolanaUnknownInstruction actualSolanaUnknownInstruction =
