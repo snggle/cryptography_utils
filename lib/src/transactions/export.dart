@@ -16,12 +16,13 @@ export 'cosmos/public_key/cosmos_legacy_amino_multisig_public_key.dart';
 export 'cosmos/public_key/cosmos_public_key.dart';
 export 'cosmos/public_key/cosmos_simple_public_key.dart';
 export 'cosmos/public_key/cosmos_val_cons_public_key.dart';
+
 // Ethereum
 export 'ethereum/a_ethereum_transaction.dart';
 export 'ethereum/access_list_bytes_item.dart';
 export 'ethereum/ethereum_eip1559_transaction.dart';
 export 'ethereum/ethereum_raw_bytes_transaction.dart';
-export 'sign_data_type.dart';
+
 // Solana
 export 'solana/a_solana_message.dart';
 export 'solana/instructions/a_solana_instruction_decoded.dart';
@@ -31,6 +32,9 @@ export 'solana/solana_legacy_message.dart';
 export 'solana/solana_message_header.dart';
 export 'solana/solana_pubkey.dart';
 export 'solana/solana_versioned_message.dart';
+
 // Generic
+// ignore: directives_ordering
+export 'sign_data_type.dart';
 export 'token_amount.dart';
 export 'token_denomination_type.dart';

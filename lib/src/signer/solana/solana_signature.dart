@@ -9,6 +9,7 @@ class SolanaSignature extends ASignature {
 
   /// The [r] value of the EDDSA signature, representing one half of the digital signature.
   final Uint8List r;
+
   /// The [s] value of the EDDSA signature, representing the other half of the digital signature.
   final Uint8List s;
 

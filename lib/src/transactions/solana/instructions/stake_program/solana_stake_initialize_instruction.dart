@@ -4,30 +4,30 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which initializes a [stakeAccount].
 class SolanaStakeInitializeInstruction extends ASolanaInstructionDecoded {
-  final String _custodian;
-  final int _epoch;
-  final String _rentSysvar;
   final String _stakeAccount;
+  final String _rentSysvar;
   final String _staker;
-  final int _unixTimestamp;
   final String _withdrawer;
+  final int _unixTimestamp;
+  final int _epoch;
+  final String _custodian;
 
   const SolanaStakeInitializeInstruction({
-    required String custodian,
-    required int epoch,
     required String programId,
-    required String rentSysvar,
     required String stakeAccount,
+    required String rentSysvar,
     required String staker,
-    required int unixTimestamp,
     required String withdrawer,
-  })  : _custodian = custodian,
-        _epoch = epoch,
+    required int unixTimestamp,
+    required int epoch,
+    required String custodian,
+  })  : _stakeAccount = stakeAccount,
         _rentSysvar = rentSysvar,
-        _stakeAccount = stakeAccount,
         _staker = staker,
-        _unixTimestamp = unixTimestamp,
         _withdrawer = withdrawer,
+        _unixTimestamp = unixTimestamp,
+        _epoch = epoch,
+        _custodian = custodian,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeInitializeInstruction] from the serialized data.
@@ -44,38 +44,38 @@ class SolanaStakeInitializeInstruction extends ASolanaInstructionDecoded {
     String custodian = SolanaPubKey.fromBytes(solanaCompiledInstruction.data.sublist(84, 116)).toBase58();
 
     return SolanaStakeInitializeInstruction(
-      custodian: custodian,
-      epoch: epoch,
       programId: programId,
-      rentSysvar: rentSysvar,
       stakeAccount: stakeAccount,
+      rentSysvar: rentSysvar,
       staker: staker,
-      unixTimestamp: unixTimestamp,
       withdrawer: withdrawer,
+      unixTimestamp: unixTimestamp,
+      epoch: epoch,
+      custodian: custodian,
     );
   }
-
-  @override
-  String? get custodian => _custodian;
-
-  @override
-  int get epoch => _epoch;
-
-  @override
-  String? get rentSysvar => _rentSysvar;
 
   @override
   String? get stakeAccount => _stakeAccount;
 
   @override
-  String? get staker => _staker;
+  String? get rentSysvar => _rentSysvar;
 
   @override
-  int? get unixTimestamp => _unixTimestamp;
+  String? get staker => _staker;
 
   @override
   String? get withdrawer => _withdrawer;
 
   @override
-  List<Object?> get props => <Object?>[programId, _custodian, _epoch, _rentSysvar, _stakeAccount, _staker, _unixTimestamp, _withdrawer];
+  int? get unixTimestamp => _unixTimestamp;
+
+  @override
+  int get epoch => _epoch;
+
+  @override
+  String? get custodian => _custodian;
+
+  @override
+  List<Object?> get props => <Object?>[programId, _stakeAccount, _rentSysvar, _staker, _withdrawer, _unixTimestamp, _epoch, _custodian];
 }

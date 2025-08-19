@@ -7,8 +7,8 @@ class SolanaComputeBudgetSetComputeUnitLimitInstruction extends ASolanaInstructi
   final int _units;
 
   const SolanaComputeBudgetSetComputeUnitLimitInstruction({
-    required int discriminator,
     required String programId,
+    required int discriminator,
     required int units,
   })  : _discriminator = discriminator,
         _units = units,
@@ -22,8 +22,8 @@ class SolanaComputeBudgetSetComputeUnitLimitInstruction extends ASolanaInstructi
     int units = byteData.getUint32(1, Endian.little);
 
     return SolanaComputeBudgetSetComputeUnitLimitInstruction(
-      discriminator: discriminator,
       programId: programId,
+      discriminator: discriminator,
       units: units,
     );
   }
@@ -35,5 +35,5 @@ class SolanaComputeBudgetSetComputeUnitLimitInstruction extends ASolanaInstructi
   int? get units => _units;
 
   @override
-  List<Object?> get props => <Object?>[programId, _units];
+  List<Object?> get props => <Object?>[programId, _discriminator, _units];
 }

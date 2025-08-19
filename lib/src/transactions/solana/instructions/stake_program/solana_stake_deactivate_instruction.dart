@@ -2,17 +2,17 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which deactivates the [stakeAccount] belonging to a [stakeAuthority].
 class SolanaStakeDeactivateInstruction extends ASolanaInstructionDecoded {
-  final String _clockSysvar;
   final String _stakeAccount;
+  final String _clockSysvar;
   final String _stakeAuthority;
 
   const SolanaStakeDeactivateInstruction({
-    required String clockSysvar,
     required String programId,
     required String stakeAccount,
+    required String clockSysvar,
     required String stakeAuthority,
-  })  : _clockSysvar = clockSysvar,
-        _stakeAccount = stakeAccount,
+  })  : _stakeAccount = stakeAccount,
+        _clockSysvar = clockSysvar,
         _stakeAuthority = stakeAuthority,
         super(programId: programId);
 
@@ -24,22 +24,22 @@ class SolanaStakeDeactivateInstruction extends ASolanaInstructionDecoded {
     String stakeAuthority = accountKeys[solanaCompiledInstruction.accounts[2]].toBase58();
 
     return SolanaStakeDeactivateInstruction(
-      clockSysvar: clockSysvar,
       programId: programId,
       stakeAccount: stakeAccount,
+      clockSysvar: clockSysvar,
       stakeAuthority: stakeAuthority,
     );
   }
 
   @override
-  String? get clockSysvar => _clockSysvar;
+  String? get stakeAccount => _stakeAccount;
 
   @override
-  String? get stakeAccount => _stakeAccount;
+  String? get clockSysvar => _clockSysvar;
 
   @override
   String? get stakeAuthority => _stakeAuthority;
 
   @override
-  List<Object?> get props => <Object?>[programId, _clockSysvar, _stakeAuthority, _stakeAccount];
+  List<Object?> get props => <Object?>[programId, _stakeAccount, _clockSysvar, _stakeAuthority];
 }

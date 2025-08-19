@@ -4,18 +4,18 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which transfers [lamports] (SOL) from [source] to [destination].
 class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
-  final String _destination;
   final String _source;
-  final int? _lamports;
+  final String _destination;
+  final int _lamports;
 
   const SolanaSystemTransferInstruction({
     required String programId,
-    required String destination,
     required String source,
-    int? lamports,
-  })  : _lamports = lamports,
+    required String destination,
+    required int lamports,
+  })  : _source = source,
         _destination = destination,
-        _source = source,
+        _lamports = lamports,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaSystemTransferInstruction] from the serialized data.
@@ -28,22 +28,22 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
     int lamports = byteData.getUint64(4, Endian.little);
 
     return SolanaSystemTransferInstruction(
-      lamports: lamports,
       programId: programId,
-      destination: destination,
       source: source,
+      destination: destination,
+      lamports: lamports,
     );
   }
-
-  @override
-  int? get lamports => _lamports;
-
-  @override
-  String? get destination => _destination;
 
   @override
   String? get source => _source;
 
   @override
-  List<Object?> get props => <Object?>[programId, _lamports, _source, _destination];
+  String? get destination => _destination;
+
+  @override
+  int? get lamports => _lamports;
+
+  @override
+  List<Object?> get props => <Object?>[programId, _source, _destination, _lamports];
 }

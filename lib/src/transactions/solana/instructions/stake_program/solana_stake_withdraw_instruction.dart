@@ -4,27 +4,27 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which withdraws unstaked lamports from the [stakeAccount].
 class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
-  final String _clockSysvar;
-  final String _destination;
-  final int _lamports;
   final String _stakeAccount;
+  final String _destination;
+  final String _clockSysvar;
   final String _stakeHistorySysvar;
   final String _withdrawAuthority;
+  final int _lamports;
 
   const SolanaStakeWithdrawInstruction({
-    required String clockSysvar,
-    required String destination,
     required String programId,
-    required int lamports,
     required String stakeAccount,
+    required String destination,
+    required String clockSysvar,
     required String stakeHistorySysvar,
     required String withdrawAuthority,
-  })  : _clockSysvar = clockSysvar,
+    required int lamports,
+  })  : _stakeAccount = stakeAccount,
         _destination = destination,
-        _lamports = lamports,
-        _stakeAccount = stakeAccount,
+        _clockSysvar = clockSysvar,
         _stakeHistorySysvar = stakeHistorySysvar,
         _withdrawAuthority = withdrawAuthority,
+        _lamports = lamports,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeWithdrawInstruction] from the serialized data.
@@ -40,27 +40,24 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
     int lamports = byteData.getUint64(4, Endian.little);
 
     return SolanaStakeWithdrawInstruction(
-      clockSysvar: clockSysvar,
-      destination: destination,
       programId: programId,
-      lamports: lamports,
       stakeAccount: stakeAccount,
+      destination: destination,
+      clockSysvar: clockSysvar,
       stakeHistorySysvar: stakeHistorySysvar,
       withdrawAuthority: withdrawAuthority,
+      lamports: lamports,
     );
   }
 
   @override
-  String? get clockSysvar => _clockSysvar;
+  String? get stakeAccount => _stakeAccount;
 
   @override
   String? get destination => _destination;
 
   @override
-  int? get lamports => _lamports;
-
-  @override
-  String? get stakeAccount => _stakeAccount;
+  String? get clockSysvar => _clockSysvar;
 
   @override
   String? get stakeHistorySysvar => _stakeHistorySysvar;
@@ -69,5 +66,8 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
   String? get withdrawAuthority => _withdrawAuthority;
 
   @override
-  List<Object?> get props => <Object?>[programId, _clockSysvar, _destination, _lamports, _stakeAccount, _stakeHistorySysvar, _withdrawAuthority];
+  int? get lamports => _lamports;
+
+  @override
+  List<Object?> get props => <Object?>[programId, _stakeAccount, _destination, _clockSysvar, _stakeHistorySysvar, _withdrawAuthority, _lamports];
 }

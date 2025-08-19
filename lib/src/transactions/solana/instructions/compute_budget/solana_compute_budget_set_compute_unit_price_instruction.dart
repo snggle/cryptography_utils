@@ -8,8 +8,8 @@ class SolanaComputeBudgetSetComputeUnitPriceInstruction extends ASolanaInstructi
   final int _microLamports;
 
   const SolanaComputeBudgetSetComputeUnitPriceInstruction({
-    required int discriminator,
     required String programId,
+    required int discriminator,
     required int microLamports,
   })  : _discriminator = discriminator,
         _microLamports = microLamports,
@@ -23,8 +23,8 @@ class SolanaComputeBudgetSetComputeUnitPriceInstruction extends ASolanaInstructi
     int microLamports = byteData.getUint64(1, Endian.little);
 
     return SolanaComputeBudgetSetComputeUnitPriceInstruction(
-      discriminator: discriminator,
       programId: programId,
+      discriminator: discriminator,
       microLamports: microLamports,
     );
   }
@@ -36,5 +36,5 @@ class SolanaComputeBudgetSetComputeUnitPriceInstruction extends ASolanaInstructi
   int? get microLamports => _microLamports;
 
   @override
-  List<Object?> get props => <Object?>[programId, _microLamports];
+  List<Object?> get props => <Object?>[programId, _discriminator, _microLamports];
 }

@@ -15,28 +15,28 @@ class SolanaLegacyMessage extends ASolanaMessage {
 
   /// Creates a new instance of [SolanaLegacyMessage] from the serialized data.
   factory SolanaLegacyMessage.fromSerializedData(Uint8List data) {
-    ByteReader reader = ByteReader(data);
+    ByteReader byteReader = ByteReader(data);
 
-    SolanaMessageHeader header = SolanaMessageHeader.fromBytes(reader);
+    SolanaMessageHeader solanaMessageHeader = SolanaMessageHeader.fromBytes(byteReader);
 
-    int accountsCount = CompactU16Decoder.decode(reader);
+    int accountsCount = CompactU16Decoder.decode(byteReader);
     List<SolanaPubKey> accountKeysList = List<SolanaPubKey>.generate(accountsCount, (_) {
-      Uint8List key = reader.shiftRightBy(SolanaPubKey.publicKeyLength);
-      return SolanaPubKey.fromBytes(Uint8List.fromList(key));
+      Uint8List keyUint8List = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
+      return SolanaPubKey.fromBytes(keyUint8List);
     });
 
-    Uint8List recentBlockhash = reader.shiftRightBy(SolanaPubKey.publicKeyLength);
+    Uint8List recentBlockhash = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
 
-    int instructionCount = CompactU16Decoder.decode(reader);
-    List<SolanaCompiledInstruction> instructions = List<SolanaCompiledInstruction>.generate(instructionCount, (_) {
-      return SolanaCompiledInstruction.fromSerializedData(reader);
+    int instructionCount = CompactU16Decoder.decode(byteReader);
+    List<SolanaCompiledInstruction> instructionsList = List<SolanaCompiledInstruction>.generate(instructionCount, (_) {
+      return SolanaCompiledInstruction.fromSerializedData(byteReader);
     });
 
     return SolanaLegacyMessage(
-      header: header,
+      header: solanaMessageHeader,
       accountKeysList: accountKeysList,
       recentBlockhash: recentBlockhash,
-      compiledInstructions: instructions,
+      compiledInstructions: instructionsList,
     );
   }
 
