@@ -36,7 +36,7 @@ abstract class ASolanaMessage extends Equatable {
   factory ASolanaMessage.fromSerializedData(Uint8List data) {
     int firstByte = data[0];
     bool versionedBool = (firstByte & 0x80) != 0;
-    if (!versionedBool) {
+    if (versionedBool == false) {
       return SolanaLegacyMessage.fromSerializedData(data);
     }
 

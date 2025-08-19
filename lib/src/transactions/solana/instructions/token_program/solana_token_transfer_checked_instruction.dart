@@ -4,27 +4,27 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which transfers a token identified as [mint] from a [source] associated account to a [destination] associated account.
 class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
-  final int _amount;
-  final String _authority;
-  final int _decimals;
-  final String _destination;
-  final String _mint;
   final String _source;
+  final String _mint;
+  final String _destination;
+  final String _authority;
+  final int _amount;
+  final int _decimals;
 
   const SolanaTokenTransferCheckedInstruction({
-    required int amount,
-    required String authority,
-    required int decimals,
-    required String destination,
-    required String mint,
     required String programId,
     required String source,
-  })  : _amount = amount,
-        _authority = authority,
-        _decimals = decimals,
-        _destination = destination,
+    required String mint,
+    required String destination,
+    required String authority,
+    required int amount,
+    required int decimals,
+  })  : _source = source,
         _mint = mint,
-        _source = source,
+        _destination = destination,
+        _authority = authority,
+        _amount = amount,
+        _decimals = decimals,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaTokenTransferCheckedInstruction] from the serialized data.
@@ -40,34 +40,34 @@ class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
     int decimals = byteData.getUint8(9);
 
     return SolanaTokenTransferCheckedInstruction(
-      amount: amount,
-      authority: authority,
-      decimals: decimals,
-      destination: destination,
-      mint: mint,
       programId: programId,
       source: source,
+      mint: mint,
+      destination: destination,
+      authority: authority,
+      amount: amount,
+      decimals: decimals,
     );
   }
-
-  @override
-  int? get amount => _amount;
-
-  @override
-  String? get authority => _authority;
-
-  @override
-  int? get decimals => _decimals;
-
-  @override
-  String? get destination => _destination;
-
-  @override
-  String? get mint => _mint;
 
   @override
   String? get source => _source;
 
   @override
-  List<Object?> get props => <Object?>[programId, _amount, _authority, _decimals, _destination, _source, _mint];
+  String? get mint => _mint;
+
+  @override
+  String? get destination => _destination;
+
+  @override
+  String? get authority => _authority;
+
+  @override
+  int? get amount => _amount;
+
+  @override
+  int? get decimals => _decimals;
+
+  @override
+  List<Object?> get props => <Object?>[programId, _source, _mint, _destination, _authority, _amount, _decimals];
 }

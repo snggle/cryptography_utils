@@ -2,27 +2,27 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which delegates a stake to a particular vote account.
 class SolanaStakeDelegateInstruction extends ASolanaInstructionDecoded {
-  final String _clockSysvar;
   final String _stakeAccount;
-  final String _stakeAuthority;
-  final String _stakeConfigAccount;
-  final String _stakeHistorySysvar;
   final String _voteAccount;
+  final String _clockSysvar;
+  final String _stakeHistorySysvar;
+  final String _stakeConfigAccount;
+  final String _stakeAuthority;
 
   const SolanaStakeDelegateInstruction({
-    required String clockSysvar,
     required String programId,
     required String stakeAccount,
-    required String stakeAuthority,
-    required String stakeConfigAccount,
-    required String stakeHistorySysvar,
     required String voteAccount,
-  })  : _clockSysvar = clockSysvar,
-        _stakeAccount = stakeAccount,
-        _stakeAuthority = stakeAuthority,
-        _stakeConfigAccount = stakeConfigAccount,
-        _stakeHistorySysvar = stakeHistorySysvar,
+    required String clockSysvar,
+    required String stakeHistorySysvar,
+    required String stakeConfigAccount,
+    required String stakeAuthority,
+  })  : _stakeAccount = stakeAccount,
         _voteAccount = voteAccount,
+        _clockSysvar = clockSysvar,
+        _stakeHistorySysvar = stakeHistorySysvar,
+        _stakeConfigAccount = stakeConfigAccount,
+        _stakeAuthority = stakeAuthority,
         super(programId: programId);
 
   /// Creates a new instance of [SolanaStakeDelegateInstruction] from the serialized data.
@@ -36,8 +36,8 @@ class SolanaStakeDelegateInstruction extends ASolanaInstructionDecoded {
     String stakeAuthority = accountKeys[solanaCompiledInstruction.accounts[5]].toBase58();
 
     return SolanaStakeDelegateInstruction(
-      clockSysvar: clockSysvar,
       programId: programId,
+      clockSysvar: clockSysvar,
       stakeAccount: stakeAccount,
       stakeAuthority: stakeAuthority,
       stakeConfigAccount: stakeConfigAccount,
@@ -47,24 +47,24 @@ class SolanaStakeDelegateInstruction extends ASolanaInstructionDecoded {
   }
 
   @override
-  String? get clockSysvar => _clockSysvar;
-
-  @override
   String? get stakeAccount => _stakeAccount;
-
-  @override
-  String? get stakeAuthority => _stakeAuthority;
-
-  @override
-  String? get stakeConfigAccount => _stakeConfigAccount;
-
-  @override
-  String? get stakeHistorySysvar => _stakeHistorySysvar;
 
   @override
   String? get voteAccount => _voteAccount;
 
   @override
+  String? get clockSysvar => _clockSysvar;
+
+  @override
+  String? get stakeHistorySysvar => _stakeHistorySysvar;
+
+  @override
+  String? get stakeConfigAccount => _stakeConfigAccount;
+
+  @override
+  String? get stakeAuthority => _stakeAuthority;
+
+  @override
   List<Object?> get props =>
-      <Object?>[programId, _clockSysvar, _stakeAccount, _stakeAuthority, _stakeConfigAccount, _stakeHistorySysvar, _voteAccount];
+      <Object?>[programId, _stakeAccount, _voteAccount, _clockSysvar, _stakeHistorySysvar, _stakeConfigAccount, _stakeAuthority];
 }

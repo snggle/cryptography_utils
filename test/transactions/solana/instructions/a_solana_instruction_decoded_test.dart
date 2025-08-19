@@ -6,6 +6,100 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tests of ASolanaInstruction.decode()', () {
+    group('Tests of ASolanaInstruction.decode() - default path', () {
+      test('Should [return SolanaUnknownInstruction] from an instruction with an unknown programId', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 1,
+            accounts: Uint8List.fromList(<int>[0, 1]),
+            data: base64Decode(
+                'AQAAAFGYCAVd43XhlRiSq7C4NB9zYy/yP5Zodzow9Mo0zXtcBwAAAAAAAABzdGFrZTowyAiZOwAAAADIAAAAAAAAAAah2BeRN1QqmDQ3vf4qerJVf1NcinhyK2ikncAAAAAA'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1w=')),
+            SolanaPubKey.fromBytes(base64Decode('wz8cu0jrS8Gt71lzlkKPUyLwd3Wq/J2JWjpRn93SKpY=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqHYF5E3VCqYNDe9/ip6slV/U1yKeHIraKSdwAAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxksXFEhjMlMPUrxf1ja7gibof1E49vZigAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('3fQqBIAKVN4uWD+U8XsIlyW3ctEzNSYnEkFTJ3bS/8Y=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxjHdMkoVmOYaR1etoteuKObS21cc1VbIQAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxk1hND+7ZuzQx0TIGvlRCgbV7hWbMU3X/QAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqHYF6UCBQtoB5Hmzm24jh5bcVD2H8Z5Ck600QAAAAA=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from an instruction with an unknown programId', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 1,
+            accounts: Uint8List.fromList(<int>[0, 1]),
+            data: base64Decode(
+                'AQAAAFGYCAVd43XhlRiSq7C4NB9zYy/yP5Zodzow9Mo0zXtcBwAAAAAAAABzdGFrZTowyAiZOwAAAADIAAAAAAAAAAah2BeRN1QqmDQ3vf4qerJVf1NcinhyK2ikncAAAAAA'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1w=')),
+            SolanaPubKey.fromBytes(base64Decode('wz8cu0jrS8Gt71lzlkKPUyLwd3Wq/J2JWjpRn93SKpY=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqHYF5E3VCqYNDe9/ip6slV/U1yKeHIraKSdwAAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxksXFEhjMlMPUrxf1ja7gibof1E49vZigAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('3fQqBIAKVN4uWD+U8XsIlyW3ctEzNSYnEkFTJ3bS/8Y=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxjHdMkoVmOYaR1etoteuKObS21cc1VbIQAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxk1hND+7ZuzQx0TIGvlRCgbV7hWbMU3X/QAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqHYF6UCBQtoB5Hmzm24jh5bcVD2H8Z5Ck600QAAAAA=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+
+      test('Should [return SolanaInvalidInstruction] from serialized instruction with no account keys', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaInvalidInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(programIdIndex: 11, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
+          const <SolanaPubKey>[],
+        );
+
+        // Assert
+        SolanaInvalidInstruction expectedSolanaInvalidInstruction = const SolanaInvalidInstruction();
+
+        expect(actualSolanaInvalidInstruction, expectedSolanaInvalidInstruction);
+      });
+
+      test('Should [return SolanaInvalidInstruction] from serialized instruction with programId out of bounds', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaInvalidInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(programIdIndex: 25, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('rpH5txy8M7bxBPIjkHpFrfq04cryOKnpH2SiPswoAmM=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqHYF5E3VCqYNDe9/ip6slV/U1yKeHIraKSdwAAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BqfVFxjHdMkoVmOYaR1etoteuKObS21cc1VbIQAAAAA=')),
+          ],
+        );
+
+        // Assert
+        SolanaInvalidInstruction expectedSolanaInvalidInstruction = const SolanaInvalidInstruction();
+
+        expect(actualSolanaInvalidInstruction, expectedSolanaInvalidInstruction);
+      });
+    });
+
     group('Tests of ASolanaInstruction.decode() - _decodeSystemProgram() path', () {
       test('Should [return SolanaSystemTransferInstruction] from serialized SolanaSystemTransferInstruction', () {
         // Act
@@ -327,70 +421,6 @@ void main() {
 
         expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
       });
-    });
-
-    group('Tests of ASolanaInstruction.decode() - default path', () {
-      test('Should [return SolanaUnknownInstruction] from an instruction with an unknown programId', () {
-        // Act
-        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
-          SolanaCompiledInstruction(
-            programIdIndex: 1,
-            accounts: Uint8List.fromList(<int>[0, 1]),
-            data: base64Decode(
-                'AQAAAFGYCAVd43XhlRiSq7C4NB9zYy/yP5Zodzow9Mo0zXtcBwAAAAAAAABzdGFrZTowyAiZOwAAAADIAAAAAAAAAAah2BeRN1QqmDQ3vf4qerJVf1NcinhyK2ikncAAAAAA'),
-          ),
-          <SolanaPubKey>[
-            SolanaPubKey.fromBytes(base64Decode('UZgIBV3jdeGVGJKrsLg0H3NjL/I/lmh3OjD0yjTNe1w=')),
-            SolanaPubKey.fromBytes(base64Decode('wz8cu0jrS8Gt71lzlkKPUyLwd3Wq/J2JWjpRn93SKpY=')),
-            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
-            SolanaPubKey.fromBytes(base64Decode('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')),
-            SolanaPubKey.fromBytes(base64Decode('BqHYF5E3VCqYNDe9/ip6slV/U1yKeHIraKSdwAAAAAA=')),
-            SolanaPubKey.fromBytes(base64Decode('BqfVFxksXFEhjMlMPUrxf1ja7gibof1E49vZigAAAAA=')),
-            SolanaPubKey.fromBytes(base64Decode('3fQqBIAKVN4uWD+U8XsIlyW3ctEzNSYnEkFTJ3bS/8Y=')),
-            SolanaPubKey.fromBytes(base64Decode('BqfVFxjHdMkoVmOYaR1etoteuKObS21cc1VbIQAAAAA=')),
-            SolanaPubKey.fromBytes(base64Decode('BqfVFxk1hND+7ZuzQx0TIGvlRCgbV7hWbMU3X/QAAAA=')),
-            SolanaPubKey.fromBytes(base64Decode('BqHYF6UCBQtoB5Hmzm24jh5bcVD2H8Z5Ck600QAAAAA=')),
-          ],
-        );
-
-        // Assert
-        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
-            const SolanaUnknownInstruction(programId: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR');
-
-        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
-      });
-    });
-
-    test('Should [return SolanaInvalidInstruction] from serialized instruction with no account keys', () {
-      // Act
-      ASolanaInstructionDecoded actualSolanaInvalidInstruction = ASolanaInstructionDecoded.decode(
-        SolanaCompiledInstruction(programIdIndex: 11, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
-        const <SolanaPubKey>[],
-      );
-
-      // Assert
-      SolanaInvalidInstruction expectedSolanaInvalidInstruction = const SolanaInvalidInstruction();
-
-      expect(actualSolanaInvalidInstruction, expectedSolanaInvalidInstruction);
-    });
-
-    test('Should [return SolanaInvalidInstruction] from serialized instruction with programId out of bounds', () {
-      // Act
-      ASolanaInstructionDecoded actualSolanaInvalidInstruction = ASolanaInstructionDecoded.decode(
-        SolanaCompiledInstruction(programIdIndex: 25, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
-        <SolanaPubKey>[
-          SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
-          SolanaPubKey.fromBytes(base64Decode('rpH5txy8M7bxBPIjkHpFrfq04cryOKnpH2SiPswoAmM=')),
-          SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
-          SolanaPubKey.fromBytes(base64Decode('BqHYF5E3VCqYNDe9/ip6slV/U1yKeHIraKSdwAAAAAA=')),
-          SolanaPubKey.fromBytes(base64Decode('BqfVFxjHdMkoVmOYaR1etoteuKObS21cc1VbIQAAAAA=')),
-        ],
-      );
-
-      // Assert
-      SolanaInvalidInstruction expectedSolanaInvalidInstruction = const SolanaInvalidInstruction();
-
-      expect(actualSolanaInvalidInstruction, expectedSolanaInvalidInstruction);
     });
   });
 }

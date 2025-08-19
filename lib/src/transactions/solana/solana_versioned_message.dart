@@ -30,32 +30,32 @@ class SolanaV0Message extends ASolanaMessage {
       throw Exception('Only version 0 is supported');
     }
 
-    SolanaMessageHeader header = SolanaMessageHeader.fromBytes(byteReader);
+    SolanaMessageHeader solanaMessageHeader = SolanaMessageHeader.fromBytes(byteReader);
 
     int accountsCount = CompactU16Decoder.decode(byteReader);
     List<SolanaPubKey> accountKeys = List<SolanaPubKey>.generate(accountsCount, (_) {
-      Uint8List key = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
-      return SolanaPubKey(Uint8List.fromList(key));
+      Uint8List keyUint8List = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
+      return SolanaPubKey(keyUint8List);
     });
 
     Uint8List recentBlockhash = byteReader.shiftRightBy(SolanaPubKey.publicKeyLength);
 
     int instructionCount = CompactU16Decoder.decode(byteReader);
-    List<SolanaCompiledInstruction> instructions = List<SolanaCompiledInstruction>.generate(instructionCount, (_) {
+    List<SolanaCompiledInstruction> instructionsList = List<SolanaCompiledInstruction>.generate(instructionCount, (_) {
       return SolanaCompiledInstruction.fromSerializedData(byteReader);
     });
 
     int addressLookupCount = CompactU16Decoder.decode(byteReader);
-    List<SolanaAddressLookupTable> addressLookupTables = List<SolanaAddressLookupTable>.generate(addressLookupCount, (_) {
+    List<SolanaAddressLookupTable> addressLookupTablesList = List<SolanaAddressLookupTable>.generate(addressLookupCount, (_) {
       return SolanaAddressLookupTable.fromSerializedData(byteReader);
     });
 
     return SolanaV0Message(
-      header: header,
+      header: solanaMessageHeader,
       accountKeysList: accountKeys,
       recentBlockhash: recentBlockhash,
-      compiledInstructions: instructions,
-      addressLookupTableList: addressLookupTables,
+      compiledInstructions: instructionsList,
+      addressLookupTableList: addressLookupTablesList,
     );
   }
 
