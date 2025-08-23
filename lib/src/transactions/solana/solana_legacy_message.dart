@@ -5,7 +5,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 /// The transaction message includes the list of instructions to be processed atomically.
 ///
 /// https://solana.com/docs/core/transactions#transactions
-class SolanaLegacyMessage extends ASolanaMessage {
+class SolanaLegacyMessage extends ASolanaTransactionMessage {
   const SolanaLegacyMessage({
     required super.header,
     required super.accountKeysList,

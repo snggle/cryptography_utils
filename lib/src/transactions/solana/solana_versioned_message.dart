@@ -8,7 +8,7 @@ import 'package:cryptography_utils/src/transactions/solana/solana_address_lookup
 /// including Address Lookup Tables.
 ///
 /// https://solana.com/developers/guides/advanced/versions
-class SolanaV0Message extends ASolanaMessage {
+class SolanaV0Message extends ASolanaTransactionMessage {
   /// A collection of related addresses
   final List<SolanaAddressLookupTable> addressLookupTableList;
 
