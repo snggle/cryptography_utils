@@ -22,11 +22,11 @@ void main() {
       );
 
       // Assert
-      SolanaTokenTransferCheckedInstruction expectedSolanaTokenTransferCheckedInstruction = const SolanaTokenTransferCheckedInstruction(
+      SolanaTokenTransferCheckedInstruction expectedSolanaTokenTransferCheckedInstruction = SolanaTokenTransferCheckedInstruction(
         programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
         source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
         destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
-        amount: 1000000,
+        amount: BigInt.from(1000000),
         mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
         authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
         decimals: 6,

@@ -9,7 +9,7 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
   final String _clockSysvar;
   final String _stakeHistorySysvar;
   final String _withdrawAuthority;
-  final int _lamports;
+  final BigInt _lamports;
 
   const SolanaStakeWithdrawInstruction({
     required String programId,
@@ -18,7 +18,7 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
     required String clockSysvar,
     required String stakeHistorySysvar,
     required String withdrawAuthority,
-    required int lamports,
+    required BigInt lamports,
   })  : _stakeAccount = stakeAccount,
         _destination = destination,
         _clockSysvar = clockSysvar,
@@ -37,7 +37,7 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
     String withdrawAuthority = accountKeys[solanaCompiledInstruction.accounts[4]].toBase58();
 
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
-    int lamports = byteData.getUint64(4, Endian.little);
+    BigInt lamports = BigInt.from(byteData.getUint64(4, Endian.little));
 
     return SolanaStakeWithdrawInstruction(
       programId: programId,
@@ -66,7 +66,7 @@ class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
   String? get withdrawAuthority => _withdrawAuthority;
 
   @override
-  int? get lamports => _lamports;
+  BigInt? get lamports => _lamports;
 
   @override
   List<Object?> get props => <Object?>[programId, _stakeAccount, _destination, _clockSysvar, _stakeHistorySysvar, _withdrawAuthority, _lamports];

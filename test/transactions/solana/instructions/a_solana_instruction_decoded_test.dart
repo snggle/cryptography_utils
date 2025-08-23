@@ -115,11 +115,11 @@ void main() {
         );
 
         // Assert
-        SolanaSystemTransferInstruction expectedSolanaSystemTransferInstruction = const SolanaSystemTransferInstruction(
+        SolanaSystemTransferInstruction expectedSolanaSystemTransferInstruction = SolanaSystemTransferInstruction(
           programId: '11111111111111111111111111111111',
           source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
           destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
-          lamports: 1000000000,
+          lamports: BigInt.from(1000000000),
         );
 
         expect(actualSolanaSystemTransferInstruction, expectedSolanaSystemTransferInstruction);
@@ -172,11 +172,11 @@ void main() {
         );
 
         // Assert
-        SolanaTokenTransferCheckedInstruction expectedSolanaTokenTransferInstruction = const SolanaTokenTransferCheckedInstruction(
+        SolanaTokenTransferCheckedInstruction expectedSolanaTokenTransferInstruction = SolanaTokenTransferCheckedInstruction(
           programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
           source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
           destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
-          amount: 1000000,
+          amount: BigInt.from(1000000),
           mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
           authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
           decimals: 6,
@@ -389,11 +389,11 @@ void main() {
         );
 
         // Assert
-        SolanaStakeWithdrawInstruction expectedSolanaStakeWithdrawInstruction = const SolanaStakeWithdrawInstruction(
+        SolanaStakeWithdrawInstruction expectedSolanaStakeWithdrawInstruction = SolanaStakeWithdrawInstruction(
           clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
           destination: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
           programId: 'Stake11111111111111111111111111111111111111',
-          lamports: 1002282880,
+          lamports: BigInt.from(1002282880),
           stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
           stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
           withdrawAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',

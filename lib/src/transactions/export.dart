@@ -25,12 +25,15 @@ export 'ethereum/ethereum_raw_bytes_transaction.dart';
 
 // Solana
 export 'solana/a_solana_message.dart';
+export 'solana/a_solana_transaction_message.dart';
 export 'solana/instructions/a_solana_instruction_decoded.dart';
 export 'solana/instructions/solana_compiled_instruction.dart';
 export 'solana/instructions/solana_instructions.dart';
 export 'solana/solana_legacy_message.dart';
 export 'solana/solana_message_header.dart';
 export 'solana/solana_pubkey.dart';
+export 'solana/solana_raw_message.dart';
+export 'solana/solana_sign_data_type.dart';
 export 'solana/solana_versioned_message.dart';
 
 // Generic

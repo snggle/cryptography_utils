@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:decimal/decimal.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -20,14 +21,37 @@ void main() {
       );
 
       // Assert
-      SolanaSystemTransferInstruction expectedSolanaSystemTransferInstruction = const SolanaSystemTransferInstruction(
+      SolanaSystemTransferInstruction expectedSolanaSystemTransferInstruction = SolanaSystemTransferInstruction(
         programId: '11111111111111111111111111111111',
         source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
         destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
-        lamports: 1000000000,
+        lamports: BigInt.from(1000000000),
       );
 
       expect(actualSolanaSystemTransferInstruction, expectedSolanaSystemTransferInstruction);
+    });
+  });
+
+  group('Tests of SolanaSystemTransferInstruction.getAmount()', () {
+    test('Should [return ETH amount] from given EthereumEIP1559Transaction', () {
+      // Arrange
+      SolanaSystemTransferInstruction actualSolanaSystemTransferInstruction = SolanaSystemTransferInstruction(
+        programId: '11111111111111111111111111111111',
+        source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        lamports: BigInt.from(100000000),
+      );
+
+      // Act
+      TokenAmount? actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
+
+      // Assert
+      TokenAmount expectedTokenAmount = TokenAmount(
+        amount: Decimal.parse('0.1'),
+        denomination: 'SOL',
+      );
+
+      expect(actualTokenAmount, expectedTokenAmount);
     });
   });
 }

@@ -6,13 +6,13 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
   final String _source;
   final String _destination;
-  final int _lamports;
+  final BigInt _lamports;
 
   const SolanaSystemTransferInstruction({
     required String programId,
     required String source,
     required String destination,
-    required int lamports,
+    required BigInt lamports,
   })  : _source = source,
         _destination = destination,
         _lamports = lamports,
@@ -25,7 +25,7 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
     String destination = accountKeys[solanaCompiledInstruction.accounts[1]].toBase58();
 
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
-    int lamports = byteData.getUint64(4, Endian.little);
+    BigInt lamports = BigInt.from(byteData.getUint64(4, Endian.little));
 
     return SolanaSystemTransferInstruction(
       programId: programId,
@@ -42,7 +42,7 @@ class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
   String? get destination => _destination;
 
   @override
-  int? get lamports => _lamports;
+  BigInt? get lamports => _lamports;
 
   @override
   List<Object?> get props => <Object?>[programId, _source, _destination, _lamports];
