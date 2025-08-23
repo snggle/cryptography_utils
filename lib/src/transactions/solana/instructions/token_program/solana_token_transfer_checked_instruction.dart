@@ -8,7 +8,7 @@ class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
   final String _mint;
   final String _destination;
   final String _authority;
-  final int _amount;
+  final BigInt _amount;
   final int _decimals;
 
   const SolanaTokenTransferCheckedInstruction({
@@ -17,7 +17,7 @@ class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
     required String mint,
     required String destination,
     required String authority,
-    required int amount,
+    required BigInt amount,
     required int decimals,
   })  : _source = source,
         _mint = mint,
@@ -36,7 +36,7 @@ class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
     String authority = accountKeys[solanaCompiledInstruction.accounts[3]].toBase58();
 
     ByteData byteData = solanaCompiledInstruction.data.buffer.asByteData();
-    int amount = byteData.getUint64(1, Endian.little);
+    BigInt amount = BigInt.from(byteData.getUint64(1, Endian.little));
     int decimals = byteData.getUint8(9);
 
     return SolanaTokenTransferCheckedInstruction(
@@ -63,7 +63,7 @@ class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
   String? get authority => _authority;
 
   @override
-  int? get amount => _amount;
+  BigInt? get amount => _amount;
 
   @override
   int? get decimals => _decimals;

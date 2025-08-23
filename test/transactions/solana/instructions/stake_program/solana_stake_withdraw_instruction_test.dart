@@ -25,11 +25,11 @@ void main() {
       );
 
       // Assert
-      SolanaStakeWithdrawInstruction expectedSolanaStakeWithdrawInstruction = const SolanaStakeWithdrawInstruction(
+      SolanaStakeWithdrawInstruction expectedSolanaStakeWithdrawInstruction = SolanaStakeWithdrawInstruction(
         clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
         destination: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
         programId: 'Stake11111111111111111111111111111111111111',
-        lamports: 1002282880,
+        lamports: BigInt.from(1002282880),
         stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
         stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
         withdrawAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',

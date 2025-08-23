@@ -1,10 +1,12 @@
 import 'dart:core';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/utils/solana_utils.dart';
 import 'package:equatable/equatable.dart';
 
 /// Abstract base class representing a decoded Solana instruction.
 abstract class ASolanaInstructionDecoded extends Equatable {
+  static const int solDecimalPrecision = 9;
   final String _programId;
 
   /// Creates a new decoded Solana instruction with the given [programId].
@@ -35,7 +37,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
   String? get account => null;
 
   /// The amount of tokens in a [SolanaTokenTransferCheckedInstruction].
-  int? get amount => null;
+  BigInt? get amount => null;
 
   /// The Base58-encoded transaction authority account address in a [SolanaTokenTransferCheckedInstruction].
   String? get authority => null;
@@ -61,8 +63,43 @@ abstract class ASolanaInstructionDecoded extends Equatable {
   /// The epoch value used in a [SolanaStakeInitializeInstruction].
   int? get epoch => null;
 
+  /// Returns the amount of lamports or token in a transaction in a human-readable form.
+  TokenAmount getAmount() {
+    if (lamports != null) {
+      return _getAmountLamports(lamports!);
+    }
+
+    if (amount != null && decimals != null) {
+      return _getAmountToken(amount!, decimals ?? 0);
+    }
+
+    return TokenAmount.fromBigInt(denomination: '', amount: BigInt.zero);
+  }
+
+  /// Returns the amount of lamports in a transaction in a human-readable form.
+  TokenAmount _getAmountLamports(BigInt lamports) {
+    if (lamports == BigInt.zero) {
+      return TokenAmount.fromBigInt(denomination: SolanaUtils.solSymbol, amount: lamports);
+    }
+    return TokenAmount(
+      denomination: SolanaUtils.solSymbol,
+      amount: SolanaUtils.parseTokenAmount(lamports, solDecimalPrecision),
+    );
+  }
+
+  /// Returns the token amount in a transaction in a human-readable form.
+  TokenAmount _getAmountToken(BigInt amount, int decimals) {
+    if (amount == BigInt.zero) {
+      return TokenAmount.fromBigInt(denomination: '', amount: amount);
+    }
+    return TokenAmount(
+      denomination: '',
+      amount: SolanaUtils.parseTokenAmount(amount, decimals),
+    );
+  }
+
   /// The amount of lamports (SOL) in a [SolanaSystemTransferInstruction] or a [SolanaStakeWithdrawInstruction].
-  int? get lamports => null;
+  BigInt? get lamports => null;
 
   /// The compute unit price in micro-lamports in a [SolanaComputeBudgetSetComputeUnitPriceInstruction].
   int? get microLamports => null;
