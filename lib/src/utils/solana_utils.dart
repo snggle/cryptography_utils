@@ -7,7 +7,7 @@ class SolanaUtils {
     if (tokenAmount == BigInt.zero) {
       return Decimal.zero;
     }
-    Decimal tokenAmountDecimal = Decimal.parse(tokenAmount.toString());
+    Decimal tokenAmountDecimal = Decimal.fromBigInt(tokenAmount);
     Decimal baseUnitsInToken = Decimal.parse('1${'0' * tokenDecimalPrecision}');
     return (tokenAmountDecimal / baseUnitsInToken).toDecimal();
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:decimal/decimal.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -421,6 +422,104 @@ void main() {
 
         expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
       });
+    });
+  });
+
+  group('Tests of ASolanaInstruction.getAmount()', () {
+    test('Should [return TokenAmount (0)] from 0 lamports', () {
+      // Arrange
+      SolanaSystemTransferInstruction actualSolanaSystemTransferInstruction = SolanaSystemTransferInstruction(
+        programId: '11111111111111111111111111111111',
+        source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        lamports: BigInt.from(100000000),
+      );
+
+      // Act
+      TokenAmount actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
+
+      // Assert
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: 'SOL', amount: Decimal.parse('0.1'));
+
+      expect(actualTokenAmount, expectedTokenAmount);
+    });
+
+    test('Should [return TokenAmount] from an arbitrary amount of lamports', () {
+      // Arrange
+      SolanaSystemTransferInstruction actualSolanaSystemTransferInstruction = SolanaSystemTransferInstruction(
+        programId: '11111111111111111111111111111111',
+        source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        lamports: BigInt.from(100000000),
+      );
+
+      // Act
+      TokenAmount actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
+
+      // Assert
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: 'SOL', amount: Decimal.parse('0.1'));
+
+      expect(actualTokenAmount, expectedTokenAmount);
+    });
+
+    test('Should [return TokenAmount (0)] from 0 tokens', () {
+      // Arrange
+      SolanaTokenTransferCheckedInstruction actualSolanaTokenTransferCheckedInstruction = SolanaTokenTransferCheckedInstruction(
+        programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
+        destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
+        amount: BigInt.from(1000000),
+        mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        decimals: 6,
+      );
+
+      // Act
+      TokenAmount actualTokenAmount = actualSolanaTokenTransferCheckedInstruction.getAmount();
+
+      // Assert
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(1));
+
+      expect(actualTokenAmount, expectedTokenAmount);
+    });
+
+    test('Should [return TokenAmount] from an arbitrary amount of tokens', () {
+      // Arrange
+      SolanaTokenTransferCheckedInstruction actualSolanaTokenTransferCheckedInstruction = SolanaTokenTransferCheckedInstruction(
+        programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
+        destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
+        amount: BigInt.from(1000000),
+        mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        decimals: 6,
+      );
+
+      // Act
+      TokenAmount actualTokenAmount = actualSolanaTokenTransferCheckedInstruction.getAmount();
+
+      // Assert
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(1));
+
+      expect(actualTokenAmount, expectedTokenAmount);
+    });
+
+    test('Should [return TokenAmount (0)] from an instruction with undefined amount and lamports', () {
+      // Arrange
+      SolanaComputeBudgetSetComputeUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction =
+          const SolanaComputeBudgetSetComputeUnitLimitInstruction(
+        discriminator: 2,
+        programId: 'ComputeBudget111111111111111111111111111111',
+        units: 495,
+      );
+
+      // Act
+      TokenAmount actualTokenAmount = actualSolanaComputeBudgetUnitSetComputeLimitInstruction.getAmount();
+
+      // Assert
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(0));
+
+      expect(actualTokenAmount, expectedTokenAmount);
     });
   });
 }
