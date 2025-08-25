@@ -33,6 +33,19 @@ abstract class ASolanaInstructionDecoded extends Equatable {
     }
   }
 
+  /// Returns the amount of lamports or token in a transaction in a human-readable form.
+  TokenAmount getAmount() {
+    if (lamports != null) {
+      return _getAmountLamports(lamports!);
+    }
+
+    if (amount != null && decimals != null) {
+      return _getAmountToken(amount!, decimals ?? 0);
+    }
+
+    return TokenAmount.fromBigInt(denomination: '', amount: BigInt.zero);
+  }
+
   /// The Base58-encoded associated account address in a [SolanaCreateIdempotentInstruction].
   String? get account => null;
 
@@ -62,41 +75,6 @@ abstract class ASolanaInstructionDecoded extends Equatable {
 
   /// The epoch value used in a [SolanaStakeInitializeInstruction].
   int? get epoch => null;
-
-  /// Returns the amount of lamports or token in a transaction in a human-readable form.
-  TokenAmount getAmount() {
-    if (lamports != null) {
-      return _getAmountLamports(lamports!);
-    }
-
-    if (amount != null && decimals != null) {
-      return _getAmountToken(amount!, decimals ?? 0);
-    }
-
-    return TokenAmount.fromBigInt(denomination: '', amount: BigInt.zero);
-  }
-
-  /// Returns the amount of lamports in a transaction in a human-readable form.
-  TokenAmount _getAmountLamports(BigInt lamports) {
-    if (lamports == BigInt.zero) {
-      return TokenAmount.fromBigInt(denomination: SolanaUtils.solSymbol, amount: lamports);
-    }
-    return TokenAmount(
-      denomination: SolanaUtils.solSymbol,
-      amount: SolanaUtils.parseTokenAmount(lamports, solDecimalPrecision),
-    );
-  }
-
-  /// Returns the token amount in a transaction in a human-readable form.
-  TokenAmount _getAmountToken(BigInt amount, int decimals) {
-    if (amount == BigInt.zero) {
-      return TokenAmount.fromBigInt(denomination: '', amount: amount);
-    }
-    return TokenAmount(
-      denomination: '',
-      amount: SolanaUtils.parseTokenAmount(amount, decimals),
-    );
-  }
 
   /// The amount of lamports (SOL) in a [SolanaSystemTransferInstruction] or a [SolanaStakeWithdrawInstruction].
   BigInt? get lamports => null;
@@ -204,5 +182,27 @@ abstract class ASolanaInstructionDecoded extends Equatable {
       default:
         return SolanaUnknownInstruction.fromSerializedData(programId);
     }
+  }
+
+  /// Returns the amount of lamports in a transaction in a human-readable form.
+  TokenAmount _getAmountLamports(BigInt lamports) {
+    if (lamports == BigInt.zero) {
+      return TokenAmount.fromBigInt(denomination: SolanaUtils.solSymbol, amount: lamports);
+    }
+    return TokenAmount(
+      denomination: SolanaUtils.solSymbol,
+      amount: SolanaUtils.parseTokenAmount(lamports, solDecimalPrecision),
+    );
+  }
+
+  /// Returns the token amount in a transaction in a human-readable form.
+  TokenAmount _getAmountToken(BigInt amount, int decimals) {
+    if (amount == BigInt.zero) {
+      return TokenAmount.fromBigInt(denomination: '', amount: amount);
+    }
+    return TokenAmount(
+      denomination: '',
+      amount: SolanaUtils.parseTokenAmount(amount, decimals),
+    );
   }
 }

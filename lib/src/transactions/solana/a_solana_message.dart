@@ -6,12 +6,12 @@ abstract class ASolanaMessage extends Equatable {
   const ASolanaMessage();
 
   /// Creates a new instance of [ASolanaMessage] from serialized data,
-  /// returning [SolanaRawMessage] or [ASolanaTransactionMessage] depending on [SolanaSignDataType].
-  factory ASolanaMessage.fromSerializedData(SolanaSignDataType solanaSignDataType, Uint8List data) {
-    switch (solanaSignDataType) {
-      case SolanaSignDataType.transaction:
+  /// returning [SolanaRawMessage] or [ASolanaTransactionMessage] depending on [SignDataType].
+  factory ASolanaMessage.fromSerializedData(SignDataType signDataType, Uint8List data) {
+    switch (signDataType) {
+      case SignDataType.typedTransaction:
         return ASolanaTransactionMessage.fromSerializedData(data);
-      case SolanaSignDataType.message:
+      case SignDataType.rawBytes:
         return SolanaRawMessage.fromSerializedData(data);
     }
   }
