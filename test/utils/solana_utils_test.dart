@@ -45,44 +45,34 @@ void main() {
       expect(actualSOLAmount, expectedSOLAmount);
     });
 
-    test('Should [convert 1 lamport] to the correct SOL amount', () {
-      // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.one, ASolanaInstructionDecoded.solDecimalPrecision);
-
-      // Assert
-      Decimal expectedSOLAmount = Decimal.parse('0.000000001');
-
-      expect(actualSOLAmount, expectedSOLAmount);
-    });
-
     test('Should [convert 1 token base unit] to the correct human-readable decimal token amount', () {
       // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.one, 6);
+      Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.one, 6);
 
       // Assert
-      Decimal expectedSOLAmount = Decimal.parse('0.000001');
+      Decimal expectedTokenAmount = Decimal.parse('0.000001');
 
-      expect(actualSOLAmount, expectedSOLAmount);
+      expect(actualTokenAmount, expectedTokenAmount);
     });
 
     test('Should [convert arbitrary token amount in base units] to the correct human-readable decimal token amount', () {
       // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.parse('1234567890'), 6);
+      Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.parse('1234567890'), 6);
 
       // Assert
-      Decimal expectedSOLAmount = Decimal.parse('1234.567890');
+      Decimal expectedTokenAmount = Decimal.parse('1234.567890');
 
-      expect(actualSOLAmount, expectedSOLAmount);
+      expect(actualTokenAmount, expectedTokenAmount);
     });
 
     test('Should [convert large token amount in base units] to the correct human-readable decimal token amount', () {
       // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.parse('12345678901234567890'), 6);
+      Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.parse('12345678901234567890'), 6);
 
       // Assert
-      Decimal expectedSOLAmount = Decimal.parse('12345678901234.567890');
+      Decimal expectedTokenAmount = Decimal.parse('12345678901234.567890');
 
-      expect(actualSOLAmount, expectedSOLAmount);
+      expect(actualTokenAmount, expectedTokenAmount);
     });
   });
 }

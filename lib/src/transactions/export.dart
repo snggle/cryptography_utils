@@ -33,7 +33,6 @@ export 'solana/solana_legacy_message.dart';
 export 'solana/solana_message_header.dart';
 export 'solana/solana_pubkey.dart';
 export 'solana/solana_raw_message.dart';
-export 'solana/solana_sign_data_type.dart';
 export 'solana/solana_versioned_message.dart';
 
 // Generic
