@@ -34,7 +34,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
   }
 
   /// Returns the amount of lamports or token in a transaction in a human-readable form.
-  TokenAmount getAmount() {
+  TokenAmount? getAmount() {
     if (lamports != null) {
       return _getAmountLamports(lamports!);
     }
@@ -43,7 +43,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
       return _getAmountToken(amount!, decimals ?? 0);
     }
 
-    return TokenAmount.fromBigInt(denomination: '', amount: BigInt.zero);
+    return null;
   }
 
   /// The Base58-encoded associated account address in a [SolanaCreateIdempotentInstruction].
