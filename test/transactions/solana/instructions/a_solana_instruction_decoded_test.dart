@@ -432,14 +432,14 @@ void main() {
         programId: '11111111111111111111111111111111',
         source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
         destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
-        lamports: BigInt.from(100000000),
+        lamports: BigInt.from(0),
       );
 
       // Act
-      TokenAmount actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
+      TokenAmount? actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
 
       // Assert
-      TokenAmount expectedTokenAmount = TokenAmount(denomination: 'SOL', amount: Decimal.parse('0.1'));
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: 'SOL', amount: Decimal.fromInt(0));
 
       expect(actualTokenAmount, expectedTokenAmount);
     });
@@ -454,7 +454,7 @@ void main() {
       );
 
       // Act
-      TokenAmount actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
+      TokenAmount? actualTokenAmount = actualSolanaSystemTransferInstruction.getAmount();
 
       // Assert
       TokenAmount expectedTokenAmount = TokenAmount(denomination: 'SOL', amount: Decimal.parse('0.1'));
@@ -468,17 +468,17 @@ void main() {
         programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
         source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
         destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
-        amount: BigInt.from(1000000),
+        amount: BigInt.from(0),
         mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
         authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
         decimals: 6,
       );
 
       // Act
-      TokenAmount actualTokenAmount = actualSolanaTokenTransferCheckedInstruction.getAmount();
+      TokenAmount? actualTokenAmount = actualSolanaTokenTransferCheckedInstruction.getAmount();
 
       // Assert
-      TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(1));
+      TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(0));
 
       expect(actualTokenAmount, expectedTokenAmount);
     });
@@ -496,7 +496,7 @@ void main() {
       );
 
       // Act
-      TokenAmount actualTokenAmount = actualSolanaTokenTransferCheckedInstruction.getAmount();
+      TokenAmount? actualTokenAmount = actualSolanaTokenTransferCheckedInstruction.getAmount();
 
       // Assert
       TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(1));
@@ -514,12 +514,10 @@ void main() {
       );
 
       // Act
-      TokenAmount actualTokenAmount = actualSolanaComputeBudgetUnitSetComputeLimitInstruction.getAmount();
+      TokenAmount? actualTokenAmount = actualSolanaComputeBudgetUnitSetComputeLimitInstruction.getAmount();
 
       // Assert
-      TokenAmount expectedTokenAmount = TokenAmount(denomination: '', amount: Decimal.fromInt(0));
-
-      expect(actualTokenAmount, expectedTokenAmount);
+      expect(actualTokenAmount, null);
     });
   });
 }

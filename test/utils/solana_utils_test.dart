@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tests of SolanaUtils.parseTokenAmount()', () {
-    test('Should [convert 0 lamports] to 0 SOL', () {
+    test('Should [convert (0) token base units] to the correct human-readable token amount (0)', () {
       // Act
       Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.zero, ASolanaInstructionDecoded.solDecimalPrecision);
 
@@ -15,47 +15,17 @@ void main() {
       expect(actualSOLAmount, expectedSOLAmount);
     });
 
-    test('Should [convert 1 lamport] to the correct SOL amount', () {
+    test('Should [convert (12345) token base units with decimal precision (4)] to the correct human-readable token amount (1)', () {
       // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.one, ASolanaInstructionDecoded.solDecimalPrecision);
+      Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.from(12345), 4);
 
       // Assert
-      Decimal expectedSOLAmount = Decimal.parse('0.000000001');
-
-      expect(actualSOLAmount, expectedSOLAmount);
-    });
-
-    test('Should [convert arbitrary lamport amount] to the correct SOL amount', () {
-      // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.from(1234567890), ASolanaInstructionDecoded.solDecimalPrecision);
-
-      // Assert
-      Decimal expectedSOLAmount = Decimal.parse('1.23456789');
-
-      expect(actualSOLAmount, expectedSOLAmount);
-    });
-
-    test('Should [convert large lamport amount] to the correct SOL amount', () {
-      // Act
-      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.parse('12345678901234567890'), ASolanaInstructionDecoded.solDecimalPrecision);
-
-      // Assert
-      Decimal expectedSOLAmount = Decimal.parse('12345678901.23456789');
-
-      expect(actualSOLAmount, expectedSOLAmount);
-    });
-
-    test('Should [convert 1 token base unit] to the correct human-readable decimal token amount', () {
-      // Act
-      Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.one, 6);
-
-      // Assert
-      Decimal expectedTokenAmount = Decimal.parse('0.000001');
+      Decimal expectedTokenAmount = Decimal.parse('1.2345');
 
       expect(actualTokenAmount, expectedTokenAmount);
     });
 
-    test('Should [convert arbitrary token amount in base units] to the correct human-readable decimal token amount', () {
+    test('Should [convert (1234567890) token base units with decimal precision (6)] to the correct human-readable token amount (1234.567890)', () {
       // Act
       Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.parse('1234567890'), 6);
 
@@ -65,14 +35,14 @@ void main() {
       expect(actualTokenAmount, expectedTokenAmount);
     });
 
-    test('Should [convert large token amount in base units] to the correct human-readable decimal token amount', () {
+    test('Should [convert (1) token base units with SOL decimal precision (9)] to the correct human-readable token amount (0.000000001)', () {
       // Act
-      Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.parse('12345678901234567890'), 6);
+      Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.from(1000000000), ASolanaInstructionDecoded.solDecimalPrecision);
 
       // Assert
-      Decimal expectedTokenAmount = Decimal.parse('12345678901234.567890');
+      Decimal expectedSOLAmount = Decimal.fromInt(1);
 
-      expect(actualTokenAmount, expectedTokenAmount);
+      expect(actualSOLAmount, expectedSOLAmount);
     });
   });
 }

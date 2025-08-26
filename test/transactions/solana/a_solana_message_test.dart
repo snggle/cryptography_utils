@@ -97,16 +97,6 @@ void main() {
       expect(actualSolanaV0Message, expectedSolanaV0Message);
     });
 
-    test('Should [throw Exception] when given data with transaction version 1 tag and SignDataType.typedTransaction', () {
-      // Arrange
-      Uint8List actualSolanaV1Message = base64Decode(
-        'gQEACRCsVML2Bg3dHy0Va9dcV1Z/NhGHyVYhJ0jE+0MRGFemVlZ3NFh19IgWu+pj5UeQzMrHbNYffxTTr/qv3cxI4kqkZn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y16FK5Sos5hWQvX6J14rpNOJgSgvSWHb2s1x9clh+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpUmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXqMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WZqAC/9MhzaIlsIPwUBz6/HLWqN1/oH+Tb3IK6Tft154tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aYsnkR0YRptLIlfQajrMt0F6AtCnIcxppx3jdg3dGvKxBwgABQLGggMACAAJA1IqNQAAAAAMBgAEABcHCgEBBwIABAwCAAAAzye0CAAAAAAKAQQBEQknCg0ABAMCBRcaBgkOCRkSDwsQEQMBExMYDQoZFQ8LFhQCARMTEw0KKsEgmzNB1pyBAgIAAAA6AWQAAToAZAECzye0CAAAAAAIqYoBAAAAADIAUAoDBAAAAQkCwVdRxcH4wwx5hrqgGgkua/Gonv4pzAZz/LU35B3ySlkEd3Z4eQQGenVTFvHsWcITjSSy666/XikzqLiO11a0SwY8rT5d3C+q84sDvr+7AA==',
-      );
-
-      // Assert
-      expect(() => ASolanaMessage.fromSerializedData(SignDataType.typedTransaction, actualSolanaV1Message), throwsA(isA<Exception>()));
-    });
-
     test('Should [return SolanaRawMessage] when given raw message bytes with SignDataType.rawBytes', () {
       // Act
       ASolanaMessage actualSolanaRawMessage = ASolanaMessage.fromSerializedData(
@@ -121,6 +111,16 @@ void main() {
       ));
 
       expect(actualSolanaRawMessage, expectedSolanaRawMessage);
+    });
+
+    test('Should [throw Exception] when given data with transaction version 1 tag and SignDataType.typedTransaction', () {
+      // Arrange
+      Uint8List actualSolanaV1Message = base64Decode(
+        'gQEACRCsVML2Bg3dHy0Va9dcV1Z/NhGHyVYhJ0jE+0MRGFemVlZ3NFh19IgWu+pj5UeQzMrHbNYffxTTr/qv3cxI4kqkZn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y16FK5Sos5hWQvX6J14rpNOJgSgvSWHb2s1x9clh+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpUmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXqMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WZqAC/9MhzaIlsIPwUBz6/HLWqN1/oH+Tb3IK6Tft154tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5ejnStls42Wf0xNRAChL93gEW4UQqPNOSYySLu5vwwX4aYsnkR0YRptLIlfQajrMt0F6AtCnIcxppx3jdg3dGvKxBwgABQLGggMACAAJA1IqNQAAAAAMBgAEABcHCgEBBwIABAwCAAAAzye0CAAAAAAKAQQBEQknCg0ABAMCBRcaBgkOCRkSDwsQEQMBExMYDQoZFQ8LFhQCARMTEw0KKsEgmzNB1pyBAgIAAAA6AWQAAToAZAECzye0CAAAAAAIqYoBAAAAADIAUAoDBAAAAQkCwVdRxcH4wwx5hrqgGgkua/Gonv4pzAZz/LU35B3ySlkEd3Z4eQQGenVTFvHsWcITjSSy666/XikzqLiO11a0SwY8rT5d3C+q84sDvr+7AA==',
+      );
+
+      // Assert
+      expect(() => ASolanaMessage.fromSerializedData(SignDataType.typedTransaction, actualSolanaV1Message), throwsA(isA<Exception>()));
     });
   });
 }
