@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tests of SolanaUtils.parseTokenAmount()', () {
-    test('Should [convert (0) token base units] to the correct human-readable token amount (0)', () {
+    test('Should [shift amount] by given precision number (amount = 0, precision = 9)', () {
       // Act
       Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.zero, ASolanaInstructionDecoded.solDecimalPrecision);
 
@@ -15,7 +15,7 @@ void main() {
       expect(actualSOLAmount, expectedSOLAmount);
     });
 
-    test('Should [convert (12345) token base units with decimal precision (4)] to the correct human-readable token amount (1)', () {
+    test('Should [shift amount] by given precision number (amount = 12345, precision = 4)', () {
       // Act
       Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.from(12345), 4);
 
@@ -25,7 +25,7 @@ void main() {
       expect(actualTokenAmount, expectedTokenAmount);
     });
 
-    test('Should [convert (1234567890) token base units with decimal precision (6)] to the correct human-readable token amount (1234.567890)', () {
+    test('Should [shift amount] by given precision number (amount = 1234567890, precision = 6)', () {
       // Act
       Decimal actualTokenAmount = SolanaUtils.parseTokenAmount(BigInt.parse('1234567890'), 6);
 
@@ -35,7 +35,7 @@ void main() {
       expect(actualTokenAmount, expectedTokenAmount);
     });
 
-    test('Should [convert (1) token base units with SOL decimal precision (9)] to the correct human-readable token amount (0.000000001)', () {
+    test('Should [shift amount] by given precision number (amount = 1000000000, precision = 9)', () {
       // Act
       Decimal actualSOLAmount = SolanaUtils.parseTokenAmount(BigInt.from(1000000000), ASolanaInstructionDecoded.solDecimalPrecision);
 
