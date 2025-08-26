@@ -504,7 +504,7 @@ void main() {
       expect(actualTokenAmount, expectedTokenAmount);
     });
 
-    test('Should [return TokenAmount (0)] from an instruction with undefined amount and lamports', () {
+    test('Should [return null] from an instruction with undefined amount and lamports', () {
       // Arrange
       SolanaComputeBudgetSetComputeUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction =
           const SolanaComputeBudgetSetComputeUnitLimitInstruction(
