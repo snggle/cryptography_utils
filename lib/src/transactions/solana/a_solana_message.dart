@@ -10,9 +10,13 @@ abstract class ASolanaMessage extends Equatable {
   factory ASolanaMessage.fromSerializedData(SignDataType signDataType, Uint8List data) {
     switch (signDataType) {
       case SignDataType.typedTransaction:
-        return ASolanaTransactionMessage.fromSerializedData(data);
+        return SolanaLegacyMessage.fromSerializedData(data);
       case SignDataType.rawBytes:
-        return SolanaRawMessage.fromSerializedData(data);
+        try {
+          return SolanaV0Message.fromSerializedData(data);
+        } catch (_) {
+          return SolanaRawMessage.fromSerializedData(data);
+        }
     }
   }
 

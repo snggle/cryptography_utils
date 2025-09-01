@@ -30,24 +30,6 @@ abstract class ASolanaTransactionMessage extends ASolanaMessage {
     required this.compiledInstructions,
   });
 
-  /// Creates a new instance of [ASolanaTransactionMessage] from serialized data,
-  /// returning [SolanaLegacyMessage] or [SolanaV0Message] depending on the detected message version.
-  factory ASolanaTransactionMessage.fromSerializedData(Uint8List data) {
-    int firstByte = data[0];
-    bool versionedBool = (firstByte & 0x80) != 0;
-    if (versionedBool == false) {
-      return SolanaLegacyMessage.fromSerializedData(data);
-    }
-
-    int version = firstByte & 0x7F;
-    switch (version) {
-      case 0:
-        return SolanaV0Message.fromSerializedData(data);
-      default:
-        throw Exception('Solana versioned message (version $version) is not supported.');
-    }
-  }
-
   List<ASolanaInstructionDecoded> get decodedInstructions {
     List<SolanaPubKey> accountKeyBytes = accountKeysList.map((SolanaPubKey solanaPubKey) => solanaPubKey).toList(growable: false);
     return compiledInstructions
