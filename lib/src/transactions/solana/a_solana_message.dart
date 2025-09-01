@@ -12,7 +12,11 @@ abstract class ASolanaMessage extends Equatable {
       case SignDataType.typedTransaction:
         return ASolanaTransactionMessage.fromSerializedData(data);
       case SignDataType.rawBytes:
-        return SolanaRawMessage.fromSerializedData(data);
+        try {
+          return ASolanaTransactionMessage.fromSerializedData(data);
+        } catch (_) {
+          return SolanaRawMessage.fromSerializedData(data);
+        }
     }
   }
 
