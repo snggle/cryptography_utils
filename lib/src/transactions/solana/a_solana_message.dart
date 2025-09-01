@@ -13,7 +13,7 @@ abstract class ASolanaMessage extends Equatable {
         return ASolanaTransactionMessage.fromSerializedData(data);
       case SignDataType.rawBytes:
         try {
-          return ASolanaTransactionMessage.fromSerializedData(data);
+          return SolanaV0Message.fromSerializedData(data);
         } catch (_) {
           return SolanaRawMessage.fromSerializedData(data);
         }
