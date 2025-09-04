@@ -1,7 +1,10 @@
 import 'dart:typed_data';
-import 'package:cryptography_utils/cryptography_utils.dart';
 
-abstract class ASolanaTransactionMessage extends ASolanaMessage {
+import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:equatable/equatable.dart';
+
+abstract class ASolanaTransactionMessage extends Equatable{
+  String? get message => null;
   final SolanaMessageHeader header;
 
   /// list of all account addresses required by its instructions.

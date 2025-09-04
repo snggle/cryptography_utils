@@ -1,28 +1,26 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:equatable/equatable.dart';
 
 /// The [SolanaRawMessage] class encapsulates the details required to
 /// create a raw transaction on the Solana blockchain. This class is typically
 /// used for transactions involving raw bytes, such as personal messages or data
 /// payloads.
-class SolanaRawMessage extends ASolanaMessage {
+class SolanaRawMessage extends Equatable {
   /// The raw transaction data.
   final Uint8List data;
 
   /// Decodes the serialized data into an instance of [SolanaRawMessage].
-  const SolanaRawMessage.fromSerializedData(this.data);
+  /// Makes a defensive copy so external mutation can't affect this instance.
+  SolanaRawMessage.fromSerializedData(Uint8List bytes) : data = Uint8List.fromList(bytes);
 
-  /// Serializes the transaction into a byte array.
-  Uint8List serialize() {
-    return Uint8List.fromList(data);
-  }
+  /// Serializes the message into a new byte array (defensive copy).
+  Uint8List serialize() => Uint8List.fromList(data);
 
-  /// Returns the message contained in the transaction data.
-  @override
+  /// Returns a textual view of [data] if the bytes are valid ASCII; otherwise `null`.
   String get message {
-    return ascii.decode(data);
+    return ascii.decode(data); // throws if non-ASCII
   }
 
   @override
