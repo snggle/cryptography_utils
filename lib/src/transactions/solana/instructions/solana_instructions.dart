@@ -1,5 +1,5 @@
-export 'compute_budget/solana_compute_budget_set_compute_unit_limit_instruction.dart';
-export 'compute_budget/solana_compute_budget_set_compute_unit_price_instruction.dart';
+export 'compute_budget/solana_compute_budget_unit_limit_instruction.dart';
+export 'compute_budget/solana_compute_budget_unit_price_instruction.dart';
 export 'invalid_instruction/solana_invalid_instruction.dart';
 export 'stake_program/solana_stake_deactivate_instruction.dart';
 export 'stake_program/solana_stake_delegate_instruction.dart';

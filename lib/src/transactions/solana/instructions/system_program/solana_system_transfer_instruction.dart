@@ -3,6 +3,16 @@ import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which transfers [lamports] (SOL) from [source] to [destination].
+///
+/// Example instruction: https://solscan.io/tx/4uyy2M3xF7swQH6ZFbhxfSFLRARqGQMUi65ikzCzcaGWmKR81vubvPcrEQ4yPhaj7MYw3hBow7w9jnFREMDXyfTs?cluster=devnet
+/// {
+///     info: {
+///         destination: "6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z"
+///         lamports: 100000000
+///         source: "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19"
+///     }
+///     type: "transfer"
+/// }
 class SolanaSystemTransferInstruction extends ASolanaInstructionDecoded {
   final String _source;
   final String _destination;

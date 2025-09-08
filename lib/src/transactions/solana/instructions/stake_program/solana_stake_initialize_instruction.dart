@@ -3,6 +3,24 @@ import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which initializes a [stakeAccount].
+///
+/// Example instruction: https://solscan.io/tx/3nJWhUxPWsEWPDHwcYouu2e5GBRZBBzWS1YS38ENXFY9LL2KHmxWfnfZfTTNZzedZh9HrLPe51rn3h9eTVCAhgpt?cluster=devnet
+/// {
+///   "info": {
+///     "authorized": {
+///       "staker": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19",
+///       "withdrawer": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19"
+///     },
+///     "lockup": {
+///       "custodian": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19",
+///       "epoch": 0,
+///       "unixTimestamp": 0
+///     },
+///     "rentSysvar": "SysvarRent111111111111111111111111111111111",
+///     "stakeAccount": "CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k"
+///   },
+///   "type": "initialize"
+/// }
 class SolanaStakeInitializeInstruction extends ASolanaInstructionDecoded {
   final String _stakeAccount;
   final String _rentSysvar;

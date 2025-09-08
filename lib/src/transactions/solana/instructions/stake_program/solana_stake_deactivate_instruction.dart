@@ -1,6 +1,16 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which deactivates the [stakeAccount] belonging to a [stakeAuthority].
+///
+/// Example instruction: https://solscan.io/tx/4DB2rzhh2KMuRqDu54iW1YWhVMi29cfWnPCXUwWheUbnzaTnyxfHPAyn7jafsFYFPtBpcsFi87ivXcF6LUk8wFJp?cluster=devnet
+/// {
+///   "info": {
+///     "clockSysvar": "SysvarC1ock11111111111111111111111111111111",
+///     "stakeAccount": "CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k",
+///     "stakeAuthority": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19"
+///   },
+///   "type": "deactivate"
+/// }
 class SolanaStakeDeactivateInstruction extends ASolanaInstructionDecoded {
   final String _stakeAccount;
   final String _clockSysvar;
