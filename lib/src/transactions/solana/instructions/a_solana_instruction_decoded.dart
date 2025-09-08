@@ -69,7 +69,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
   /// or [SolanaTokenTransferCheckedInstruction].
   String? get destination => null;
 
-  /// The tag used in [SolanaComputeBudgetSetComputeUnitPriceInstruction] and [SolanaComputeBudgetSetComputeUnitLimitInstruction]
+  /// The tag used in [SolanaComputeBudgetUnitPriceInstruction] and [SolanaComputeBudgetUnitLimitInstruction]
   /// to differentiate between them.
   int? get discriminator => null;
 
@@ -79,7 +79,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
   /// The amount of lamports (SOL) in a [SolanaSystemTransferInstruction] or a [SolanaStakeWithdrawInstruction].
   BigInt? get lamports => null;
 
-  /// The compute unit price in micro-lamports in a [SolanaComputeBudgetSetComputeUnitPriceInstruction].
+  /// The compute unit price in micro-lamports in a [SolanaComputeBudgetUnitPriceInstruction].
   int? get microLamports => null;
 
   /// The Base58-encoded token mint address in a [SolanaTokenTransferCheckedInstruction].
@@ -112,7 +112,7 @@ abstract class ASolanaInstructionDecoded extends Equatable {
   /// The Base58-encoded staker account address used in a [SolanaStakeInitializeInstruction].
   String? get staker => null;
 
-  /// The compute unit limit in a [SolanaComputeBudgetSetComputeUnitLimitInstruction].
+  /// The compute unit limit in a [SolanaComputeBudgetUnitLimitInstruction].
   int? get units => null;
 
   /// The Unix timestamp used in a [SolanaStakeInitializeInstruction].
@@ -134,9 +134,9 @@ abstract class ASolanaInstructionDecoded extends Equatable {
     int tag = solanaInstruction.data[0];
     switch (tag) {
       case 2:
-        return SolanaComputeBudgetSetComputeUnitLimitInstruction.fromSerializedData(solanaInstruction, programId);
+        return SolanaComputeBudgetUnitLimitInstruction.fromSerializedData(solanaInstruction, programId);
       case 3:
-        return SolanaComputeBudgetSetComputeUnitPriceInstruction.fromSerializedData(solanaInstruction, programId);
+        return SolanaComputeBudgetUnitPriceInstruction.fromSerializedData(solanaInstruction, programId);
       default:
         return SolanaUnknownInstruction.fromSerializedData(programId);
     }

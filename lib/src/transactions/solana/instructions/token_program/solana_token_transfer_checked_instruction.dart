@@ -3,6 +3,23 @@ import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which transfers a token identified as [mint] from a [source] associated account to a [destination] associated account.
+///
+/// Example instruction: https://solscan.io/tx/5Cx6TSFpNPxG4byh51hx1tdn1S7CZev8NmKuumErgLQxbvV6FVzXcfxF4rmpzpVsQffYb7EsExXiwq3aUMhT8tfE?cluster=devnet
+/// {
+///   "info": {
+///     "authority": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19",
+///     "destination": "5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP",
+///     "mint": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+///     "source": "9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv",
+///     "tokenAmount": {
+///       "amount": "100000",
+///       "decimals": 6,
+///       "uiAmount": 0.1,
+///       "uiAmountString": "0.1"
+///     }
+///   },
+///   "type": "transferChecked"
+/// }
 class SolanaTokenTransferCheckedInstruction extends ASolanaInstructionDecoded {
   final String _source;
   final String _mint;

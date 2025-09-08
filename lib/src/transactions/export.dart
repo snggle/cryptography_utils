@@ -33,7 +33,7 @@ export 'solana/solana_legacy_message.dart';
 export 'solana/solana_message_header.dart';
 export 'solana/solana_pubkey.dart';
 export 'solana/solana_raw_message.dart';
-export 'solana/solana_versioned_message.dart';
+export 'solana/solana_v0_message.dart';
 
 // Generic
 // ignore: directives_ordering

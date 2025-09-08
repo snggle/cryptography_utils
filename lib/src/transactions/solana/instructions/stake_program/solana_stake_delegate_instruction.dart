@@ -1,6 +1,19 @@
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which delegates a stake to a particular vote account.
+///
+/// Example instruction: https://solscan.io/tx/3nJWhUxPWsEWPDHwcYouu2e5GBRZBBzWS1YS38ENXFY9LL2KHmxWfnfZfTTNZzedZh9HrLPe51rn3h9eTVCAhgpt?cluster=devnet
+/// {
+///   "info": {
+///     "clockSysvar": "SysvarC1ock11111111111111111111111111111111",
+///     "stakeAccount": "CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k",
+///     "stakeAuthority": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19",
+///     "stakeConfigAccount": "StakeConfig11111111111111111111111111111111",
+///     "stakeHistorySysvar": "SysvarStakeHistory1111111111111111111111111",
+///     "voteAccount": "FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f"
+///   },
+///   "type": "delegate"
+/// }
 class SolanaStakeDelegateInstruction extends ASolanaInstructionDecoded {
   final String _stakeAccount;
   final String _voteAccount;

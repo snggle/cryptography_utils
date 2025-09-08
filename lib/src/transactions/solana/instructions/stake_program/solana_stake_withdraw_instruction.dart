@@ -3,6 +3,19 @@ import 'dart:typed_data';
 import 'package:cryptography_utils/cryptography_utils.dart';
 
 /// An instruction which withdraws unstaked lamports from the [stakeAccount].
+///
+/// Example instruction: https://solscan.io/tx/3an1bBo4bpPiKJPTohfMB2TRdGUVTzoT8vpZ1RfHjnaQWH7CRguKogqqfaerYoYTJ7zGi2bhibzpNs8VB274uYLD?cluster=devnet
+/// {
+///   "info": {
+///     "clockSysvar": "SysvarC1ock11111111111111111111111111111111",
+///     "destination": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19",
+///     "lamports": 12282880,
+///     "stakeAccount": "CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k",
+///     "stakeHistorySysvar": "SysvarStakeHistory1111111111111111111111111",
+///     "withdrawAuthority": "2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19"
+///   },
+///   "type": "withdraw"
+/// }
 class SolanaStakeWithdrawInstruction extends ASolanaInstructionDecoded {
   final String _stakeAccount;
   final String _destination;

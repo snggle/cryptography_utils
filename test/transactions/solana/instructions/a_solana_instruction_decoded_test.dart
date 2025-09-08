@@ -223,8 +223,8 @@ void main() {
         );
 
         // Assert
-        SolanaComputeBudgetSetComputeUnitPriceInstruction expectedSolanaComputeBudgetSetComputeUnitPriceInstruction =
-            const SolanaComputeBudgetSetComputeUnitPriceInstruction(
+        SolanaComputeBudgetUnitPriceInstruction expectedSolanaComputeBudgetSetComputeUnitPriceInstruction =
+            const SolanaComputeBudgetUnitPriceInstruction(
           discriminator: 3,
           programId: 'ComputeBudget111111111111111111111111111111',
           microLamports: 20000000,
@@ -246,8 +246,8 @@ void main() {
         );
 
         // Assert
-        SolanaComputeBudgetSetComputeUnitLimitInstruction expectedSolanaComputeBudgetSetComputeUnitLimitInstruction =
-            const SolanaComputeBudgetSetComputeUnitLimitInstruction(
+        SolanaComputeBudgetUnitLimitInstruction expectedSolanaComputeBudgetSetComputeUnitLimitInstruction =
+            const SolanaComputeBudgetUnitLimitInstruction(
           discriminator: 2,
           programId: 'ComputeBudget111111111111111111111111111111',
           units: 495,
@@ -506,8 +506,8 @@ void main() {
 
     test('Should [return null] from an instruction with undefined amount and lamports', () {
       // Arrange
-      SolanaComputeBudgetSetComputeUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction =
-          const SolanaComputeBudgetSetComputeUnitLimitInstruction(
+      SolanaComputeBudgetUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction =
+          const SolanaComputeBudgetUnitLimitInstruction(
         discriminator: 2,
         programId: 'ComputeBudget111111111111111111111111111111',
         units: 495,
