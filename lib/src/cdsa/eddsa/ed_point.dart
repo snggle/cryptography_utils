@@ -75,7 +75,7 @@ class EDPoint extends Equatable {
   })  : x = x ?? BigInt.zero,
         y = y ?? BigInt.zero,
         z = z ?? BigInt.zero,
-        t = t ?? ((x ?? BigInt.zero) * (y ?? BigInt.zero));
+        t = t ?? ((x ?? BigInt.zero) * (y ?? BigInt.zero)) % curve.p;
 
   /// Constructs an instance of EDPoint from a byte array.
   factory EDPoint.fromBytes(EDPoint generator, Uint8List bytes) {
@@ -99,7 +99,7 @@ class EDPoint extends Equatable {
       x = (-x) % p;
     }
 
-    return EDPoint(curve: curve, n: generator.n, x: x, y: y, z: BigInt.one, t: x * y);
+    return EDPoint(curve: curve, n: generator.n, x: x, y: y, z: BigInt.one, t: (x * y) % p);
   }
 
   /// Constructs an instance of [EDPoint] representing the point at infinity.

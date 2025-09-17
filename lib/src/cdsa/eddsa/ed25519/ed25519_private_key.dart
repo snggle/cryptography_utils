@@ -27,7 +27,7 @@ class ED25519PrivateKey extends ABip32PrivateKey {
   @override
   ED25519PublicKey get publicKey {
     return ED25519PublicKey(
-      edPublicKey: edPrivateKey.edPublicKey,
+      edPublicKey: EDPublicKey(edPrivateKey.edPublicKey.A.scaleToAffineCoordinates()),
       metadata: metadata,
     );
   }

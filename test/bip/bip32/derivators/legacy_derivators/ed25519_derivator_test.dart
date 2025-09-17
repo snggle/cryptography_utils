@@ -54,30 +54,30 @@ void main() {
       expect(actualED25519PrivateKey, expectedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/60'/)", () async {
+    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/501'/)", () async {
       // Act
-      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/60'/");
+      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/501'/");
       ED25519PrivateKey actualED25519PrivateKey = await actualED25519Derivator.derivePath(actualMnemonic, actualLegacyDerivationPath);
 
       // Assert
       ED25519PrivateKey expectedED25519PrivateKey = ED25519PrivateKey(
         metadata: Bip32KeyMetadata(
           depth: 2,
-          shiftedIndex: 2147483708,
-          chainCode: base64Decode('AlYCSjYOCo//7XisF+s9f+4uREPjJlQ3lZVRypceTI0='),
-          fingerprint: BigInt.parse('4278372777'),
+          shiftedIndex: 2147484149,
+          chainCode: base64Decode('N8hqS/GQMbS0QaVEk75FmKA6yPFRa2XC5x+MWTMYSsg='),
+          fingerprint: BigInt.parse('4036075356'),
           parentFingerprint: BigInt.parse('2330465125'),
           masterFingerprint: BigInt.parse('3578578273'),
         ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('dZiZCf9yd0YSUxbInwyamtkndKTTRj6j+G6xmj928vY=')),
+        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('/TWsTCOLvsuX0xrFMzD3yXZSjCQViIGf6hWaevc1vOY=')),
       );
 
       expect(actualED25519PrivateKey, expectedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/60'/0'/)", () async {
+    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/501'/0'/)", () async {
       // Act
-      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/60'/0'/");
+      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/501'/0'/");
       ED25519PrivateKey actualED25519PrivateKey = await actualED25519Derivator.derivePath(actualMnemonic, actualLegacyDerivationPath);
 
       // Assert
@@ -85,20 +85,20 @@ void main() {
         metadata: Bip32KeyMetadata(
           depth: 3,
           shiftedIndex: 2147483648,
-          chainCode: base64Decode('XJIq3dw+4wLO363ghHmYr8iBf0sSpDC1SsJGbG6BMxM='),
-          fingerprint: BigInt.parse('4237045580'),
-          parentFingerprint: BigInt.parse('4278372777'),
+          chainCode: base64Decode('LxPIxnNe9YXF9o6sstwDQavHXPdE7WUF2cKUqxS+MTc='),
+          fingerprint: BigInt.parse('753771646'),
+          parentFingerprint: BigInt.parse('4036075356'),
           masterFingerprint: BigInt.parse('3578578273'),
         ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('dnfNSsX9wTWBvMXva/SUqWt3iRaK+oH68fM9Feg/SIs=')),
+        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('T3WAkMPu1mLHuRW+Dra0RFDDclbr6L6zJw6wPkpPJYA=')),
       );
 
       expect(actualED25519PrivateKey, expectedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/60'/0'/0'/)", () async {
+    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/501'/0'/0'/)", () async {
       // Act
-      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/60'/0'/0'/");
+      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/501'/0'/0'/");
       ED25519PrivateKey actualED25519PrivateKey = await actualED25519Derivator.derivePath(actualMnemonic, actualLegacyDerivationPath);
 
       // Assert
@@ -106,54 +106,33 @@ void main() {
         metadata: Bip32KeyMetadata(
           depth: 4,
           shiftedIndex: 2147483648,
-          chainCode: base64Decode('7VKKNJkj9ZEp7SX+GveAvvcZhi+8NJNrSG98+BNgjxY='),
-          fingerprint: BigInt.parse('2130523803'),
-          parentFingerprint: BigInt.parse('4237045580'),
+          chainCode: base64Decode('bJz0NEJLEZUTTobbklJ8hYb9gCS+4J7UGPMtDyO+IDY='),
+          fingerprint: BigInt.parse('635615273'),
+          parentFingerprint: BigInt.parse('753771646'),
           masterFingerprint: BigInt.parse('3578578273'),
         ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('Dy1S7AO7gPWC+vO7mV/cwTi9sjJ56abeYtD8s3qRTAk=')),
+        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('iGjr84MoC1+WAY4cnAFqETc5KjMEtZ7CfAYvxkd877M=')),
       );
 
       expect(actualED25519PrivateKey, expectedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/60'/0'/0'/0')", () async {
+    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/501'/1'/0'/)", () async {
       // Act
-      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/60'/0'/0'/0'");
+      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/501'/1'/0'/");
       ED25519PrivateKey actualED25519PrivateKey = await actualED25519Derivator.derivePath(actualMnemonic, actualLegacyDerivationPath);
 
       // Assert
       ED25519PrivateKey expectedED25519PrivateKey = ED25519PrivateKey(
         metadata: Bip32KeyMetadata(
-          depth: 5,
+          depth: 4,
           shiftedIndex: 2147483648,
-          chainCode: base64Decode('hz6ve3vISMyVDK7ZD0zQoV2v4K1ota1QJ9kY1xakFR4='),
-          fingerprint: BigInt.parse('3808761756'),
-          parentFingerprint: BigInt.parse('2130523803'),
+          chainCode: base64Decode('pdvuHGZNYfgdrW/BAMpsBlNcM2xCYGKsT7j4ZymApJA='),
+          fingerprint: BigInt.parse('1931527399'),
+          parentFingerprint: BigInt.parse('429089605'),
           masterFingerprint: BigInt.parse('3578578273'),
         ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('fbrqtRb364ZjYonX89pDhtlKE+4jFrxmpHGU2kmQaGs=')),
-      );
-
-      expect(actualED25519PrivateKey, expectedED25519PrivateKey);
-    });
-
-    test("Should [return ED25519PrivateKey] constructed from mnemonic and derivation path (m/44'/60'/0'/0'/1')", () async {
-      // Act
-      LegacyDerivationPath actualLegacyDerivationPath = LegacyDerivationPath.parse("m/44'/60'/0'/0'/1'");
-      ED25519PrivateKey actualED25519PrivateKey = await actualED25519Derivator.derivePath(actualMnemonic, actualLegacyDerivationPath);
-
-      // Assert
-      ED25519PrivateKey expectedED25519PrivateKey = ED25519PrivateKey(
-        metadata: Bip32KeyMetadata(
-          depth: 5,
-          shiftedIndex: 2147483649,
-          chainCode: base64Decode('l1JlMYKoERbLwsNQIZbHugLvqyxktb1J+O+zU5jue+k='),
-          fingerprint: BigInt.parse('2573384385'),
-          parentFingerprint: BigInt.parse('2130523803'),
-          masterFingerprint: BigInt.parse('3578578273'),
-        ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('AVPH3U7LPhJ6E3PFI9S+Ek+vUM59I5RBk5uRG1nMIBw=')),
+        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('2fcDuvPOTai9vU+A3d9xto81C5nkpEtawFntHXhyrts=')),
       );
 
       expect(actualED25519PrivateKey, expectedED25519PrivateKey);
@@ -215,19 +194,19 @@ void main() {
       expect(actualDerivedED25519PrivateKey, expectedDerivedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/ -> m/44'/60'/)", () async {
+    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/ -> m/44'/501'/)", () async {
       // Arrange
-      LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse("60'");
+      LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse("501'");
       ED25519PrivateKey actualED25519PrivateKey = ED25519PrivateKey(
         metadata: Bip32KeyMetadata(
           depth: 1,
           shiftedIndex: 2147483692,
-          chainCode: base64Decode('oVTP3c7E2KeoquJttMLqsSV7zyzEbvACvVcFTjW2Cz4='),
+          chainCode: base64Decode('N8hqS/GQMbS0QaVEk75FmKA6yPFRa2XC5x+MWTMYSsg='),
           fingerprint: BigInt.parse('2330465125'),
           parentFingerprint: BigInt.parse('3578578273'),
           masterFingerprint: BigInt.parse('3578578273'),
         ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('MinQRVP+LSjLX9pmmkDLcm01pJP8IVaKrlVAGlNXUbs=')),
+        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('/TWsTCOLvsuX0xrFMzD3yXZSjCQViIGf6hWaevc1vOY=')),
       );
 
       // Act
@@ -237,19 +216,19 @@ void main() {
       ED25519PrivateKey expectedDerivedED25519PrivateKey = ED25519PrivateKey(
         metadata: Bip32KeyMetadata(
           depth: 2,
-          shiftedIndex: 2147483708,
-          chainCode: base64Decode('AlYCSjYOCo//7XisF+s9f+4uREPjJlQ3lZVRypceTI0='),
-          fingerprint: BigInt.parse('4278372777'),
+          shiftedIndex: 2147484149,
+          chainCode: base64Decode('nVpoaXRJzBmqw/3/DHi9EjRrEWOUiEilp5fbkw8aaTk='),
+          fingerprint: BigInt.parse('3862087306'),
           parentFingerprint: BigInt.parse('2330465125'),
           masterFingerprint: BigInt.parse('3578578273'),
         ),
-        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('dZiZCf9yd0YSUxbInwyamtkndKTTRj6j+G6xmj928vY=')),
+        edPrivateKey: EDPrivateKey.fromBytes(base64Decode('/Fcp11uAxg7VyMEvkW5IPYuGDrk2bcxS8tZ8QvZgqaQ=')),
       );
 
       expect(actualDerivedED25519PrivateKey, expectedDerivedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/60'/ -> m/44'/60'/0'/)", () async {
+    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/501'/ -> m/44'/501'/0'/)", () async {
       // Arrange
       LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse("0'");
       ED25519PrivateKey actualED25519PrivateKey = ED25519PrivateKey(
@@ -283,7 +262,7 @@ void main() {
       expect(actualDerivedED25519PrivateKey, expectedDerivedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/60'/0'/ -> m/44'/60'/0'/0'/)", () async {
+    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/501'/0'/ -> m/44'/501'/0'/0'/)", () async {
       // Arrange
       LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse("0'");
       ED25519PrivateKey actualED25519PrivateKey = ED25519PrivateKey(
@@ -317,7 +296,7 @@ void main() {
       expect(actualDerivedED25519PrivateKey, expectedDerivedED25519PrivateKey);
     });
 
-    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/60'/0'/0'/ -> m/44'/60'/0'/0'/0'/)", () async {
+    test("Should [return ED25519PrivateKey] derived from ED25519PrivateKey (m/44'/501'/0'/0'/ -> m/44'/501'/0'/0'/0'/)", () async {
       // Arrange
       LegacyDerivationPathElement actualDerivationPathElement = LegacyDerivationPathElement.parse("0'");
       ED25519PrivateKey actualED25519PrivateKey = ED25519PrivateKey(
