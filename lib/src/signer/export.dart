@@ -13,4 +13,3 @@ export 'ethereum/ethereum_verifier.dart';
 //Solana
 export 'solana/solana_signature.dart';
 export 'solana/solana_signer.dart';
-export 'solana/solana_verifier.dart';
