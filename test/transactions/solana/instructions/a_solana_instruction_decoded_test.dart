@@ -209,6 +209,417 @@ void main() {
       });
     });
 
+    group('Tests of ASolanaInstruction.decode() - _decodeDflowSwapProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeRaydiumLiquiditySwapProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeRaydiumConcentratedLiquiditySwapProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeOkxDexSwapProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeMeteoraDynamicBondingSwapProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeMeteoraDammSwapProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeTokenProgram() path', () {
+      test('Should [return SolanaSwapDFlowInstruction] from serialized SolanaSwapDFlowInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaSwapDFlowInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+            programIdIndex: 0,
+            accounts: Uint8List.fromList(<int>[0]),
+            data: base64Decode(
+                'QUs/TOtbW4gEAAAAJXAoPIUerEPKYTnPGHEG35gEs2bNRMmnS45kUsPrm6wDG/vYEaeo9FOdCo9pz4JeukV2HJri82IKqMXUFCWqcghZwV0WAAAAAHgAAAAjzikAAAAAAAARdAwTAAAAAAABBXe92QEAAAAAAgKBGMR0AQAAAJABAAAF'),
+          ),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBase58('DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH'),
+          ],
+        );
+
+        // Assert
+        SolanaSwapDFlowInstruction expectedSolanaSwapDFlowInstruction = SolanaSwapDFlowInstruction(
+            programId: 'DF1ow4tspfHX9JwWJsAb9epbkA8hmpSEAtxXy1V27QBH',
+            signer: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+            quotedOutAmount: BigInt.from(6253975681),
+            slippageBps: 400,
+            platformFeeBps: 0,
+            positiveSlippageFeeLimitPct: 5);
+
+        expect(actualSolanaSwapDFlowInstruction, expectedSolanaSwapDFlowInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
+    group('Tests of ASolanaInstruction.decode() - _decodeAssociatedTokenProgram() path', () {
+      test('Should [return SolanaCreateIdempotentInstruction] from serialized SolanaCreateIdempotentInstruction', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaCreateIdempotentInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(programIdIndex: 12, accounts: Uint8List.fromList(<int>[0, 4, 0, 23, 7, 10]), data: Uint8List.fromList(<int>[1])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('rFTC9gYN3R8tFWvXXFdWfzYRh8lWISdIxPtDERhXplY=')),
+            SolanaPubKey.fromBytes(base64Decode('Vnc0WHX0iBa76mPlR5DMysds1h9/FNOv+q/dzEjiSqQ=')),
+            SolanaPubKey.fromBytes(base64Decode('Zn/LU4VSNrEZJg9hJjEvfwMjmNLCvJDpEyG0zH7Y1yQ=')),
+            SolanaPubKey.fromBytes(base64Decode('cTN9kd8r51/xwc6IwfXwKTzn7kVi9u4+BF+gf6rTEd0=')),
+            SolanaPubKey.fromBytes(base64Decode('iou8xepom1HvEnvPP/CxI5KlTFCbIDBNTEiG08FkW4M=')),
+            SolanaPubKey.fromBytes(base64Decode('zN/gj1H6SStJcojxfyVSBM4CsNHf9s8Fuywijv3R7Sw=')),
+            SolanaPubKey.fromBytes(base64Decode('3+/RoUrlKizmFZC9fonXiuk04mBKC9JYdvazXH1yWH4=')),
+            SolanaPubKey.fromBytes(base64Decode('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('BHnVW/IxwG7udMVuzmgVB/2xst6j9I5RArHNola8E48=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+            SolanaPubKey.fromBytes(base64Decode('UmHRSqzFvA7sY12ocFofcKOe41qazwv48izGzkkBnXo=')),
+            SolanaPubKey.fromBytes(base64Decode('jJclj04kifG7PRApFI4NgwtaE5na/xCEBI572Nvp+Fk=')),
+            SolanaPubKey.fromBytes(base64Decode('moAL/0yHNoiWwg/BQHPr8ctao3X+gf5NvcgrpN+3Xng=')),
+            SolanaPubKey.fromBytes(base64Decode('tD/6J/XX9kp0wJsfKVh53ksJqzbfyd1RSzIap7OM5eU=')),
+            SolanaPubKey.fromBytes(base64Decode('50rZbONln9MTUQAoS/d4BFuFEKjzTkmMki7ub8MF+Gk=')),
+          ],
+        );
+
+        // Assert
+        SolanaCreateIdempotentInstruction expectedSolanaCreateIdempotentInstruction = const SolanaCreateIdempotentInstruction(
+          programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+          systemProgram: '11111111111111111111111111111111',
+          wallet: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+          tokenProgram: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+          account: 'AKpr7UPK7JdQ1BjqkNmo1HQUMwve8EW6EZQhZRbiHPPY',
+          source: 'Cbi65bkTUnJWG8uesnCHg2gAEj4ujeD1SamJPe78fdq7',
+        );
+
+        expect(actualSolanaCreateIdempotentInstruction, expectedSolanaCreateIdempotentInstruction);
+      });
+
+      test('Should [return SolanaUnknownInstruction] from serialized associated token transfer instruction with an unknown tag', () {
+        // Act
+        ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
+          SolanaCompiledInstruction(
+              programIdIndex: 5, accounts: Uint8List.fromList(<int>[2, 3, 1, 0]), data: Uint8List.fromList(<int>[11, 64, 66, 15, 0, 0, 0, 0, 0, 6])),
+          <SolanaPubKey>[
+            SolanaPubKey.fromBytes(base64Decode('HQPUAQhezlHPjfJ5rKjtbS1KlIQXuQ1NFUBUXhQYWPQ=')),
+            SolanaPubKey.fromBytes(base64Decode('QcP4RyZsB5mqKLVXbVwJOPUQz1BEAbKAvrz2grGLjSg=')),
+            SolanaPubKey.fromBytes(base64Decode('fgTQkptSwcCd6H+RFKHWRBILwGHlUQiXdfuEeaD99kM=')),
+            SolanaPubKey.fromBytes(base64Decode('O0Qss5EhV/E6kz0BNCgtAytf/s0Botvxt3kGCN8ALqc=')),
+            SolanaPubKey.fromBytes(base64Decode('AwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAA=')),
+            SolanaPubKey.fromBytes(base64Decode('Bt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKk=')),
+          ],
+        );
+
+        // Assert
+        SolanaUnknownInstruction expectedSolanaUnknownInstruction =
+            const SolanaUnknownInstruction(programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
+
+        expect(actualSolanaUnknownInstruction, expectedSolanaUnknownInstruction);
+      });
+    });
+
     group('Tests of ASolanaInstruction.decode() - _decodeComputeBudgetProgram() path', () {
       test('Should [return SolanaComputeBudgetSetComputeUnitPriceInstruction] from serialized SolanaComputeBudgetSetComputeUnitPriceInstruction', () {
         // Act
@@ -276,7 +687,7 @@ void main() {
       });
     });
 
-    group('Tests of ASolanaInstruction.decode() - _decodeStakeProgram() path', () {
+    group('Tests of ASolanaInstruction.decode() - _decodeJupiterSwapProgram() path', () {
       test('Should [return SolanaStakeInitializeInstruction] from serialized SolanaStakeInitializeInstruction', () {
         // Act
         ASolanaInstructionDecoded actualSolanaStakeInitializeInstruction = ASolanaInstructionDecoded.decode(
@@ -506,8 +917,7 @@ void main() {
 
     test('Should [return null] from an instruction with undefined amount and lamports', () {
       // Arrange
-      SolanaComputeBudgetUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction =
-          const SolanaComputeBudgetUnitLimitInstruction(
+      SolanaComputeBudgetUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction = const SolanaComputeBudgetUnitLimitInstruction(
         discriminator: 2,
         programId: 'ComputeBudget111111111111111111111111111111',
         units: 495,
