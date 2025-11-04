@@ -6,8 +6,8 @@ import 'package:decimal/decimal.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tests of ASolanaInstruction.decode()', () {
-    group('Tests of ASolanaInstruction.decode() - default path', () {
+  group('Tests of ASolanaInstructionDecoded.decode()', () {
+    group('Tests of ASolanaInstructionDecoded.decode() - default path', () {
       test('Should [return SolanaUnknownInstruction] from an instruction with an unknown programId', () {
         // Act
         ASolanaInstructionDecoded actualSolanaUnknownInstruction = ASolanaInstructionDecoded.decode(
@@ -101,7 +101,7 @@ void main() {
       });
     });
 
-    group('Tests of ASolanaInstruction.decode() - _decodeSystemProgram() path', () {
+    group('Tests of ASolanaInstructionDecoded.decode() - _decodeSystemProgram() path', () {
       test('Should [return SolanaSystemTransferInstruction] from serialized SolanaSystemTransferInstruction', () {
         // Act
         ASolanaInstructionDecoded actualSolanaSystemTransferInstruction = ASolanaInstructionDecoded.decode(
@@ -156,7 +156,7 @@ void main() {
       });
     });
 
-    group('Tests of ASolanaInstruction.decode() - _decodeTokenProgram() path', () {
+    group('Tests of ASolanaInstructionDecoded.decode() - _decodeTokenProgram() path', () {
       test('Should [return SolanaTokenTransferInstruction] from serialized SolanaTokenTransferInstruction', () {
         // Act
         ASolanaInstructionDecoded actualSolanaTokenTransferInstruction = ASolanaInstructionDecoded.decode(
@@ -209,7 +209,7 @@ void main() {
       });
     });
 
-    group('Tests of ASolanaInstruction.decode() - _decodeComputeBudgetProgram() path', () {
+    group('Tests of ASolanaInstructionDecoded.decode() - _decodeComputeBudgetProgram() path', () {
       test('Should [return SolanaComputeBudgetSetComputeUnitPriceInstruction] from serialized SolanaComputeBudgetSetComputeUnitPriceInstruction', () {
         // Act
         ASolanaInstructionDecoded actualSolanaComputeBudgetSetComputeUnitPriceInstruction = ASolanaInstructionDecoded.decode(
@@ -276,7 +276,7 @@ void main() {
       });
     });
 
-    group('Tests of ASolanaInstruction.decode() - _decodeStakeProgram() path', () {
+    group('Tests of ASolanaInstructionDecoded.decode() - _decodeStakeProgram() path', () {
       test('Should [return SolanaStakeInitializeInstruction] from serialized SolanaStakeInitializeInstruction', () {
         // Act
         ASolanaInstructionDecoded actualSolanaStakeInitializeInstruction = ASolanaInstructionDecoded.decode(
@@ -425,7 +425,7 @@ void main() {
     });
   });
 
-  group('Tests of ASolanaInstruction.getAmount()', () {
+  group('Tests of ASolanaInstructionDecoded.getAmount()', () {
     test('Should [return TokenAmount (0)] from 0 lamports', () {
       // Arrange
       SolanaSystemTransferInstruction actualSolanaSystemTransferInstruction = SolanaSystemTransferInstruction(
@@ -506,8 +506,7 @@ void main() {
 
     test('Should [return null] from an instruction with undefined amount and lamports', () {
       // Arrange
-      SolanaComputeBudgetUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction =
-          const SolanaComputeBudgetUnitLimitInstruction(
+      SolanaComputeBudgetUnitLimitInstruction actualSolanaComputeBudgetUnitSetComputeLimitInstruction = const SolanaComputeBudgetUnitLimitInstruction(
         discriminator: 2,
         programId: 'ComputeBudget111111111111111111111111111111',
         units: 495,
@@ -518,6 +517,466 @@ void main() {
 
       // Assert
       expect(actualTokenAmount, null);
+    });
+  });
+
+  group('Tests of ASolanaInstructionDecoded.getMintAddress()', () {
+    test('Should [return mint address] from an instruction WITH mint', () {
+      // Arrange
+      SolanaTokenTransferCheckedInstruction actualASolanaInstructionDecoded = SolanaTokenTransferCheckedInstruction(
+        programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
+        destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
+        amount: BigInt.from(1000000),
+        mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        decimals: 6,
+      );
+
+      // Act
+      String? actualMintAddress = actualASolanaInstructionDecoded.getMintAddress();
+
+      // Assert
+      String expectedMintAddress = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
+
+      expect(actualMintAddress, expectedMintAddress);
+    });
+
+    test('Should [return null] for an instruction WITHOUT mint', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaComputeBudgetUnitPriceInstruction(
+        discriminator: 3,
+        programId: 'ComputeBudget111111111111111111111111111111',
+        microLamports: 20000000,
+      );
+
+      // Act
+      String? actualMintAddress = actualASolanaInstructionDecoded.getMintAddress();
+
+      // Assert
+      String? expectedMintAddress;
+
+      expect(actualMintAddress, expectedMintAddress);
+    });
+  });
+
+  group('Tests of ASolanaInstructionDecoded.getSenderAddress()', () {
+    test('Should [return stakeAuthority as SENDER ADDRESS] from a SolanaStakeDeactivateInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaStakeDeactivateInstruction(
+        programId: 'Stake11111111111111111111111111111111111111',
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
+        stakeAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String expectedSenderAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return stakeAuthority as SENDER ADDRESS] from a SolanaStakeDelegateInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaStakeDelegateInstruction(
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        programId: 'Stake11111111111111111111111111111111111111',
+        stakeAccount: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR',
+        stakeAuthority: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        stakeConfigAccount: 'StakeConfig11111111111111111111111111111111',
+        stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
+        voteAccount: 'FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String? expectedSenderAddress = '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return STAKER as SENDER ADDRESS] from a SolanaStakeInitializeInstruction', () {
+      // Arrange
+      SolanaStakeInitializeInstruction actualASolanaInstructionDecoded = const SolanaStakeInitializeInstruction(
+        programId: 'Stake11111111111111111111111111111111111111',
+        custodian: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        epoch: 0,
+        rentSysvar: 'SysvarRent111111111111111111111111111111111',
+        stakeAccount: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR',
+        staker: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        unixTimestamp: 0,
+        withdrawer: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String? expectedSenderAddress = '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return stakeAccount as SENDER ADDRESS] from a SolanaStakeWithdrawInstruction', () {
+      // Arrange
+      SolanaStakeWithdrawInstruction actualASolanaInstructionDecoded = SolanaStakeWithdrawInstruction(
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        destination: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        programId: 'Stake11111111111111111111111111111111111111',
+        lamports: BigInt.from(1002282880),
+        stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
+        stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
+        withdrawAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String? expectedSenderAddress = 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return source as SENDER ADDRESS] from a SolanaSystemTransferInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = SolanaSystemTransferInstruction(
+        programId: '11111111111111111111111111111111',
+        source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        lamports: BigInt.from(1000000000),
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String? expectedSenderAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return source as SENDER ADDRESS] from a SolanaTokenTransferCheckedInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = SolanaTokenTransferCheckedInstruction(
+        programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
+        destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
+        amount: BigInt.from(1000000),
+        mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        decimals: 6,
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String? expectedSenderAddress = '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return NULL] for an instruction WITHOUT source, stakeAccount, stakeAuthority or staker', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaComputeBudgetUnitPriceInstruction(
+        discriminator: 3,
+        programId: 'ComputeBudget111111111111111111111111111111',
+        microLamports: 20000000,
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSenderAddress();
+
+      // Assert
+      String? expectedSenderAddress;
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+  });
+
+  group('Tests of ASolanaInstructionDecoded.getRecipientAddress()', () {
+    test('Should [return stakeAccount as RECIPIENT ADDRESS] from a SolanaStakeDeactivateInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaStakeDeactivateInstruction(
+        programId: 'Stake11111111111111111111111111111111111111',
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
+        stakeAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String expectedRecipientAddress = 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k';
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+
+    test('Should [return stakeAccount as RECIPIENT ADDRESS] from a SolanaStakeDelegateInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaStakeDelegateInstruction(
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        programId: 'Stake11111111111111111111111111111111111111',
+        stakeAccount: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR',
+        stakeAuthority: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        stakeConfigAccount: 'StakeConfig11111111111111111111111111111111',
+        stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
+        voteAccount: 'FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f',
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String? expectedRecipientAddress = 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR';
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+
+    test('Should [return stakeAccount as RECIPIENT ADDRESS] from a SolanaStakeInitializeInstruction', () {
+      // Arrange
+      SolanaStakeInitializeInstruction actualASolanaInstructionDecoded = const SolanaStakeInitializeInstruction(
+        programId: 'Stake11111111111111111111111111111111111111',
+        custodian: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        epoch: 0,
+        rentSysvar: 'SysvarRent111111111111111111111111111111111',
+        stakeAccount: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR',
+        staker: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        unixTimestamp: 0,
+        withdrawer: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String? expectedRecipientAddress = 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR';
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+
+    test('Should [return destination as RECIPIENT ADDRESS] from a SolanaStakeWithdrawInstruction', () {
+      // Arrange
+      SolanaStakeWithdrawInstruction actualASolanaInstructionDecoded = SolanaStakeWithdrawInstruction(
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        destination: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        programId: 'Stake11111111111111111111111111111111111111',
+        lamports: BigInt.from(1002282880),
+        stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
+        stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
+        withdrawAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String? expectedRecipientAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+
+    test('Should [return destination as RECIPIENT ADDRESS] from a SolanaSystemTransferInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = SolanaSystemTransferInstruction(
+        programId: '11111111111111111111111111111111',
+        source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        lamports: BigInt.from(1000000000),
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String? expectedRecipientAddress = '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z';
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+
+    test('Should [return destination as RECIPIENT ADDRESS] from a SolanaTokenTransferCheckedInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = SolanaTokenTransferCheckedInstruction(
+        programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
+        destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
+        amount: BigInt.from(1000000),
+        mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        decimals: 6,
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String? expectedRecipientAddress = '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP';
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+
+    test('Should [return NULL] for an instruction WITHOUT destination or stakeAccount', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaComputeBudgetUnitPriceInstruction(
+        discriminator: 3,
+        programId: 'ComputeBudget111111111111111111111111111111',
+        microLamports: 20000000,
+      );
+
+      // Act
+      String? actualRecipientAddress = actualASolanaInstructionDecoded.getRecipientAddress();
+
+      // Assert
+      String? expectedRecipientAddress;
+
+      expect(actualRecipientAddress, expectedRecipientAddress);
+    });
+  });
+
+  group('Tests of ASolanaInstructionDecoded.getSignerAddress()', () {
+    test('Should [return stakeAuthority as SIGNER ADDRESS] from a SolanaStakeDeactivateInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaStakeDeactivateInstruction(
+        programId: 'Stake11111111111111111111111111111111111111',
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
+        stakeAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String expectedSenderAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return stakeAuthority as SIGNER ADDRESS] from a SolanaStakeDelegateInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaStakeDelegateInstruction(
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        programId: 'Stake11111111111111111111111111111111111111',
+        stakeAccount: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR',
+        stakeAuthority: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        stakeConfigAccount: 'StakeConfig11111111111111111111111111111111',
+        stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
+        voteAccount: 'FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String? expectedSenderAddress = '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return staker as SIGNER ADDRESS] from a SolanaStakeInitializeInstruction', () {
+      // Arrange
+      SolanaStakeInitializeInstruction actualASolanaInstructionDecoded = const SolanaStakeInitializeInstruction(
+        programId: 'Stake11111111111111111111111111111111111111',
+        custodian: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        epoch: 0,
+        rentSysvar: 'SysvarRent111111111111111111111111111111111',
+        stakeAccount: 'E9AKSDnvxFcUrvMqRVrANNZ2qdidh4AC1niGhQ6vGZxR',
+        staker: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        unixTimestamp: 0,
+        withdrawer: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String? expectedSenderAddress = '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return withdrawAuthority as SIGNER ADDRESS] from a SolanaStakeWithdrawInstruction', () {
+      // Arrange
+      SolanaStakeWithdrawInstruction actualASolanaInstructionDecoded = SolanaStakeWithdrawInstruction(
+        clockSysvar: 'SysvarC1ock11111111111111111111111111111111',
+        destination: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        programId: 'Stake11111111111111111111111111111111111111',
+        lamports: BigInt.from(1002282880),
+        stakeAccount: 'CkT3NP8HMam7v73564b638kPBvy8SGTt9mNjuLtRw79k',
+        stakeHistorySysvar: 'SysvarStakeHistory1111111111111111111111111',
+        withdrawAuthority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String? expectedSenderAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return source as SIGNER ADDRESS] from a SolanaSystemTransferInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = SolanaSystemTransferInstruction(
+        programId: '11111111111111111111111111111111',
+        source: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        destination: '6VWUtQiEbSXy6viXkxs7xywevQJXruVD1NmhX4akdC1Z',
+        lamports: BigInt.from(1000000000),
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String? expectedSenderAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return authority as SIGNER ADDRESS] from a SolanaTokenTransferCheckedInstruction', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = SolanaTokenTransferCheckedInstruction(
+        programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        source: '9UvdRv2CoyLrgdGbobrQu6feMoapdzY1oqueuYMBfLWv',
+        destination: '5RipPdH3QLE7cyKzf7HKDrUoBrPKNi8odK866vJZV3AP',
+        amount: BigInt.from(1000000),
+        mint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
+        authority: '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19',
+        decimals: 6,
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String? expectedSenderAddress = '2xGD7cWtwpmCpW2NvT9EJt96eDavS3suVgQNVaBU4A19';
+
+      expect(actualSenderAddress, expectedSenderAddress);
+    });
+
+    test('Should [return NULL] for an instruction WITHOUT authority, stakeAuthority, withdrawAuthority, staker or source', () {
+      // Arrange
+      ASolanaInstructionDecoded actualASolanaInstructionDecoded = const SolanaComputeBudgetUnitPriceInstruction(
+        discriminator: 3,
+        programId: 'ComputeBudget111111111111111111111111111111',
+        microLamports: 20000000,
+      );
+
+      // Act
+      String? actualSenderAddress = actualASolanaInstructionDecoded.getSignerAddress();
+
+      // Assert
+      String? expectedSenderAddress;
+
+      expect(actualSenderAddress, expectedSenderAddress);
     });
   });
 }

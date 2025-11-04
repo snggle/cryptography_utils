@@ -46,6 +46,22 @@ abstract class ASolanaInstructionDecoded extends Equatable {
     return null;
   }
 
+  String? getMintAddress() {
+    return mint;
+  }
+
+  String? getSenderAddress() {
+    return source ?? (lamports != null ? stakeAccount : stakeAuthority ?? staker);
+  }
+
+  String? getRecipientAddress() {
+    return destination ?? stakeAccount;
+  }
+
+  String? getSignerAddress() {
+    return authority ?? stakeAuthority ?? withdrawAuthority ?? staker ?? source;
+  }
+
   /// The Base58-encoded associated account address in a [SolanaCreateIdempotentInstruction].
   String? get account => null;
 

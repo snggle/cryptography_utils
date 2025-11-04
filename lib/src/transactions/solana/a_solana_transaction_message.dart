@@ -4,7 +4,7 @@ import 'package:cryptography_utils/cryptography_utils.dart';
 abstract class ASolanaTransactionMessage extends ASolanaMessage {
   final SolanaMessageHeader header;
 
-  /// list of all account addresses required by its instructions.
+  /// List of all account addresses required by its instructions.
   /// The array starts with a compact-u16 number indicating how many addresses it contains.
   /// https://solana.com/docs/core/transactions#array-of-account-addresses
   final List<SolanaPubKey> accountKeysList;
