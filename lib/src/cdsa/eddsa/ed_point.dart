@@ -75,7 +75,7 @@ class EDPoint extends Equatable {
   })  : x = x ?? BigInt.zero,
         y = y ?? BigInt.zero,
         z = z ?? BigInt.zero,
-        t = t ?? ((x ?? BigInt.zero) * (y ?? BigInt.zero)) % curve.p;
+        t = t ?? (((x ?? BigInt.zero) * (y ?? BigInt.zero)) % curve.p);
 
   /// Constructs an instance of EDPoint from a byte array.
   factory EDPoint.fromBytes(EDPoint generator, Uint8List bytes) {
@@ -91,10 +91,13 @@ class EDPoint extends Equatable {
     int x0 = (editableBytes[expLen - 1] & 0x80) >> 7;
     editableBytes[expLen - 1] &= 0x80 - 1;
 
-    BigInt y = BigIntUtils.decode(editableBytes, order: Endian.little);
+    BigInt y = BigIntUtils.decode(editableBytes, order: Endian.little) % p;
 
-    BigInt x2 = (y * y - BigInt.from(1)) * (curve.d * y * y - curve.a).modInverse(p) % p;
-    BigInt x = ED25519Utils.findModularSquareRoot(a: x2, p: p);
+    BigInt yy = (y * y) % p;
+    BigInt num = (yy - BigInt.one) % p;
+    BigInt den = (curve.d * yy - curve.a) % p;
+    BigInt denInv = den.modInverse(p);
+    BigInt x2 = (num * denInv) % p;    BigInt x = ED25519Utils.findModularSquareRoot(a: x2, p: p);
     if (x.isOdd != (x0 == 1)) {
       x = (-x) % p;
     }
@@ -143,12 +146,12 @@ class EDPoint extends Equatable {
     BigInt b = (y * other.y) % curve.p;
     BigInt c = (z * other.t) % curve.p;
     BigInt d = (t * other.z) % curve.p;
-    BigInt e = d + c;
+    BigInt e = (d + c) % curve.p;
     BigInt f = (((x - y) * (other.x + other.y)) + b - A) % curve.p;
-    BigInt g = b + (curve.a * A);
-    BigInt h = d - c;
+    BigInt g = (b + (curve.a * A)) % curve.p;
+    BigInt h = (d - c) % curve.p;
 
-    if (h == BigInt.zero) {
+    if (h % curve.p == BigInt.zero) {
       return _double();
     }
 
@@ -245,9 +248,9 @@ class EDPoint extends Equatable {
     BigInt C = (z * z * BigInt.two) % curve.p;
     BigInt D = (curve.a * A) % curve.p;
     BigInt E = (((x + y) * (x + y)) - A - B) % curve.p;
-    BigInt G = D + B;
-    BigInt F = G - C;
-    BigInt H = D - B;
+    BigInt G = (D + B) % curve.p;
+    BigInt F = (G - C) % curve.p;
+    BigInt H = (D - B) % curve.p;
     BigInt x3 = (E * F) % curve.p;
     BigInt y3 = (G * H) % curve.p;
     BigInt t3 = (E * H) % curve.p;
