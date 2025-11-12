@@ -191,7 +191,7 @@ class EDPoint extends Equatable {
       x: BigInt.zero,
       y: BigInt.one,
       z: BigInt.one,
-      t: BigInt.one,
+      t: BigInt.zero,
     );
 
     List<BigInt> nafList = BigIntUtils.computeNAF(modScalar).reversed.toList();
