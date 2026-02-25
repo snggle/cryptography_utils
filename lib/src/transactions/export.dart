@@ -23,7 +23,20 @@ export 'ethereum/access_list_bytes_item.dart';
 export 'ethereum/ethereum_eip1559_transaction.dart';
 export 'ethereum/ethereum_raw_bytes_transaction.dart';
 
+// Solana
+export 'solana/a_solana_message.dart';
+export 'solana/a_solana_transaction_message.dart';
+export 'solana/instructions/a_solana_instruction_decoded.dart';
+export 'solana/instructions/solana_compiled_instruction.dart';
+export 'solana/instructions/solana_instructions.dart';
+export 'solana/solana_legacy_message.dart';
+export 'solana/solana_message_header.dart';
+export 'solana/solana_pubkey.dart';
+export 'solana/solana_raw_message.dart';
+export 'solana/solana_v0_message.dart';
+
 // Generic
+// ignore: directives_ordering
 export 'sign_data_type.dart';
 export 'token_amount.dart';
 export 'token_denomination_type.dart';
