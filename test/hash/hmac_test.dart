@@ -6,6 +6,51 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tests of HMAC.process()', () {
+    test('Should [return HMAC digest] constructed using SHA1 algorithm (key length < digest size)', () {
+      // Arrange
+      Uint8List actualDataToHash = base64Decode('Q1JZUFRP');
+      Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
+
+      // Act
+      Uint8List actualHMACResult = HMAC(hash: Sha1(), key: actualHMACKey).process(actualDataToHash);
+
+      // Assert
+      Uint8List expectedHMACResult = base64Decode('anrW6soh6I0c+HLa2VQ7Vg1Xa7Y=');
+
+      expect(actualHMACResult, expectedHMACResult);
+    });
+
+    test('Should [return HMAC digest] constructed using SHA1 algorithm (key length == digest size)', () {
+      // Arrange
+      Uint8List actualDataToHash = base64Decode('Q1JZUFRP');
+      Uint8List actualHMACKey = base64Decode('BucEJucuy4B7Xo9OvwvDO0Z3HokXk3DjIQC51BiJGdU=');
+
+      // Act
+      Uint8List actualHMACResult = HMAC(hash: Sha1(), key: actualHMACKey).process(actualDataToHash);
+
+      // Assert
+      Uint8List expectedHMACResult = base64Decode('eKMO4fVD1ysUScx4d2V770rtnUc=');
+
+      expect(actualHMACResult, expectedHMACResult);
+    });
+
+    test('Should [return HMAC digest] constructed using SHA1 algorithm (key length > digest size)', () {
+      // Arrange
+      Uint8List actualDataToHash = base64Decode('Q1JZUFRP');
+      Uint8List actualHMACKey = base64Decode(
+          'ZXhjbHVkZSB3ZXN0IG5vYmxlIHB1cml0eSBiZXlvbmQgaWxsbmVzcyBzb3VwIHJlc2VtYmxlIGF0b20gb2J2aW91cyBtZXRob2QgZmVzdGl2YWwgbmFtZSBpZGVudGlmeSBlbGVwaGFudCBzYXRpc2Z5IHdlZGRpbmcgaG9uZXkgY2VydGFpbiB0b2UgZXJvZGU=');
+
+      // Act
+      Uint8List actualHMACResult = HMAC(hash: Sha1(), key: actualHMACKey).process(actualDataToHash);
+
+      // Assert
+      Uint8List expectedHMACResult = base64Decode('hb51FkrVeDGDSPgQeO94tX+InFk=');
+
+      expect(actualHMACResult, expectedHMACResult);
+    });
+
+    // ********************************************************************************************************
+
     test('Should [return HMAC digest] constructed using SHA256 algorithm (key length < digest size)', () {
       // Arrange
       Uint8List actualDataToHash = base64Decode('Q1JZUFRP');
@@ -96,6 +141,66 @@ void main() {
   });
 
   group('Tests of HMAC.processChunks()', () {
+    test('Should [return HMAC digest] constructed using SHA1 algorithm (key length < digest size)', () {
+      // Arrange
+      Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
+
+      // Act
+      Uint8List actualHMACResult = HMAC(hash: Sha1(), key: actualHMACKey).processChunks(actualDataChunks);
+
+      // Assert
+      Uint8List expectedHMACResult = base64Decode('ncsWeIl3q7X38rB5Xh+Wjaor42Q=');
+
+      expect(actualHMACResult, expectedHMACResult);
+    });
+
+    test('Should [return HMAC digest] constructed using SHA1 algorithm (key length == digest size)', () {
+      // Arrange
+      Uint8List actualHMACKey = base64Decode('BucEJucuy4B7Xo9OvwvDO0Z3HokXk3DjIQC51BiJGdU=');
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
+
+      // Act
+      Uint8List actualHMACResult = HMAC(hash: Sha1(), key: actualHMACKey).processChunks(actualDataChunks);
+
+      // Assert
+      Uint8List expectedHMACResult = base64Decode('3/adZknFUduKk+XG97IBWRBk/2w=');
+
+      expect(actualHMACResult, expectedHMACResult);
+    });
+
+    test('Should [return HMAC digest] constructed using SHA1 algorithm (key length > digest size)', () {
+      // Arrange
+      Uint8List actualHMACKey = base64Decode(
+          'ZXhjbHVkZSB3ZXN0IG5vYmxlIHB1cml0eSBiZXlvbmQgaWxsbmVzcyBzb3VwIHJlc2VtYmxlIGF0b20gb2J2aW91cyBtZXRob2QgZmVzdGl2YWwgbmFtZSBpZGVudGlmeSBlbGVwaGFudCBzYXRpc2Z5IHdlZGRpbmcgaG9uZXkgY2VydGFpbiB0b2UgZXJvZGU=');
+      List<Uint8List> actualDataChunks = <Uint8List>[
+        base64Decode('RE9HRQ=='),
+        base64Decode('V0lMTA=='),
+        base64Decode('UFVNUA=='),
+        base64Decode('U09PTg==')
+      ];
+
+      // Act
+      Uint8List actualHMACResult = HMAC(hash: Sha1(), key: actualHMACKey).processChunks(actualDataChunks);
+
+      // Assert
+      Uint8List expectedHMACResult = base64Decode('bZHWlzbPA6FW4SgcoHGN84zERtQ=');
+
+      expect(actualHMACResult, expectedHMACResult);
+    });
+
+    // ********************************************************************************************************
+
     test('Should [return HMAC digest] constructed using SHA256 algorithm (key length < digest size)', () {
       // Arrange
       Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
@@ -216,6 +321,138 @@ void main() {
   });
 
   group('Tests of HMAC.update() method and HMAC.digest getter', () {
+    group('Tests for SHA1 algorithm (key length < digest size)', () {
+      Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
+      HMAC actualHMAC = HMAC(hash: Sha1(), key: actualHMACKey);
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (empty chunks)', () {
+        // Act
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('DxW02l1HPL6U3wFCr10vu7ccmTM=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (1st chunk)', () {
+        // Arrange
+        Uint8List actualDataToHash = base64Decode('RE9HRQ==');
+
+        // Act
+        actualHMAC.update(actualDataToHash);
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('SPq15vyNUXMDH7RelTr2pXCbXZA=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (2nd chunk)', () {
+        // Arrange
+        Uint8List actualDataToHash = base64Decode('V0lMTA==');
+
+        // Act
+        actualHMAC.update(actualDataToHash);
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('OnvH1/hla9oMwaG916ebJhL+WeQ=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+    });
+
+    group('Tests for SHA1 algorithm (key length == digest size)', () {
+      Uint8List actualHMACKey = base64Decode('BucEJucuy4B7Xo9OvwvDO0Z3HokXk3DjIQC51BiJGdU=');
+      HMAC actualHMAC = HMAC(hash: Sha1(), key: actualHMACKey);
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (empty chunks)', () {
+        // Act
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('JYmyhKE1U+hysTncYSyDxn9ZlBA=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (1st chunk)', () {
+        // Arrange
+        Uint8List actualDataToHash = base64Decode('RE9HRQ==');
+
+        // Act
+        actualHMAC.update(actualDataToHash);
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('qJZ8/UOUxk/aXcDUrtTnit9Zx2U=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (2nd chunk)', () {
+        // Arrange
+        Uint8List actualDataToHash = base64Decode('V0lMTA==');
+
+        // Act
+        actualHMAC.update(actualDataToHash);
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('iUYLhr4x9RFdU/74D+wAknFWYNM=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+    });
+
+    group('Tests for SHA1 algorithm (key length > digest size)', () {
+      Uint8List actualHMACKey = base64Decode(
+          'ZXhjbHVkZSB3ZXN0IG5vYmxlIHB1cml0eSBiZXlvbmQgaWxsbmVzcyBzb3VwIHJlc2VtYmxlIGF0b20gb2J2aW91cyBtZXRob2QgZmVzdGl2YWwgbmFtZSBpZGVudGlmeSBlbGVwaGFudCBzYXRpc2Z5IHdlZGRpbmcgaG9uZXkgY2VydGFpbiB0b2UgZXJvZGU=');
+      HMAC actualHMAC = HMAC(hash: Sha1(), key: actualHMACKey);
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (empty chunks)', () {
+        // Act
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('631/GMj/Rzn7K1TofrgPAll4kw4=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (1st chunk)', () {
+        // Arrange
+        Uint8List actualDataToHash = base64Decode('RE9HRQ==');
+
+        // Act
+        actualHMAC.update(actualDataToHash);
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('tutBt2WS/BFn326o9iEm7W464rg=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+
+      test('Should [return HMAC digest] constructed using SHA1 algorithm (2nd chunk)', () {
+        // Arrange
+        Uint8List actualDataToHash = base64Decode('V0lMTA==');
+
+        // Act
+        actualHMAC.update(actualDataToHash);
+        Uint8List actualHMACResult = actualHMAC.digest;
+
+        // Assert
+        Uint8List expectedHMACResult = base64Decode('TntPwsEQZ3kfEZES7AhFLrywrbE=');
+
+        expect(actualHMACResult, expectedHMACResult);
+      });
+    });
+
+    // ********************************************************************************************************
+
     group('Tests for SHA256 algorithm (key length < digest size)', () {
       Uint8List actualHMACKey = base64Decode('Qml0Y29pbiBzZWVk');
       HMAC actualHMAC = HMAC(hash: Sha256(), key: actualHMACKey);
