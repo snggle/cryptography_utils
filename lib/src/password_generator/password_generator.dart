@@ -2,34 +2,26 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/password_generator/character_set_type.dart';
 import 'package:cryptography_utils/src/password_generator/password.dart';
 
 class PasswordGenerator {
-  static final String asciiCharacterSet = String.fromCharCodes(
-    List<int>.generate(_asciiCharacterSetLength, (int index) => _firstNonWhitespaceAsciiCodeUnit + index),
-  );
-  static const String sip2CharacterSet = '!+-0123456789=@ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-  static const int _asciiCharacterSetLength = 94;
   static const int _bitsPerChecksumCharacter = 6;
   static const int _byteBitLength = 8;
   static const int _checksumCharacterMask = 0x3f;
-  static const int _firstNonWhitespaceAsciiCodeUnit = 33;
   static const int _hashWindowBitLength = 16;
   static const int _maxPasswordLengthWithOneChecksumCharacter = 20;
 
-  final Random random;
-  final String characterSet;
-  final bool _checksumEnabled;
+  final CharacterSetType characterSetType;
 
-  PasswordGenerator.ascii({
-    required this.random,
-  })  : characterSet = asciiCharacterSet,
-        _checksumEnabled = false;
+  PasswordGenerator.ascii()
+      : characterSetType = CharacterSetType.ascii;
 
-  PasswordGenerator.sip2({
-    required this.random,
-  })  : characterSet = sip2CharacterSet,
-        _checksumEnabled = true;
+  PasswordGenerator.sip2()
+      : characterSetType = CharacterSetType.sip2;
+
+
+  bool get _checksumEnabled => characterSetType == CharacterSetType.sip2;
 
   Password generate(int passwordLength) {
     if (passwordLength < _minPasswordLength) {
@@ -46,6 +38,7 @@ class PasswordGenerator {
       password: password,
       randomCharacterCount: randomCharacterCount,
       checksumCharacterCount: checksumCharacterCount,
+      characterSetType: characterSetType,
     );
   }
 
@@ -64,7 +57,7 @@ class PasswordGenerator {
 
     for (int checksumCharacterIndex = 0; checksumCharacterIndex < checksumCharacterCount; checksumCharacterIndex++) {
       int checksumCharacterValue = _readSixBitValue(hashBytes, checksumCharacterIndex);
-      checksumStringBuffer.write(sip2CharacterSet[checksumCharacterValue]);
+      checksumStringBuffer.write(CharacterSetType.sip2.characterSet[checksumCharacterValue]);
     }
 
     return checksumStringBuffer.toString();
@@ -72,6 +65,8 @@ class PasswordGenerator {
 
   String _generateRandomPassword(int randomCharacterCount) {
     StringBuffer passwordStringBuffer = StringBuffer();
+    String characterSet = characterSetType.characterSet;
+    Random random = Random.secure();
 
     for (int characterIndex = 0; characterIndex < randomCharacterCount; characterIndex++) {
       passwordStringBuffer.write(characterSet[random.nextInt(characterSet.length)]);
