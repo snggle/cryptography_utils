@@ -15,5 +15,5 @@ class Password {
     required this.checksumCharacterCount,
   });
 
-  double get passwordEntropy => randomCharacterCount * (log(characterSetType.length) / ln2);
+  double get entropy => randomCharacterCount * (log(characterSetType.length) / ln2);
 }

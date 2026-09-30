@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cryptography_utils/src/password_generator/character_set_type.dart';
 import 'package:cryptography_utils/src/password_generator/password.dart';
 import 'package:cryptography_utils/src/password_generator/password_generator.dart';
@@ -47,7 +45,7 @@ void main() {
           expect(actualGeneratedPassword.randomCharacterCount, 1);
           expect(actualGeneratedPassword.checksumCharacterCount, 0);
           expect(actualGeneratedPassword.characterSetType, CharacterSetType.ascii);
-          expect(actualGeneratedPassword.passwordEntropy, closeTo(log(94) / ln2, 0.0000000001));
+          expect(actualGeneratedPassword.entropy, 6.554588851677638);
         },
       );
 
@@ -64,6 +62,7 @@ void main() {
           expect(actualGeneratedPassword.password.length, 18);
           expect(actualGeneratedPassword.randomCharacterCount, 18);
           expect(actualGeneratedPassword.checksumCharacterCount, 0);
+          expect(actualGeneratedPassword.entropy, 117.98259933019747);
         },
       );
 
@@ -80,6 +79,7 @@ void main() {
           expect(actualGeneratedPassword.password.length, 20);
           expect(actualGeneratedPassword.randomCharacterCount, 20);
           expect(actualGeneratedPassword.checksumCharacterCount, 0);
+          expect(actualGeneratedPassword.entropy, 131.09177703355275);
         },
       );
 
@@ -96,6 +96,7 @@ void main() {
           expect(actualGeneratedPassword.password.length, 40);
           expect(actualGeneratedPassword.randomCharacterCount, 40);
           expect(actualGeneratedPassword.checksumCharacterCount, 0);
+          expect(actualGeneratedPassword.entropy, 262.1835540671055);
         },
       );
     });
@@ -154,7 +155,7 @@ void main() {
           expect(actualGeneratedPassword.randomCharacterCount, 1);
           expect(actualGeneratedPassword.checksumCharacterCount, 1);
           expect(actualGeneratedPassword.characterSetType, CharacterSetType.sip2);
-          expect(actualGeneratedPassword.passwordEntropy, 6);
+          expect(actualGeneratedPassword.entropy, 6);
         },
       );
 
@@ -171,6 +172,7 @@ void main() {
           expect(actualGeneratedPassword.password.length, 20);
           expect(actualGeneratedPassword.randomCharacterCount, 19);
           expect(actualGeneratedPassword.checksumCharacterCount, 1);
+          expect(actualGeneratedPassword.entropy, 114);
         },
       );
 
@@ -187,6 +189,7 @@ void main() {
           expect(actualGeneratedPassword.password.length, 21);
           expect(actualGeneratedPassword.randomCharacterCount, 19);
           expect(actualGeneratedPassword.checksumCharacterCount, 2);
+          expect(actualGeneratedPassword.entropy, 114);
         },
       );
 
@@ -203,6 +206,7 @@ void main() {
           expect(actualGeneratedPassword.password.length, 22);
           expect(actualGeneratedPassword.randomCharacterCount, 20);
           expect(actualGeneratedPassword.checksumCharacterCount, 2);
+          expect(actualGeneratedPassword.entropy, 120);
         },
       );
     });

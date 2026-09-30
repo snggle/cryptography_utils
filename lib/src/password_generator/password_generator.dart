@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
-import 'package:cryptography_utils/src/password_generator/character_set_type.dart';
-import 'package:cryptography_utils/src/password_generator/password.dart';
 
 class PasswordGenerator {
   static const int _bitsPerChecksumCharacter = 6;
