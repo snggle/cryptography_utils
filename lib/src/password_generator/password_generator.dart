@@ -27,7 +27,7 @@ class PasswordGenerator {
     }
 
     int checksumCharacterCount = _checksumEnabled ? _getChecksumCharacterCount(passwordLength) : 0;
-    int randomCharacterCount = max(0, passwordLength - checksumCharacterCount);
+    int randomCharacterCount = passwordLength - checksumCharacterCount;
     String randomPassword = _generateRandomPassword(randomCharacterCount);
     String checksumString = _checksumEnabled ? _generateChecksum(randomPassword, checksumCharacterCount) : '';
     String password = '$randomPassword$checksumString';
