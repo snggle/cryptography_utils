@@ -1,20 +1,18 @@
-enum CharacterSetType {
-  sip2,
-  ascii;
+import 'package:cryptography_utils/src/password_generator/character_sets.dart';
 
-  static const int _asciiCharacterSetLength = 94;
-  static const int _firstNonWhitespaceAsciiCodeUnit = 33;
-  static const String _sip2CharacterSet = '!+-0123456789=@ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-  static final String _asciiCharacterSet = String.fromCharCodes(
-    List<int>.generate(_asciiCharacterSetLength, (int index) => _firstNonWhitespaceAsciiCodeUnit + index),
-  );
+enum CharacterSetType {
+  ascii,
+  sip2,
+  advanced;
 
   String get characterSet {
     switch (this) {
       case CharacterSetType.sip2:
-        return _sip2CharacterSet;
+        return PasswordCharacterSets.sip2;
       case CharacterSetType.ascii:
-        return _asciiCharacterSet;
+        return PasswordCharacterSets.ascii;
+      case CharacterSetType.advanced:
+        throw StateError('Use AdvancedCharacterSettings or PasswordGeneratorConfig for the effective advanced alphabet.');
     }
   }
 
