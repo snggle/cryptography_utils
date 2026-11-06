@@ -1,4 +1,3 @@
-/// Shared alphabets used by password presets and advanced settings.
 class PasswordCharacterSets {
   static const String lowercase = 'abcdefghijklmnopqrstuvwxyz';
   static const String uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

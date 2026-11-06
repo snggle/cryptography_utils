@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/password_generator/character_sets.dart';
-import 'package:cryptography_utils/src/password_generator/password_characters_config.dart';
 
 class PasswordGenerator {
   static const int _bitsPerChecksumCharacter = 6;
@@ -21,7 +20,6 @@ class PasswordGenerator {
 
   PasswordGenerator.advanced(PasswordCharactersConfig settings) : this(PasswordGeneratorConfig.advanced(settings));
 
-  /// Selection marker only. Use [config] for the effective advanced alphabet.
   CharacterSetType get characterSetType => config.characterSetType;
 
   Password generate(int passwordLength) {
@@ -36,7 +34,7 @@ class PasswordGenerator {
     String checksumString = config.checksumEnabled ? _generateChecksum(randomPassword, checksumCharacterCount) : '';
     String password = '$randomPassword$checksumString';
 
-    return Password.withConfig(
+    return Password(
       password: password,
       randomCharacterCount: randomCharacterCount,
       checksumCharacterCount: checksumCharacterCount,
