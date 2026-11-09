@@ -1,6 +1,7 @@
 import 'package:cryptography_utils/src/password_generator/character_sets.dart';
+import 'package:equatable/equatable.dart';
 
-class PasswordCharactersConfig {
+class PasswordCharactersConfig extends Equatable {
   final bool lowercase;
   final bool uppercase;
   final bool numbers;
@@ -12,7 +13,7 @@ class PasswordCharactersConfig {
     this.numbers = true,
     this.special = true,
   }) {
-    if (!lowercase && !uppercase && !numbers && !special) {
+    if (lowercase == false && uppercase == false && numbers == false && special == false) {
       throw ArgumentError('At least one character category must be enabled.');
     }
   }
@@ -41,4 +42,7 @@ class PasswordCharactersConfig {
       special: special ?? this.special,
     );
   }
+
+  @override
+  List<Object?> get props => <Object?>[lowercase, uppercase, numbers, special];
 }

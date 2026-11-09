@@ -3,8 +3,9 @@ import 'dart:math';
 
 import 'package:cryptography_utils/cryptography_utils.dart';
 import 'package:cryptography_utils/src/password_generator/character_sets.dart';
+import 'package:equatable/equatable.dart';
 
-class PasswordGenerator {
+class PasswordGenerator extends Equatable {
   static const int _bitsPerChecksumCharacter = 6;
   static const int _byteBitLength = 8;
   static const int _checksumCharacterMask = 0x3f;
@@ -12,7 +13,7 @@ class PasswordGenerator {
 
   final PasswordGeneratorConfig config;
 
-  PasswordGenerator(this.config);
+  const PasswordGenerator(this.config);
 
   PasswordGenerator.ascii() : this(PasswordGeneratorConfig.ascii());
 
@@ -28,7 +29,7 @@ class PasswordGenerator {
       throw ArgumentError('Invalid password length: $passwordLength. It should never be lower than $minPasswordLength');
     }
 
-    int checksumCharacterCount = config.checksumCharacterCountForLength(passwordLength);
+    int checksumCharacterCount = config.checksumCharactersForLength(passwordLength);
     int randomCharacterCount = passwordLength - checksumCharacterCount;
     String randomPassword = _generateRandomPassword(randomCharacterCount);
     String checksumString = config.checksumEnabled ? _generateChecksum(randomPassword, checksumCharacterCount) : '';
@@ -75,4 +76,7 @@ class PasswordGenerator {
 
     return (hashWindow >> rightShift) & _checksumCharacterMask;
   }
+
+  @override
+  List<Object?> get props => <Object?>[config];
 }

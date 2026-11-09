@@ -1,7 +1,8 @@
 import 'package:cryptography_utils/src/password_generator/character_set_type.dart';
 import 'package:cryptography_utils/src/password_generator/password_generator_config.dart';
+import 'package:equatable/equatable.dart';
 
-class Password {
+class Password extends Equatable {
   final String password;
   final int randomCharacterCount;
   final int checksumCharacterCount;
@@ -17,4 +18,7 @@ class Password {
   CharacterSetType get characterSetType => config.characterSetType;
 
   double get entropy => randomCharacterCount * config.bitsPerCharacter;
+
+  @override
+  List<Object?> get props => <Object?>[password, randomCharacterCount, checksumCharacterCount, config];
 }

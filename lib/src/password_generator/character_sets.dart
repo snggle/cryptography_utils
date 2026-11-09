@@ -4,5 +4,5 @@ class PasswordCharacterSets {
   static const String numbers = '0123456789';
   static const String special = r'''!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~''';
   static const String sip2 = '!+-0123456789=@ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-  static final String ascii = String.fromCharCodes(List<int>.generate(94, (int index) => 33 + index));
+  static const String ascii = r'''!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~''';
 }
