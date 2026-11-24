@@ -6,7 +6,8 @@
 import 'dart:typed_data';
 
 import 'package:codec_utils/codec_utils.dart';
-import 'package:cryptography_utils/cryptography_utils.dart';
+import 'package:cryptography_utils/src/hash/hmac.dart';
+import 'package:cryptography_utils/src/hash/sha/sha1/sha1.dart';
 
 /// Time-based One-Time Password generator with default parameters.
 class TOTP {
@@ -29,15 +30,10 @@ class TOTP {
 
   /// Converts the moving time counter value into an 8-byte array.
   static Uint8List _convertTimeToBytes(int timeWindow) {
-    Uint8List timeWindowBytes = Uint8List(8);
-    int remainingTimeWindow = timeWindow;
+    ByteData byteData = ByteData(8)
+    ..setUint64(0, timeWindow, Endian.big);
 
-    for (int i = timeWindowBytes.length - 1; i >= 0; i--) {
-      timeWindowBytes[i] = remainingTimeWindow & 0xff;
-      remainingTimeWindow >>= 8;
-    }
-
-    return timeWindowBytes;
+    return byteData.buffer.asUint8List();
   }
 
   /// Applies dynamic truncation to an HMAC digest and returns the code.
