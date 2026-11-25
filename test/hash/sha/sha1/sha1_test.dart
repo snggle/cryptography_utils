@@ -21,7 +21,7 @@ void main() {
       expect(actualDigest, expectedDigest);
     });
 
-    test('Should [return the expected SHA-1 digest] if [input contains zero bytes]', () {
+    test('Should [return the expected digest] if [input contains zero bytes]', () {
       // Arrange
       Uint8List actualDataToHash = Uint8List(0);
 

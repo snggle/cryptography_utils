@@ -9,13 +9,26 @@ void main() {
     group('Tests of TOTP.generate() with valid Base32 secrets', () {
       test('Should [generate the previous window code] if [timestamp is one millisecond before the next window]', () {
         // Arrange
-        DateTime actualTimestamp = DateTime.fromMillisecondsSinceEpoch(59999, isUtc: true);
+        DateTime actualTimestamp = DateTime.fromMillisecondsSinceEpoch(1111111109999, isUtc: true);
 
         // Act
         String actualTOTP = TOTP.generate(actualSecret, timestamp: actualTimestamp);
 
         // Assert
-        const String expectedTOTP = '287082';
+        const String expectedTOTP = '081804';
+
+        expect(actualTOTP, expectedTOTP);
+      });
+
+      test('Should [generate the new window code] if [timestamp is the first millisecond into the next window]', () {
+        // Arrange
+        DateTime actualTimestamp = DateTime.fromMillisecondsSinceEpoch(1111111111000, isUtc: true);
+
+        // Act
+        String actualTOTP = TOTP.generate(actualSecret, timestamp: actualTimestamp);
+
+        // Assert
+        const String expectedTOTP = '050471';
 
         expect(actualTOTP, expectedTOTP);
       });
